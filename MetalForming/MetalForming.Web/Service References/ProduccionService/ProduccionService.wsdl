@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ProduccionService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" />
+      <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IProduccionService_ListarOrdenesVenta_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesVenta" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesVenta_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesVentaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ObtenerOrdenVentaPorNumero_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerOrdenVentaPorNumero" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ObtenerOrdenVentaPorNumero_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerOrdenVentaPorNumeroResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarMaterialesPorProducto_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarMaterialesPorProducto" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarMaterialesPorProducto_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarMaterialesPorProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarMaquinaPorBusqueda_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarMaquinaPorBusqueda" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarMaquinaPorBusqueda_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarMaquinaPorBusquedaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ObtenerMaquinaPorID_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerMaquinaPorID" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ObtenerMaquinaPorID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerMaquinaPorIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_RegistrarOrdenProduccion_InputMessage">
+    <wsdl:part name="parameters" element="tns:RegistrarOrdenProduccion" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_RegistrarOrdenProduccion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegistrarOrdenProduccionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesProduccion_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesProduccion" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesProduccion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ObetenerOrdenProduccionPorNumero_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObetenerOrdenProduccionPorNumero" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ObetenerOrdenProduccionPorNumero_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObetenerOrdenProduccionPorNumeroResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IProduccionService">
+    <wsdl:operation name="ListarOrdenesVenta">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVenta" message="tns:IProduccionService_ListarOrdenesVenta_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaResponse" message="tns:IProduccionService_ListarOrdenesVenta_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerOrdenVentaPorNumero">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObtenerOrdenVentaPorNumero" message="tns:IProduccionService_ObtenerOrdenVentaPorNumero_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ObtenerOrdenVentaPorNumeroResponse" message="tns:IProduccionService_ObtenerOrdenVentaPorNumero_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarMaterialesPorProducto">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarMaterialesPorProducto" message="tns:IProduccionService_ListarMaterialesPorProducto_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarMaterialesPorProductoResponse" message="tns:IProduccionService_ListarMaterialesPorProducto_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarMaquinaPorBusqueda">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarMaquinaPorBusqueda" message="tns:IProduccionService_ListarMaquinaPorBusqueda_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarMaquinaPorBusquedaResponse" message="tns:IProduccionService_ListarMaquinaPorBusqueda_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerMaquinaPorID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObtenerMaquinaPorID" message="tns:IProduccionService_ObtenerMaquinaPorID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ObtenerMaquinaPorIDResponse" message="tns:IProduccionService_ObtenerMaquinaPorID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RegistrarOrdenProduccion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/RegistrarOrdenProduccion" message="tns:IProduccionService_RegistrarOrdenProduccion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/RegistrarOrdenProduccionResponse" message="tns:IProduccionService_RegistrarOrdenProduccion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarOrdenesProduccion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccion" message="tns:IProduccionService_ListarOrdenesProduccion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionResponse" message="tns:IProduccionService_ListarOrdenesProduccion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObetenerOrdenProduccionPorNumero">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumero" message="tns:IProduccionService_ObetenerOrdenProduccionPorNumero_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumeroResponse" message="tns:IProduccionService_ObetenerOrdenProduccionPorNumero_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IProduccionService" type="tns:IProduccionService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ListarOrdenesVenta">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesVenta" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerOrdenVentaPorNumero">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ObtenerOrdenVentaPorNumero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarMaterialesPorProducto">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarMaterialesPorProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarMaquinaPorBusqueda">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarMaquinaPorBusqueda" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerMaquinaPorID">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ObtenerMaquinaPorID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistrarOrdenProduccion">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/RegistrarOrdenProduccion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarOrdenesProduccion">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObetenerOrdenProduccionPorNumero">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProduccionService">
+    <wsdl:port name="BasicHttpBinding_IProduccionService" binding="tns:BasicHttpBinding_IProduccionService">
+      <soap:address location="http://localhost:7457/ProduccionService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

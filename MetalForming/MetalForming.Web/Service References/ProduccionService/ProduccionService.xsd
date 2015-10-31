@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" />
+  <xs:complexType name="ArrayOfOrdenVenta">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrdenVenta" nillable="true" type="tns:OrdenVenta" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrdenVenta" nillable="true" type="tns:ArrayOfOrdenVenta" />
+  <xs:complexType name="OrdenVenta">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q1:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Cantidad" type="xs:int" />
+          <xs:element minOccurs="0" name="Cliente" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FechaEntrega" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Producto" nillable="true" type="tns:Producto" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OrdenVenta" nillable="true" type="tns:OrdenVenta" />
+  <xs:complexType name="Producto">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q2:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Stock" type="xs:int" />
+          <xs:element minOccurs="0" name="StockMinimo" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Producto" nillable="true" type="tns:Producto" />
+  <xs:complexType name="ArrayOfMaterial">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Material" nillable="true" type="tns:Material" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMaterial" nillable="true" type="tns:ArrayOfMaterial" />
+  <xs:complexType name="Material">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q3:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Cantidad" type="xs:int" />
+          <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Reservado" type="xs:int" />
+          <xs:element minOccurs="0" name="Stock" type="xs:int" />
+          <xs:element minOccurs="0" name="StockMinimo" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Material" nillable="true" type="tns:Material" />
+  <xs:complexType name="ArrayOfMaquina">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Maquina" nillable="true" type="tns:Maquina" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMaquina" nillable="true" type="tns:ArrayOfMaquina" />
+  <xs:complexType name="Maquina">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q4:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CantidadRodillos" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Configuracion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaximoCaliente" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaximoFrio" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PLD" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PorcentajeFalla" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReduacionFin" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReduacionInicio" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Tiempo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Tipo" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Maquina" nillable="true" type="tns:Maquina" />
+  <xs:complexType name="OrdenProduccion">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q5:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CantidadProducto" type="xs:int" />
+          <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Materiales" nillable="true" type="tns:ArrayOfOrdenProduccionMaterial" />
+          <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OrdenVenta" nillable="true" type="tns:OrdenVenta" />
+          <xs:element minOccurs="0" name="Secuencia" nillable="true" type="tns:ArrayOfOrdenProduccionSecuencia" />
+          <xs:element minOccurs="0" name="TomarStock" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OrdenProduccion" nillable="true" type="tns:OrdenProduccion" />
+  <xs:complexType name="ArrayOfOrdenProduccionMaterial">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrdenProduccionMaterial" nillable="true" type="tns:OrdenProduccionMaterial" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrdenProduccionMaterial" nillable="true" type="tns:ArrayOfOrdenProduccionMaterial" />
+  <xs:complexType name="OrdenProduccionMaterial">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q6:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Comprar" type="xs:int" />
+          <xs:element minOccurs="0" name="IdOrdenProduccion" type="xs:int" />
+          <xs:element minOccurs="0" name="Material" nillable="true" type="tns:Material" />
+          <xs:element minOccurs="0" name="Requerido" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OrdenProduccionMaterial" nillable="true" type="tns:OrdenProduccionMaterial" />
+  <xs:complexType name="ArrayOfOrdenProduccionSecuencia">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrdenProduccionSecuencia" nillable="true" type="tns:OrdenProduccionSecuencia" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrdenProduccionSecuencia" nillable="true" type="tns:ArrayOfOrdenProduccionSecuencia" />
+  <xs:complexType name="OrdenProduccionSecuencia">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q7:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="FechaFin" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="FechaInicio" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="IdOrdenProduccion" type="xs:int" />
+          <xs:element minOccurs="0" name="Maquina" nillable="true" type="tns:Maquina" />
+          <xs:element minOccurs="0" name="Secuencia" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OrdenProduccionSecuencia" nillable="true" type="tns:OrdenProduccionSecuencia" />
+  <xs:complexType name="ArrayOfOrdenProduccion">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrdenProduccion" nillable="true" type="tns:OrdenProduccion" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrdenProduccion" nillable="true" type="tns:ArrayOfOrdenProduccion" />
+</xs:schema>

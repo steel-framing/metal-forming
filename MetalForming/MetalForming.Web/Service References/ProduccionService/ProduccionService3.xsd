@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" />
+  <xs:element name="ListarOrdenesVenta">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarOrdenesVentaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesVentaResult" nillable="true" type="q1:ArrayOfOrdenVenta" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerOrdenVentaPorNumero">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="numero" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerOrdenVentaPorNumeroResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerOrdenVentaPorNumeroResult" nillable="true" type="q2:OrdenVenta" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarMaterialesPorProducto">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idProducto" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarMaterialesPorProductoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarMaterialesPorProductoResult" nillable="true" type="q3:ArrayOfMaterial" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarMaquinaPorBusqueda">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="descripcion" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="tipo" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="pld" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="configuracion" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarMaquinaPorBusquedaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarMaquinaPorBusquedaResult" nillable="true" type="q4:ArrayOfMaquina" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerMaquinaPorID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idMaquina" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerMaquinaPorIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerMaquinaPorIDResult" nillable="true" type="q5:Maquina" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RegistrarOrdenProduccion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ordenProduccion" nillable="true" type="q6:OrdenProduccion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RegistrarOrdenProduccionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="RegistrarOrdenProduccionResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarOrdenesProduccion">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarOrdenesProduccionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesProduccionResult" nillable="true" type="q7:ArrayOfOrdenProduccion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObetenerOrdenProduccionPorNumero">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="numero" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObetenerOrdenProduccionPorNumeroResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObetenerOrdenProduccionPorNumeroResult" nillable="true" type="q8:OrdenProduccion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
