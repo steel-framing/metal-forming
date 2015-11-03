@@ -171,3 +171,6 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# Videos MP4
+*.mp4
