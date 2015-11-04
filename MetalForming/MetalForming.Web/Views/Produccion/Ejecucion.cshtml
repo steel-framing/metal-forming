@@ -1,0 +1,416 @@
+﻿@model OrdenProduccionModel
+
+@{
+    ViewBag.MenuActual = ConstantesWeb.Menu.Produccion;
+    ViewBag.MenuItemActual = ConstantesWeb.MenuItem.EjecutarOrdenProduccion;
+}
+
+@Html.HiddenFor(p => p.Id)
+@Html.HiddenFor(p => p.IdOrdenVenta)
+
+<header class="header-crumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <a id="btnIniciar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-play"></i> Iniciar</a>
+                <a id="btnReanudar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-refresh"></i> Reanudar</a>
+                <a id="btnDetener" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-pause"></i> Detener</a>
+                <a id="btnFinalizar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-power"></i> Finalizar</a>
+            </div>
+            <div class="col-xs-6">
+                <div class="text-right">
+                    <strong class="text-white">Número OP:</strong> <strong>@Model.Numero</strong>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong class="text-white">Estado:</strong> <strong>@Model.Estado</strong>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span id="spaTiempoContenedor" style="display: none;"><strong class="text-white">Tiempo:</strong> <strong><span id="crono" class="text-danger"></span></strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="well" style="max-height: 215px; min-height: 215px; margin-bottom: 5px; overflow: auto;">
+                        <h4 class="text-primary">Proceso de producción</h4>
+                        <div class="table-responsive">
+                            <table id="tblSecuencia" class="table table-striped table-header table-rounded table-condensed">
+                                <thead class="upper">
+                                    <tr>
+                                        <th class="hide">Id</th>
+                                        <th style="width: 5%;">Sec.</th>
+                                        <th style="width: 25%;">Máquina</th>
+                                        <th style="width: 25%;">F.Inicio</th>
+                                        <th style="width: 25%;">F.Fin</th>
+                                        <th style="width: 20%;">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var secuencia in Model.Secuencia)
+                                    {
+                                    <tr>
+                                        <td class="hide">@secuencia.IdMaquina</td>
+                                        <td>@secuencia.Secuencia</td>
+                                        <td>@secuencia.DescripcionMaquina</td>
+                                        <td>@secuencia.FechaInicio.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@secuencia.FechaFin.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@secuencia.Estado</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="well" style="max-height: 215px; min-height: 215px; margin-bottom: 5px; overflow: auto;">
+                        <h4 class="text-primary">Materiales reservados</h4>
+                        <div class="table-responsive">
+                            <table id="tblMateriales" class="table table-striped table-header table-rounded table-condensed">
+                                <thead class="upper">
+                                    <tr>
+                                        <th class="hide"></th>
+                                        <th></th>
+                                        <th>Material</th>
+                                        <th>Reservado</th>
+                                        <th>Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var material in Model.Materiales)
+                                    {
+                                        <tr>
+                                            <td class="hide">@material.IdMaterial</td>
+                                            <td class="tdCheckMaterial"><input type="checkbox" class="checkMaterial" /></td>
+                                            <td>@material.DescripcionMaterial</td>
+                                            <td>@material.Reservado</td>
+                                            <td>@material.Comprar</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br />
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well">
+                        <h4 class="text-primary">Eventos</h4>
+                        <div class="table-responsive">
+                            <table id="tblEventos" class="table table-striped table-header table-rounded table-condensed">
+                                <thead class="upper">
+                                    <tr>
+                                        <th class="hide">ID</th>
+                                        <th style="width: 15%;">Dispositivo <br /> Usuario</th>
+                                        <th style="width: 15%;">Evento</th>
+                                        <th style="width: 25%;">Momento</th>
+                                        <th style="width: 45%;">Resultado</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br />
+    <br />
+</main>
+
+<div class="modal fade" id="modalReanudar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-primary">Reanudar producción</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-12 control-label">Comentario de reanudación:</label>
+                                <div class="col-md-12">
+                                    <textarea id="txtComentarioReanudar" class="form-control" rows="4">
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="btnReanudarConfirmacion" href="javascript:;" class="btn btn-danger"><i class="ion-checkmark-round"></i> Reanudar</a>
+                <a href="javascript:;" class="btn btn-danger" data-dismiss="modal"><i class="ion-close-circled"></i> Cerrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetener">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-primary">Detener producción</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-12 control-label">Comentario:</label>
+                                <div class="col-md-12">
+                                    <textarea id="txtComentarioDetener" class="form-control" rows="4"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="btnDetenerConfirmacion" href="javascript:;" class="btn btn-danger"><i class="ion-checkmark-round"></i> Detener</a>
+                <a href="javascript:;" class="btn btn-danger" data-dismiss="modal"><i class="ion-close-circled"></i> Cerrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalError">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-primary">Error</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-12 control-label">ERR00015: Cizalla no calibrada.</label>
+                                <div class="col-md-12">
+                                    <p>
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="btnDetenerError" href="javascript:;" class="btn btn-danger"><i class="ion-checkmark-round"></i> Detener</a>
+                <a id="btnReanudarError" href="javascript:;" class="btn btn-danger"><i class="ion-close-circled"></i> Reanudar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        var usuario = "USU 01";
+        var inicio = 0;
+        var timeout = 0;
+
+        var urlFinalizar = '@Url.Action("Finalizar")';
+
+        $(function () {
+            $(".checkMaterial").on("change", function () {
+                VerificarCheckBoxesMateriales();
+            });
+
+            $("#btnIniciar").on("click", function () {
+                if ($(this).hasClass("disabled") == false) {
+                    app.showConfirmDialog("Listo para iniciar la producción?", function () {
+                        Iniciar();
+                    });
+                }
+            });
+
+            $("#btnReanudar").on("click", function () {
+                if ($(this).hasClass("disabled") == false) {
+                    $("#modalReanudar").modal("show");
+                }
+            });
+
+            $("#btnReanudarConfirmacion").on("click", function () {
+                Reanudar();
+            });
+
+            $("#btnReanudarError").on("click", function () {
+                $("#modalReanudar").modal("show");
+            });
+
+            $("#btnDetener").on("click", function () {
+                if ($(this).hasClass("disabled") == false) {
+                    $("#modalDetener").modal("show");
+                }
+            });
+
+            $("#btnDetenerConfirmacion").on("click", function () {
+                Detener();
+            });
+
+            $("#btnDetenerError").on("click", function () {
+                $("#modalDetener").modal("show");
+            });
+
+            $("#btnFinalizar").on("click", function () {
+                if ($(this).hasClass("disabled") == false) {
+                    app.showConfirmDialog("Listo para finalizar la producción?", function () {
+                        Finalizar();
+                    });
+                }
+            });
+        });
+
+        function VerificarCheckBoxesMateriales() {
+            var result = true;
+            $("#tblMateriales tbody tr").each(function (index, item) {
+                var checkbox = $(this).find("td.tdCheckMaterial input").is(':checked');
+                if (checkbox == false) {
+                    result = false;
+                }
+            });
+            if (result == true) {
+                $("#btnIniciar").removeClass("disabled");
+            } else {
+                $("#btnIniciar").addClass("disabled");
+            }
+        }
+
+        function Iniciar() {
+            $("#btnIniciar").addClass("disabled");
+            $("#btnFinalizar").removeClass("disabled");
+            $("#spaTiempoContenedor").show();
+            EmpezarDetener();
+            AgregarEvento(usuario, "Inicio", "El usuario marco el inicio de la producción.");
+            //ErrorEjecutar();
+        }
+
+        function Ejecutar() {
+            sleepFor(2000);
+            AgregarEvento("PLD 001", "Paso 1", "Comentario 1.");
+
+            sleepFor(2000);
+            AgregarEvento("PLD 002", "Paso 2", "Comentario 2.");
+
+            sleepFor(2000);
+            AgregarEvento("PLD 003", "Paso 3", "Comentario 3.");
+
+            sleepFor(2000);
+            AgregarEvento("PLD 004", "Paso 4", "Comentario 4.");
+
+            sleepFor(2000);
+            Error();
+
+            sleepFor(2000);
+            AgregarEvento("PLD 005", "Paso 5", "Comentario 5.");
+
+            sleepFor(2000);
+            AgregarEvento("PLD 006", "Paso 6", "Comentario 5.");
+        }
+
+        function Error() {
+            $("#modalError").modal("show");
+            $("#btnReanudar").removeClass("disabled");
+            $("#btnDetener").removeClass("disabled");
+        }
+
+        function Reanudar() {
+            AgregarEvento(usuario, "Reanudar", "El usuario marco el inicio de la producción.");
+        }
+
+        function Detener() {
+            AgregarEvento(usuario, "Detenido", "ERR00015: Cizalla no calibrada. Se requiere mantenimiento de máquina.");
+        }
+
+        function Finalizar() {
+            EmpezarDetener();
+            //window.location.href = urlFinalizar;
+        }
+
+        function AgregarEvento(dispositvo_usuario, evento, resultado) {
+            var date = new Date();
+            var momento = date.yyyymmddhhmmss();
+
+            var tr = "<tr>";
+            tr += "<td>" + dispositvo_usuario + "</td>";
+            tr += "<td>" + evento + "</td>";
+            tr += "<td>" + momento + "</td>";
+            tr += "<td>" + resultado + "</td>";
+            tr += "</tr>";
+            $("#tblEventos tbody").prepend(tr);
+        }
+
+        function EmpezarDetener() {
+            if (timeout == 0) {
+                // Obtenemos el valor actual
+                inicio = new Date().getTime();
+
+                // iniciamos el proceso
+                Funcionando();
+
+            } else {
+                // detemer el cronometro
+                clearTimeout(timeout);
+                timeout = 0;
+            }
+        }
+
+        function Funcionando() {
+            // obteneos la fecha actual
+            var actual = new Date().getTime();
+
+            // obtenemos la diferencia entre la fecha actual y la de inicio
+            var diff = new Date(actual - inicio);
+
+            // mostramos la diferencia entre la fecha actual y la inicial
+            var result = LeadingZero(diff.getUTCHours()) + ":" + LeadingZero(diff.getUTCMinutes()) + ":" + LeadingZero(diff.getUTCSeconds());
+            document.getElementById('crono').innerHTML = result;
+
+            // Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
+            timeout = setTimeout("Funcionando()", 1000);
+        }
+
+        function LeadingZero(time) {
+            // Coloca un 0 delante de un valor si es necesario
+            return (time < 10) ? "0" + time : + time;
+        }
+
+        function sleepFor(sleepDuration) {
+            var now = new Date().getTime();
+            while (new Date().getTime() < now + sleepDuration) { /* do nothing */ }
+        }
+
+        Date.prototype.yyyymmddhhmmss = function () {
+            var yyyy = this.getFullYear();
+            var mm = this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1); // getMonth() is zero-based
+            var dd = this.getDate() < 10 ? "0" + this.getDate() : this.getDate();
+            var hh = this.getHours() < 10 ? "0" + this.getHours() : this.getHours();
+            var min = this.getMinutes() < 10 ? "0" + this.getMinutes() : this.getMinutes();
+            var seg = this.getSeconds() < 10 ? "0" + this.getSeconds() : this.getSeconds();
+            return "".concat(dd).concat("/").concat(mm).concat("/").concat(yyyy).concat(" ").concat(hh).concat(":").concat(min).concat(":").concat(seg);
+        };
+
+    </script>
+}

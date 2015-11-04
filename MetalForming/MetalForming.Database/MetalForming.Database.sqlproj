@@ -61,7 +61,6 @@
     <Folder Include="Properties" />
     <Folder Include="Tables\" />
     <Folder Include="Stored Procedures\" />
-    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Maquina.sql" />
@@ -86,6 +85,5 @@
     <Build Include="Stored Procedures\ObtenerMaquinaPorID.sql" />
     <Build Include="Stored Procedures\ObtenerOrdenVentaPorNumero.sql" />
     <Build Include="Stored Procedures\ObtenerOrdenProduccionPorNumero.sql" />
-    <Build Include="Scripts\ScriptBackUp.sql" />
   </ItemGroup>
 </Project>

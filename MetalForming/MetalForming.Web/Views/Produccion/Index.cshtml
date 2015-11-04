@@ -1,0 +1,75 @@
+﻿@model IList<OrdenProduccionModel>
+
+@{
+    ViewBag.MenuActual = ConstantesWeb.Menu.Produccion;
+    ViewBag.MenuItemActual = ConstantesWeb.MenuItem.EjecutarOrdenProduccion;
+}
+
+<header class="header-crumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Listado de Ordenes de Producción</h3>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-responsive ">
+                        <table class="table table-striped table-header table-rounded">
+                            <thead class="upper">
+                                <tr>
+                                    <th class="hide">ID</th>
+                                    <th>Num. OP</th>
+                                    <th>Num. OV</th>
+                                    <th>F.Producción</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="hide">@item.Id</td>
+                                        <td>@item.Numero</td>
+                                        <td>@item.NumeroOrdenVenta</td>
+                                        <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.Estado</td>
+                                        <td>
+                                            <a href="javascript:;" class="btn-link" onclick="IniciarOrdenProduccion('@item.Numero')">Iniciar</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br />
+    <br />
+</main>
+
+@section scripts{
+    <script type="text/javascript">
+
+        var urlEjecucion = '@Url.Action("Ejecucion")';
+
+        $(function () {
+
+        });
+
+        function IniciarOrdenProduccion(numero) {
+            window.location.href = urlEjecucion + '?numero=' + numero;
+        }
+
+    </script>
+}

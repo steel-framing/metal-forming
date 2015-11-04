@@ -32,6 +32,9 @@ namespace MetalForming.Web.ProduccionService {
         private System.DateTime FechaEntregaField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdProgramaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NumeroField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -90,6 +93,19 @@ namespace MetalForming.Web.ProduccionService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int IdPrograma {
+            get {
+                return this.IdProgramaField;
+            }
+            set {
+                if ((this.IdProgramaField.Equals(value) != true)) {
+                    this.IdProgramaField = value;
+                    this.RaisePropertyChanged("IdPrograma");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Numero {
             get {
                 return this.NumeroField;
@@ -126,6 +142,7 @@ namespace MetalForming.Web.ProduccionService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.OrdenProduccion))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.OrdenProduccionMaterial))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.OrdenProduccionSecuencia))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.Plan))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.OrdenVenta))]
     public partial class BaseEntity : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -786,6 +803,77 @@ namespace MetalForming.Web.ProduccionService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Plan", Namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities")]
+    [System.SerializableAttribute()]
+    public partial class Plan : MetalForming.Web.ProduccionService.BaseEntity {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EstadoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime FechaFinField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime FechaInicioField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Codigo {
+            get {
+                return this.CodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoField, value) != true)) {
+                    this.CodigoField = value;
+                    this.RaisePropertyChanged("Codigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Estado {
+            get {
+                return this.EstadoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EstadoField, value) != true)) {
+                    this.EstadoField = value;
+                    this.RaisePropertyChanged("Estado");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime FechaFin {
+            get {
+                return this.FechaFinField;
+            }
+            set {
+                if ((this.FechaFinField.Equals(value) != true)) {
+                    this.FechaFinField = value;
+                    this.RaisePropertyChanged("FechaFin");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime FechaInicio {
+            get {
+                return this.FechaInicioField;
+            }
+            set {
+                if ((this.FechaInicioField.Equals(value) != true)) {
+                    this.FechaInicioField = value;
+                    this.RaisePropertyChanged("FechaInicio");
+                }
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ProduccionService.IProduccionService")]
     public interface IProduccionService {
@@ -837,6 +925,20 @@ namespace MetalForming.Web.ProduccionService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumero", ReplyAction="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumeroResponse")]
         System.Threading.Tasks.Task<MetalForming.Web.ProduccionService.OrdenProduccion> ObetenerOrdenProduccionPorNumeroAsync(string numero);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaEjecucion", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaEjecucionRespons" +
+            "e")]
+        System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion> ListarOrdenesProduccionParaEjecucion();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaEjecucion", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaEjecucionRespons" +
+            "e")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion>> ListarOrdenesProduccionParaEjecucionAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente", ReplyAction="http://tempuri.org/IProduccionService/ObtenerPlanVigenteResponse")]
+        MetalForming.Web.ProduccionService.Plan ObtenerPlanVigente();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente", ReplyAction="http://tempuri.org/IProduccionService/ObtenerPlanVigenteResponse")]
+        System.Threading.Tasks.Task<MetalForming.Web.ProduccionService.Plan> ObtenerPlanVigenteAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -928,6 +1030,22 @@ namespace MetalForming.Web.ProduccionService {
         
         public System.Threading.Tasks.Task<MetalForming.Web.ProduccionService.OrdenProduccion> ObetenerOrdenProduccionPorNumeroAsync(string numero) {
             return base.Channel.ObetenerOrdenProduccionPorNumeroAsync(numero);
+        }
+        
+        public System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion> ListarOrdenesProduccionParaEjecucion() {
+            return base.Channel.ListarOrdenesProduccionParaEjecucion();
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion>> ListarOrdenesProduccionParaEjecucionAsync() {
+            return base.Channel.ListarOrdenesProduccionParaEjecucionAsync();
+        }
+        
+        public MetalForming.Web.ProduccionService.Plan ObtenerPlanVigente() {
+            return base.Channel.ObtenerPlanVigente();
+        }
+        
+        public System.Threading.Tasks.Task<MetalForming.Web.ProduccionService.Plan> ObtenerPlanVigenteAsync() {
+            return base.Channel.ObtenerPlanVigenteAsync();
         }
     }
 }

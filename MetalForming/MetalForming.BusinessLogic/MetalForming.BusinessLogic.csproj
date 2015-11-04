@@ -52,12 +52,17 @@
     <Compile Include="MaterialBL.cs" />
     <Compile Include="OrdenProduccionBL.cs" />
     <Compile Include="OrdenVentaBL.cs" />
+    <Compile Include="PlanBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MetalForming.BusinessEntities\MetalForming.BusinessEntities.csproj">
       <Project>{8bbca356-7bbf-485d-a9b6-15a92b8dc062}</Project>
       <Name>MetalForming.BusinessEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MetalForming.Common\MetalForming.Common.csproj">
+      <Project>{a3d559dd-9d5f-4328-8df0-3968f52336e7}</Project>
+      <Name>MetalForming.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\MetalForming.Data\MetalForming.Data.csproj">
       <Project>{1cd8b356-9e44-4a5b-8bd3-3c72b2e66bdb}</Project>

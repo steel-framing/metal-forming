@@ -35,7 +35,8 @@ namespace MetalForming.Data
                             {
                                 Id = GetDataValue<int>(lector, "IdProducto"),
                                 Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
-                            }
+                            },
+                            IdPrograma = GetDataValue<int>(lector, "IdPrograma")
                         };
 
                         lista.Add(entidad);
@@ -76,7 +77,8 @@ namespace MetalForming.Data
                                 Descripcion = GetDataValue<string>(lector, "DescripcionProducto"),
                                 Stock = GetDataValue<int>(lector, "StockProducto"),
                                 StockMinimo = GetDataValue<int>(lector, "StockMinimoProducto")
-                            }
+                            },
+                            IdPrograma = GetDataValue<int>(lector, "IdPrograma")
                         };
                     }
                 }

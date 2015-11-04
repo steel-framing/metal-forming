@@ -1,8 +1,10 @@
 ﻿using MetalForming.BusinessEntities;
 using MetalForming.BusinessLogic.Core;
+using MetalForming.Common;
 using MetalForming.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Transactions;
 
@@ -19,6 +21,22 @@ namespace MetalForming.BusinessLogic
             try
             {
                 return _ordenProduccionDA.Listar();
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
+        public IList<OrdenProduccion> ListarParaEjecucion()
+        {
+            try
+            {
+                return
+                    _ordenProduccionDA.Listar()
+                        .Where(p => p.Estado == Constantes.EstadoOrdenPoduccion.Programado || 
+                                    p.Estado == Constantes.EstadoOrdenPoduccion.ReProgramado)
+                        .ToList();
             }
             catch (Exception ex)
             {
@@ -59,7 +77,7 @@ namespace MetalForming.BusinessLogic
                         _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.CantidadProducto);
 
                         //Cambiar estado a Orden de Venta
-                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, "Programado");
+                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenPoduccion.Programado);
                     }
                     else
                     {
@@ -86,7 +104,7 @@ namespace MetalForming.BusinessLogic
                         _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.CantidadProducto);
 
                         //Cambiar estado a Orden de Venta
-                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, "Programado");
+                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenPoduccion.Programado);
                     }
 
                     transactionScope.Complete();

@@ -31,5 +31,11 @@ namespace MetalForming.ServiceContracts
 
         [OperationContract]
         OrdenProduccion ObetenerOrdenProduccionPorNumero(string numero);
+
+        [OperationContract]
+        IList<OrdenProduccion> ListarOrdenesProduccionParaEjecucion();
+
+        [OperationContract]
+        Plan ObtenerPlanVigente();
     }
 }

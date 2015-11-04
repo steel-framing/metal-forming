@@ -112,4 +112,28 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="ListarOrdenesProduccionParaEjecucion">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarOrdenesProduccionParaEjecucionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesProduccionParaEjecucionResult" nillable="true" type="q9:ArrayOfOrdenProduccion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerPlanVigente">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerPlanVigenteResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerPlanVigenteResult" nillable="true" type="q10:Plan" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
