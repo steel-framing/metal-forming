@@ -149,11 +149,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\css\datepicker.min.css" />
     <Content Include="Content\css\theme.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\ajax-loader.gif" />
     <Content Include="Content\ionicons\css\ionicons.min.css" />
     <Content Include="Content\ionicons\fonts\ionicons.svg" />
+    <Content Include="Content\js\bootstrap-datepicker.es.js" />
+    <Content Include="Content\js\bootstrap-datepicker.min.js" />
     <Content Include="Content\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\css\style.css" />
@@ -178,6 +181,12 @@
     <Content Include="Content\ionicons\fonts\ionicons.ttf" />
     <Content Include="Content\ionicons\fonts\ionicons.woff" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
+    <Content Include="Service References\ProduccionService\MetalForming.Web.ProduccionService.Plan.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ProduccionService\MetalForming.Web.ProduccionService.Programa.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Service References\ProduccionService\ProduccionService.disco" />
     <None Include="Service References\ProduccionService\configuration91.svcinfo" />
     <None Include="Service References\ProduccionService\configuration.svcinfo" />

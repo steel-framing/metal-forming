@@ -4,6 +4,7 @@ using System.Reflection;
 using MetalForming.BusinessEntities;
 using MetalForming.BusinessLogic.Core;
 using MetalForming.Data;
+using MetalForming.Common;
 
 namespace MetalForming.BusinessLogic
 {
@@ -16,6 +17,30 @@ namespace MetalForming.BusinessLogic
             try
             {
                 return _orderVentaDA.Listar();
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
+        public IList<OrdenVenta> ListarPendientes()
+        {
+            try
+            {
+                return _orderVentaDA.ListarPorEstado(Constantes.EstadoOrdenVenta.Pendiente);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
+        public IList<OrdenVenta> ListarPorPrograma(int idPrograma)
+        {
+            try
+            {
+                return _orderVentaDA.ListarPorPrograma(idPrograma);
             }
             catch (Exception ex)
             {

@@ -156,4 +156,25 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Plan" nillable="true" type="tns:Plan" />
+  <xs:complexType name="ArrayOfPrograma">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Programa" nillable="true" type="tns:Programa" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPrograma" nillable="true" type="tns:ArrayOfPrograma" />
+  <xs:complexType name="Programa">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q9:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CantidadOV" type="xs:int" />
+          <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FechaFin" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="FechaInicio" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="IdPlan" type="xs:int" />
+          <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Programa" nillable="true" type="tns:Programa" />
 </xs:schema>

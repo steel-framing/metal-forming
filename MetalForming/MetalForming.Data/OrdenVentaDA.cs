@@ -9,6 +9,8 @@ namespace MetalForming.Data
     public class OrdenVentaDA : BaseData
     {
         private const string ProcedimientoAlmacenadoListar = "dbo.ListarOrdenVenta";
+        private const string ProcedimientoAlmacenadoListarPorEstado = "dbo.ListarOrdenVentaPorEstado";
+        private const string ProcedimientoAlmacenadoListarPorPrograma = "dbo.ListarOrdenVentaPorPrograma";
         private const string ProcedimientoAlmacenadoObtenerPorNumero = "dbo.ObtenerOrdenVentaPorNumero";
         private const string ProcedimientoAlmacenadoActualizarEstado = "dbo.ActualizarEstadoOrdenVenta";
 
@@ -46,6 +48,86 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListar);
+            }
+            return lista;
+        }
+
+        public IList<OrdenVenta> ListarPorEstado(string estado)
+        {
+            var lista = new List<OrdenVenta>();
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoListarPorEstado);
+
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, estado);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    while (lector.Read())
+                    {
+                        var entidad = new OrdenVenta
+                        {
+                            Id = GetDataValue<int>(lector, "Id"),
+                            Numero = GetDataValue<string>(lector, "Numero"),
+                            Cliente = GetDataValue<string>(lector, "Cliente"),
+                            FechaEntrega = GetDataValue<DateTime>(lector, "FechaEntrega"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
+                            Cantidad = GetDataValue<int>(lector, "Cantidad"),
+                            Producto = new Producto
+                            {
+                                Id = GetDataValue<int>(lector, "IdProducto"),
+                                Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
+                            },
+                            IdPrograma = GetDataValue<int>(lector, "IdPrograma")
+                        };
+
+                        lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarPorEstado);
+            }
+            return lista;
+        }
+
+        public IList<OrdenVenta> ListarPorPrograma(int idPrograma)
+        {
+            var lista = new List<OrdenVenta>();
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoListarPorPrograma);
+
+                Context.Database.AddInParameter(comando, "@IdPrograma", DbType.Int32, idPrograma);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    while (lector.Read())
+                    {
+                        var entidad = new OrdenVenta
+                        {
+                            Id = GetDataValue<int>(lector, "Id"),
+                            Numero = GetDataValue<string>(lector, "Numero"),
+                            Cliente = GetDataValue<string>(lector, "Cliente"),
+                            FechaEntrega = GetDataValue<DateTime>(lector, "FechaEntrega"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
+                            Cantidad = GetDataValue<int>(lector, "Cantidad"),
+                            Producto = new Producto
+                            {
+                                Id = GetDataValue<int>(lector, "IdProducto"),
+                                Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
+                            },
+                            IdPrograma = GetDataValue<int>(lector, "IdPrograma")
+                        };
+
+                        lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarPorPrograma);
             }
             return lista;
         }

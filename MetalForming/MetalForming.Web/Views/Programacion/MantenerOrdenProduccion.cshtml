@@ -63,7 +63,7 @@
                                         <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
                                         <td>@item.Estado</td>
                                         <td>
-                                            @if (item.Estado == Constantes.EstadoOrdenVenta.Pendiente)
+                                            @if (item.Estado == Constantes.EstadoOrdenVenta.Programado)
                                             {
                                                 <a href="javascript:;" class="btn-link" onclick="CrearOrdenProduccion('@item.Numero');">Crear OP</a>
                                             }

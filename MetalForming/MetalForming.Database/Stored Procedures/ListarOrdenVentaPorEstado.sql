@@ -1,7 +1,6 @@
-﻿
-CREATE PROCEDURE [dbo].[ObtenerOrdenVentaPorNumero]
+﻿CREATE PROCEDURE [dbo].[ListarOrdenVentaPorEstado]
 (
-	@Numero varchar(50)
+	@Estado varchar(50)
 )
 AS
 BEGIN
@@ -17,11 +16,9 @@ OV.Estado,
 OV.Cantidad,
 OV.IdPrograma,
 OV.IdProducto,
-P.Descripcion AS DescripcionProducto,
-P.Stock AS StockProducto,
-P.StockMinimo AS StockMinimoProducto
+P.Descripcion AS DescripcionProducto
 FROM dbo.OrdenVenta OV
 INNER JOIN dbo.Producto P ON OV.IdProducto = P.Id
-WHERE OV.Numero = @Numero
+WHERE Estado = @Estado
 
 END

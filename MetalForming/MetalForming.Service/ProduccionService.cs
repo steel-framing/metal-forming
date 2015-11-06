@@ -14,10 +14,21 @@ namespace MetalForming.Service
         private readonly MaquinaBL _maquinaBL = new MaquinaBL();
         private readonly OrdenProduccionBL _ordenProduccionBL = new OrdenProduccionBL();
         private readonly PlanBL _planBL = new PlanBL();
+        private readonly ProgramaBL _programaBL = new ProgramaBL();
 
         public IList<OrdenVenta> ListarOrdenesVenta()
         {
             return _ordenVentaBL.Listar();
+        }
+
+        public IList<OrdenVenta> ListarOrdenesVentaPendiente()
+        {
+            return _ordenVentaBL.ListarPendientes();
+        }
+
+        public IList<OrdenVenta> ListarOrdenesVentaPorPrograma(int idPrograma)
+        {
+            return _ordenVentaBL.ListarPorPrograma(idPrograma);
         }
 
         public OrdenVenta ObtenerOrdenVentaPorNumero(string numero)
@@ -63,6 +74,11 @@ namespace MetalForming.Service
         public Plan ObtenerPlanVigente()
         {
             return _planBL.ObtenerVigente();
+        }
+
+        public IList<Programa> ListrarProgramasPorPlan(int idPlan)
+        {
+            return _programaBL.ListrarPorPlan(idPlan);
         }
     }
 }

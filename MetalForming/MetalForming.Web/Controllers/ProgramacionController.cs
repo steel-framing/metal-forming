@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using MetalForming.Common;
 using MetalForming.Web.Core;
@@ -25,19 +26,48 @@ namespace MetalForming.Web.Controllers
                     model.PlanVigente = service.ObtenerPlanVigente();
                 }
 
-                if (model.PlanVigente == null)
+                using (var service = new ProduccionServiceClient())
                 {
-                    
+                    model.OrdenesVenta = service.ListarOrdenesVentaPendiente();
                 }
-                else
+
+                if (model.PlanVigente != null && model.PlanVigente.Estado != Constantes.EstadoPlan.Pendiente)
                 {
-                    if (model.PlanVigente.Estado == Constantes.EstadoPlan.Pendiente)
+                    using (var service = new ProduccionServiceClient())
                     {
-                        
+                        model.ProgramasAnteriores = service.ListrarProgramasPorPlan(model.PlanVigente.Id);
                     }
-                    else
+
+                    if (model.ProgramasAnteriores.Any(p => p.Estado == Constantes.EstadoPrograma.Iniciado))
                     {
-                        
+                        var programaVigente =
+                            model.ProgramasAnteriores.LastOrDefault(
+                                p => p.Estado == Constantes.EstadoOrdenPoduccion.Programado);
+
+                        if (programaVigente != null)
+                        {
+                            model.Id = programaVigente.Id;
+                            model.Numero = programaVigente.Numero;
+                            model.FechaInicio = programaVigente.FechaInicio;
+                            model.FechaFin = programaVigente.FechaFin;
+                            model.CantidadOV = programaVigente.CantidadOV;
+                            model.Estado = programaVigente.Estado;
+
+                            model.ProgramasAnteriores.Remove(programaVigente);   
+                        }
+
+                        IList<OrdenVenta> ordenesVentaPorPrograma;
+                        using (var service = new ProduccionServiceClient())
+                        {
+                             ordenesVentaPorPrograma = service.ListarOrdenesVentaPorPrograma(model.Id);
+                        }
+                        if (ordenesVentaPorPrograma.Count > 0)
+                        {
+                            foreach (var ordenVenta in ordenesVentaPorPrograma)
+                            {
+                                model.OrdenesVenta.Add(ordenVenta);
+                            }
+                        }
                     }
                 }
             }
@@ -46,6 +76,55 @@ namespace MetalForming.Web.Controllers
                 LogError(ex);
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult GuardarPrograma(ProgramaModel model)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                var fechaInicio = Utils.ConvertDate(model.FechaInicioStr, "dd/MM/yyyy");
+                var fechaFin = Utils.ConvertDate(model.FechaFinStr, "dd/MM/yyyy");
+
+                var programa = new Programa
+                {
+                    Id = model.Id,
+                    Numero = model.Numero,
+                    FechaInicio = fechaInicio.Value,
+                    FechaFin = fechaFin.Value,
+                    CantidadOV = model.CantidadOV,
+                    Estado = model.Estado,
+                    IdPlan = model.IdPlan
+                };
+
+
+
+                response.Data = "";
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                response.Message = ex.Message;
+            }
+            return Json(response);
+        }
+
+        [HttpPost]
+        public JsonResult FinalizarPrograma(int idPrograma)
+        {
+            var response = new JsonResponse();
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                response.Message = ex.Message;
+            }
+            return Json(response);
         }
 
         #endregion

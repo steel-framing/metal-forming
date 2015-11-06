@@ -1,78 +1,130 @@
-﻿@model ProgramacionModel
+﻿@model ProgramaModel
 
 @{
     ViewBag.MenuActual = ConstantesWeb.Menu.Programacion;
     ViewBag.MenuItemActual = ConstantesWeb.MenuItem.MantenerPrograma;
 }
 
+@section styles{
+    <style type="text/css">
+        .well {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .well-form {
+            padding-top: 15px;
+            padding-bottom: 0px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    </style>
+}
+
 <header class="header-crumb">
     <div class="container">
-        <div class="row">
-            <div class="col-sm-7">
-                <table class="table table-form">
-                    <tbody>
-                        <tr>
-                            <td class="text-white"><strong>Programa Num.:</strong> 00000025447</td>
-                            <td class="text-white"><strong>F.Inicio:</strong> 20/09/2015</td>
-                            <td class="text-white"><strong>F.Fin:</strong> 26/09/2015</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-sm-5">
-                <div class="text-right">
-                    <a href="javascript:;" class="btn btn-primary-line"><i class="ion-ios-close-outline"></i> Anular Programa</a>
-                </div>
-            </div>
-        </div>
+        <h2>Mantener Programa</h2>
     </div>
 </header>
 
 <main>
     <section>
         <div class="container">
-            <div class="well">
-                <h3 class="text-primary">Ordenes de Venta por atender</h3>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-8">
+                    <div class="well">
+                        <h4 class="text-primary">Programas anteriores</h4>
+                    </div>
                     <div class="table-responsive ">
                         <table class="table table-striped table-header table-rounded">
                             <thead class="upper">
                                 <tr>
                                     <th class="hide"></th>
-                                    <th>Orden de Venta</th>
-                                    <th>Cliente</th>
-                                    <th>Fecha de Entrega</th>
+                                    <th>Num. Programa</th>
+                                    <th>F. Inicio</th>
+                                    <th>F. Fin</th>
+                                    <th>Cant. OV</th>
                                     <th>Estado</th>
-                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.OrdenesVenta)
+                                @if (Model.ProgramasAnteriores.Count > 0)
+                                {
+                                    foreach (var item in Model.ProgramasAnteriores.OrderBy(p => p.FechaFin))
+                                    {
+                                        <tr>
+                                            <td class="hide">@item.Id</td>
+                                            <td>@item.Numero</td>
+                                            <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.CantidadOV</td>
+                                            <td>@item.Estado</td>
+                                        </tr>
+                                    }
+                                }
+                                else
                                 {
                                     <tr>
-                                        <td class="hide">@item.Id</td>
-                                        <td>@item.Numero</td>
-                                        <td>@item.Cliente</td>
-                                        <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
-                                        <td>@item.Estado</td>
-                                        <td>
-                                            @if (item.Estado.ToUpper() == "PENDIENTE")
-                                            {
-                                                <a href="javascript:;" class="btn-link" onclick="CrearOrdenProduccion('@item.Numero');">Crear OP</a>
-                                            }
+                                        <td colspan="6">
+                                            <div class="text-center">No existen programas registrados.</div>
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="well">
+                        <h4 class="text-primary">Plan vigente</h4>
+                    </div>
+                    @if (Model.PlanVigente == null)
+                    {
+                        <div class="well well-form">
+                            <div class="form-horizontal">
+                                <div class="form-group form-group-sm">
+                                    <div class="col-xs-12">
+                                        No existe un plan vigente.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="well well-form">
+                            <div class="form-horizontal">
+                                <input type="hidden" id="hidIdPlan" value="@Model.PlanVigente.Id" />
+                                <div class="form-group form-group-sm">
+                                    <div class="col-xs-5">
+                                        Código:
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <input id="txtCodigoPlan" class="form-control" readonly="readonly" value="@Model.PlanVigente.Codigo" />
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-sm">
+                                    <div class="col-xs-5">
+                                        Fecha de inicio:
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <input id="txtFechaInicioPlam" class="form-control" readonly="readonly" value="@Model.PlanVigente.FechaInicio.ToString("dd/MM/yyyy")" />
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-sm">
+                                    <div class="col-xs-5">
+                                        Fecha de fin:
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <input id="txtFechaFinPlam" class="form-control" readonly="readonly" value="@Model.PlanVigente.FechaFin.ToString("dd/MM/yyyy")" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -82,70 +134,314 @@
 
     <section>
         <div class="container">
-            <div class="well">
-                <h3 class="text-primary">Ordenes de Producción Generadas</h3>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-8">
+                    <div class="well">
+                        <h4 class="text-primary">Ordenes de venta por atender</h4>
+                    </div>
                     <div class="table-responsive ">
-                        <table class="table table-striped table-header table-rounded">
+                        <table id="tblOrdenesVenta" class="table table-striped table-header table-rounded">
                             <thead class="upper">
-                            <tr>
-                                <th class="hide"></th>
-                                <th>Num. OP</th>
-                                <th>Num. OV</th>
-                                <th>F.Entrega</th>
-                                <th>Producto</th>
-                                <th>Estado</th>
-                            </tr>
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th>Sel.</th>
+                                    <th>Orden Venta</th>
+                                    <th>Cliente</th>
+                                    <th>F. Entrega</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @foreach (var item in Model.OrdenesProduccion)
-                            {
-                                <tr>
-                                    <td class="hide">@item.Id</td>
-                                    <td>
-                                        <a href="javascript:;" class="btn-link" onclick=" VerOrdenProduccion('@item.Numero') ">@item.Numero</a>
-                                    </td>
-                                    <td>@item.NumeroOrdenVenta</td>
-                                    <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
-                                    <td>@item.DescripcionProducto</td>
-                                    <td>@item.Estado</td>
-                                </tr>
-                            }
+                                @if (Model.OrdenesVenta.Count > 0)
+                                {
+                                    foreach (var item in Model.OrdenesVenta.OrderBy(p => p.FechaEntrega))
+                                    {
+                                        <tr>
+                                            <td class="tdIdOrdenVenta hide">@item.Id</td>
+                                            <td class="tdSeleccionar">
+                                                <label for="chkHaProducir_@item.Id">
+                                                    @if (item.Estado == Constantes.EstadoOrdenVenta.Programado)
+                                                    {
+                                                        <input id="chkHaProducir_@item.Id" type="checkbox" class="checkbox-inline chkOV" checked="checked" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="chkHaProducir_@item.Id" type="checkbox" class="checkbox-inline chkOV" />
+                                                    }
+                                                </label>
+                                            </td>
+                                            <td>@item.Numero</td>
+                                            <td>@item.Cliente</td>
+                                            <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="text-center">No existen ordenes de ventas pendientes.</div>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="col-xs-4">
+                    <input type="hidden" id="hidIdPrograma" value="@Model.Id"/>
+                    <input type="hidden" id="hidNumero" value="@Model.Numero"/>
+                    <input type="hidden" id="hidEstado" value="@Model.Estado" />
+
+                    @if (Model.PlanVigente == null)
+                    {
+                        <div class="well">
+                            <h4 class="text-primary">Programa nuevo</h4>
+                        </div>
+                        <div class="well well-form">
+                            <div class="form-horizontal">
+                                <div class="form-group form-group-sm">
+                                    <div class="col-xs-12">
+                                        No es posible crear un programa porque no existe un plan vigente.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        if (Model.Id == 0)
+                        {
+                            <div class="well">
+                                <h4 class="text-primary">Programa nuevo</h4>
+                            </div>
+                            <div class="well well-form">
+                                <div class="form-horizontal">
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-5">
+                                            Fecha de inicio:
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="input-group datepicker-default date">
+                                                <input id="txtFechaInicioPrograma" class="form-control" placeholder="dd/mm/aaaa" />
+                                                <label class="input-group-btn" for="txtFechaInicioPrograma">
+                                                    <span class="btn btn-sm btn-primary" type="button">
+                                                        <i class="ion-calendar"></i>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-5">
+                                            Fecha de fin:
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="input-group datepicker-default date">
+                                                <input id="txtFechaFinPrograma" class="form-control" placeholder="dd/mm/aaaa" />
+                                                <label class="input-group-btn" for="txtFechaFinPrograma">
+                                                    <span class="btn btn-sm btn-primary" type="button">
+                                                        <i class="ion-calendar"></i>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-5">
+                                            Cantidad de OV:
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <input id="txtCantidadOV" class="form-control" value="0" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-12 text-center">
+                                            <a href="javascript:;" class="btn btn-primary-line" id="btnGuardar"> Crear</a>
+                                            <a href="javascript:;" class="btn btn-primary-line" id="btnSalir"> Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="well">
+                                <h4 class="text-primary">Programa vigente</h4>
+                            </div>
+                            <div class="well well-form">
+                                <div class="form-horizontal">
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-5">
+                                            Fecha de inicio:
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="input-group datepicker-default date">
+                                                <input id="txtFechaInicioPrograma" class="form-control" value="@Model.FechaInicio.ToString("dd/MM/yyyy")" placeholder="dd/mm/aaaa" />
+                                                <label class="input-group-btn" for="txtFechaInicioPrograma">
+                                                    <span class="btn btn-sm btn-primary" type="button">
+                                                        <i class="ion-calendar"></i>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-5">
+                                            Fecha de fin:
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="input-group datepicker-default date">
+                                                <input id="txtFechaFinPrograma" class="form-control" value="@Model.FechaFin.ToString("dd/MM/yyyy")" placeholder="dd/mm/aaaa" />
+                                                <label class="input-group-btn" for="txtFechaFinPrograma">
+                                                    <span class="btn btn-sm btn-primary" type="button">
+                                                        <i class="ion-calendar"></i>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-5">
+                                            Cantidad de OV:
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <input id="txtCantidadOV" class="form-control" value="@Model.CantidadOV" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-12 text-center">
+                                            <a href="javascript:;" class="btn btn-primary-line" id="btnFinalizar"> Finalizar</a>
+                                            <a href="javascript:;" class="btn btn-primary-line" id="btnGuardar"> Guardar</a>
+                                            <a href="javascript:;" class="btn btn-primary-line" id="btnSalir"> Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
         </div>
     </section>
 
-    <br/>
-    <br/>
+    <br />
+    <br />
 </main>
 
 @section scripts{
     <script type="text/javascript">
 
-        var urlCrearOrdenProduccion = '@Url.Action("CrearOrdenProduccion")';
-        var urlVerOrdenProduccion = '@Url.Action("VerOrdenProduccion")';
+        var urlGuardarPrograma = '@Url.Action("GuardarPrograma")';
+        var urlFinalizarPrograma = '@Url.Action("FinalizarPrograma")';
 
-        $(function () {
+        $(function() {
+            $(".date input").datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                language: 'es',
+                weekStart: 1,
+                todayHighlight: true
+            });
 
+            $(".chkOV").on("change", function() {
+                var cantidadChecked = $('input:checkbox:checked').length;
+                $("#txtCantidadOV").val(cantidadChecked);
+            });
+
+            $("#btnGuardar").on("click", function() {
+                if (Validaciones()) {
+                    Guardar();
+                }
+            });
+            $("#btnFinalizar").on("click", function() {
+                Finalizar();
+            });
+            $("#btnSalir").on("click", function() {
+                Refrescar();
+            });
         });
 
-        function VerOrdenProduccion(numero) {
-            window.location.href = urlVerOrdenProduccion + '?numero=' + numero;
+        function Validaciones() {
+            var result = true;
+
+            return result;
         }
 
-        function CrearOrdenProduccion(numero) {
-            window.location.href = urlCrearOrdenProduccion + '?numero=' + numero;
+        function Guardar() {
+            var model = {
+                Id: parseInt($("#hidIdPrograma").val()),
+                Estado: $("#txtFechaFinPrograma").val(),
+                FechaInicioStr: $("#hidEstado").val(),
+                FechaFinStr: $("#txtFechaInicioPrograma").val(),
+                CantidadOV: parseInt($("#txtCantidadOV").val()),
+                IdPlan: parseInt($("#hidIdPlan").val()),
+                OrdenesVenta: new Array()
+            };
+            $('#tblOrdenesVenta').find("tbody tr").each(function() {
+                var seleccionado = $(this).find("td.tdSeleccionar input").is(':checked');
+                if (seleccionado == true) {
+                    var idOrdenVenta = parseInt($.trim($(this).find("td.tdIdOrdenVenta").text()));
+                    model.OrdenesVenta.push({
+                        Id: idOrdenVenta
+                    });
+                }
+            });
+
+            var mensajeConfirmacion = "";
+            if (model.Id === 0) {
+                mensajeConfirmacion = "Seguro de crear el programa.";
+            } else {
+                mensajeConfirmacion = "Seguro de modificar el programa vigente.";
+            }
+
+            app.showConfirmDialog(mensajeConfirmacion, function() {
+                $.ajax({
+                    type: 'POST',
+                    url: urlGuardarPrograma,
+                    data: JSON.stringify(model),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function(response) {
+                        if (response.Success === true) {
+                            var mensajeGrabadoCorrecto = "Se creó el programa " + response.Data + ". En el periodo del " + model.FechaInicioStr + " al " + model.FechaFinStr;
+                            app.showMessageDialog(mensajeGrabadoCorrecto, Refrescar());
+                        } else {
+                            app.showMessageDialog(response.Message);
+                        }
+                    },
+                    error: function(x, xh, xhr) {
+                        console.error(xh);
+                    }
+                });
+            });
+        }
+
+        function Finalizar() {
+            var idPrograma = parseInt($("#hidIdPrograma").val());
+            var numeroPrograma = $("#hidNumero").val();
+            app.showConfirmDialog("Seguro de finalizar el programa vigente.", function() {
+                $.ajax({
+                    type: 'POST',
+                    url: urlFinalizarPrograma,
+                    data: JSON.stringify({ idPrograma: idPrograma }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function(response) {
+                        if (response.Success === true) {
+                            app.showMessageDialog("Se finalizó el programa " + numeroPrograma, Refrescar());
+                        } else {
+                            app.showMessageDialog(response.Message);
+                        }
+                    },
+                    error: function(x, xh, xhr) {
+                        console.error(xh);
+                    }
+                });
+            });
+        }
+
+        function Refrescar() {
+            window.location.reload();
         }
 
     </script>

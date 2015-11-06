@@ -53,6 +53,7 @@
     <Compile Include="OrdenProduccionBL.cs" />
     <Compile Include="OrdenVentaBL.cs" />
     <Compile Include="PlanBL.cs" />
+    <Compile Include="ProgramaBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

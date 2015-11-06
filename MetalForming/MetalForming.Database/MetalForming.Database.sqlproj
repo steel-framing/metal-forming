@@ -59,31 +59,5 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Tables\" />
-    <Folder Include="Stored Procedures\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="Tables\Maquina.sql" />
-    <Build Include="Tables\Material.sql" />
-    <Build Include="Tables\OrdenProduccionMaterial.sql" />
-    <Build Include="Tables\OrdenVenta.sql" />
-    <Build Include="Tables\Producto.sql" />
-    <Build Include="Tables\ProductoMaterial.sql" />
-    <Build Include="Tables\OrdenProduccion.sql" />
-    <Build Include="Tables\OrdenProduccionSecuencia.sql" />
-    <Build Include="Stored Procedures\ActualizarEstadoOrdenVenta.sql" />
-    <Build Include="Stored Procedures\ActualizarStockProducto.sql" />
-    <Build Include="Stored Procedures\InsertarOrdenProduccion.sql" />
-    <Build Include="Stored Procedures\InsertarOrdenProduccionMaterial.sql" />
-    <Build Include="Stored Procedures\InsertarOrdenProduccionSecuencia.sql" />
-    <Build Include="Stored Procedures\ListarMaquinaPorBusqueda.sql" />
-    <Build Include="Stored Procedures\ListarMaterialPorProducto.sql" />
-    <Build Include="Stored Procedures\ListarOrdenProduccion.sql" />
-    <Build Include="Stored Procedures\ListarOrdenProduccionMaterial.sql" />
-    <Build Include="Stored Procedures\ListarOrdenProduccionSecuencia.sql" />
-    <Build Include="Stored Procedures\ListarOrdenVenta.sql" />
-    <Build Include="Stored Procedures\ObtenerMaquinaPorID.sql" />
-    <Build Include="Stored Procedures\ObtenerOrdenVentaPorNumero.sql" />
-    <Build Include="Stored Procedures\ObtenerOrdenProduccionPorNumero.sql" />
   </ItemGroup>
 </Project>
