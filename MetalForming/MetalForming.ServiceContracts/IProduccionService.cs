@@ -46,5 +46,11 @@ namespace MetalForming.ServiceContracts
 
         [OperationContract]
         IList<Programa> ListrarProgramasPorPlan(int idPlan);
+
+        [OperationContract]
+        string GuardarPrograma(Programa programa);
+
+        [OperationContract]
+        void FinalizarPrograma(int idPrograma, string motivo);
     }
 }

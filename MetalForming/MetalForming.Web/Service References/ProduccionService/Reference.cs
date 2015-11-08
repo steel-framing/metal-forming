@@ -891,13 +891,22 @@ namespace MetalForming.Web.ProduccionService {
         private System.DateTime FechaFinField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<System.DateTime> FechaFinalizacionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime FechaInicioField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdPlanField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MotivoFinalizacionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NumeroField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> OrdenesVentaField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int CantidadOV {
@@ -939,6 +948,19 @@ namespace MetalForming.Web.ProduccionService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> FechaFinalizacion {
+            get {
+                return this.FechaFinalizacionField;
+            }
+            set {
+                if ((this.FechaFinalizacionField.Equals(value) != true)) {
+                    this.FechaFinalizacionField = value;
+                    this.RaisePropertyChanged("FechaFinalizacion");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime FechaInicio {
             get {
                 return this.FechaInicioField;
@@ -965,6 +987,19 @@ namespace MetalForming.Web.ProduccionService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string MotivoFinalizacion {
+            get {
+                return this.MotivoFinalizacionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MotivoFinalizacionField, value) != true)) {
+                    this.MotivoFinalizacionField = value;
+                    this.RaisePropertyChanged("MotivoFinalizacion");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Numero {
             get {
                 return this.NumeroField;
@@ -973,6 +1008,19 @@ namespace MetalForming.Web.ProduccionService {
                 if ((object.ReferenceEquals(this.NumeroField, value) != true)) {
                     this.NumeroField = value;
                     this.RaisePropertyChanged("Numero");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> OrdenesVenta {
+            get {
+                return this.OrdenesVentaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OrdenesVentaField, value) != true)) {
+                    this.OrdenesVentaField = value;
+                    this.RaisePropertyChanged("OrdenesVenta");
                 }
             }
         }
@@ -1061,6 +1109,18 @@ namespace MetalForming.Web.ProduccionService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListrarProgramasPorPlan", ReplyAction="http://tempuri.org/IProduccionService/ListrarProgramasPorPlanResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.Programa>> ListrarProgramasPorPlanAsync(int idPlan);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/GuardarPrograma", ReplyAction="http://tempuri.org/IProduccionService/GuardarProgramaResponse")]
+        string GuardarPrograma(MetalForming.Web.ProduccionService.Programa programa);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/GuardarPrograma", ReplyAction="http://tempuri.org/IProduccionService/GuardarProgramaResponse")]
+        System.Threading.Tasks.Task<string> GuardarProgramaAsync(MetalForming.Web.ProduccionService.Programa programa);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/FinalizarPrograma", ReplyAction="http://tempuri.org/IProduccionService/FinalizarProgramaResponse")]
+        void FinalizarPrograma(int idPrograma, string motivo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/FinalizarPrograma", ReplyAction="http://tempuri.org/IProduccionService/FinalizarProgramaResponse")]
+        System.Threading.Tasks.Task FinalizarProgramaAsync(int idPrograma, string motivo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1192,6 +1252,22 @@ namespace MetalForming.Web.ProduccionService {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.Programa>> ListrarProgramasPorPlanAsync(int idPlan) {
             return base.Channel.ListrarProgramasPorPlanAsync(idPlan);
+        }
+        
+        public string GuardarPrograma(MetalForming.Web.ProduccionService.Programa programa) {
+            return base.Channel.GuardarPrograma(programa);
+        }
+        
+        public System.Threading.Tasks.Task<string> GuardarProgramaAsync(MetalForming.Web.ProduccionService.Programa programa) {
+            return base.Channel.GuardarProgramaAsync(programa);
+        }
+        
+        public void FinalizarPrograma(int idPrograma, string motivo) {
+            base.Channel.FinalizarPrograma(idPrograma, motivo);
+        }
+        
+        public System.Threading.Tasks.Task FinalizarProgramaAsync(int idPrograma, string motivo) {
+            return base.Channel.FinalizarProgramaAsync(idPrograma, motivo);
         }
     }
 }

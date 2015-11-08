@@ -176,4 +176,31 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GuardarPrograma">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="programa" nillable="true" type="q14:Programa" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GuardarProgramaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GuardarProgramaResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FinalizarPrograma">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idPrograma" type="xs:int" />
+        <xs:element minOccurs="0" name="motivo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FinalizarProgramaResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

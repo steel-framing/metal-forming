@@ -13,6 +13,8 @@ namespace MetalForming.Data
         private const string ProcedimientoAlmacenadoListarPorPrograma = "dbo.ListarOrdenVentaPorPrograma";
         private const string ProcedimientoAlmacenadoObtenerPorNumero = "dbo.ObtenerOrdenVentaPorNumero";
         private const string ProcedimientoAlmacenadoActualizarEstado = "dbo.ActualizarEstadoOrdenVenta";
+        private const string ProcedimientoAlmacenadoActualizarPrograma = "dbo.ActualizarProgramaOrdenVenta";
+        private const string ProcedimientoAlmacenadoActualizarProgramasHaciaNull = "dbo.ActualizarProgramasHaciaNullOrdenVenta";
 
         public IList<OrdenVenta> Listar()
         {
@@ -186,6 +188,40 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarEstado);
+            }
+        }
+
+        public void ActualizarPrograma(int id, int idPrograma)
+        {
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizarPrograma);
+
+                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, id);
+                Context.Database.AddInParameter(comando, "@IdPrograma", DbType.Int32, idPrograma);
+
+                Context.ExecuteNonQuery(comando);
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarPrograma);
+            }
+        }
+
+        public void ActualizarProgramasHaciaNull(int idPrograma, string estado)
+        {
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizarProgramasHaciaNull);
+
+                Context.Database.AddInParameter(comando, "@IdPrograma", DbType.Int32, idPrograma);
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, estado);
+
+                Context.ExecuteNonQuery(comando);
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarProgramasHaciaNull);
             }
         }
     }

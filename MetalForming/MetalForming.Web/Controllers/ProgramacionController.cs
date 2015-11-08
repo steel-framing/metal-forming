@@ -31,14 +31,14 @@ namespace MetalForming.Web.Controllers
                     model.OrdenesVenta = service.ListarOrdenesVentaPendiente();
                 }
 
-                if (model.PlanVigente != null && model.PlanVigente.Estado != Constantes.EstadoPlan.Pendiente)
+                if (model.PlanVigente != null && model.PlanVigente.Estado == Constantes.EstadoPlan.Pendiente)
                 {
                     using (var service = new ProduccionServiceClient())
                     {
                         model.ProgramasAnteriores = service.ListrarProgramasPorPlan(model.PlanVigente.Id);
                     }
 
-                    if (model.ProgramasAnteriores.Any(p => p.Estado == Constantes.EstadoPrograma.Iniciado))
+                    if (model.ProgramasAnteriores.Any(p => p.Estado == Constantes.EstadoPrograma.Programado))
                     {
                         var programaVigente =
                             model.ProgramasAnteriores.LastOrDefault(
@@ -95,12 +95,20 @@ namespace MetalForming.Web.Controllers
                     FechaFin = fechaFin.Value,
                     CantidadOV = model.CantidadOV,
                     Estado = model.Estado,
-                    IdPlan = model.IdPlan
+                    IdPlan = model.IdPlan,
+                    OrdenesVenta =  new List<OrdenVenta>()
                 };
 
+                foreach (var ordenVenta in model.OrdenesVenta)
+                {
+                    programa.OrdenesVenta.Add(ordenVenta);
+                }
 
+                using (var service = new ProduccionServiceClient())
+                {
+                    response.Data = service.GuardarPrograma(programa);
+                }
 
-                response.Data = "";
                 response.Success = true;
             }
             catch (Exception ex)
@@ -112,12 +120,17 @@ namespace MetalForming.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult FinalizarPrograma(int idPrograma)
+        public JsonResult FinalizarPrograma(int idPrograma, string motivo)
         {
             var response = new JsonResponse();
             try
             {
+                using (var service = new ProduccionServiceClient())
+                {
+                    service.FinalizarPrograma(idPrograma, motivo);
+                }
 
+                response.Success = true;
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using MetalForming.BusinessEntities.Core;
 
@@ -24,5 +25,14 @@ namespace MetalForming.BusinessEntities
 
         [DataMember]
         public int IdPlan { get; set; }
+
+        [DataMember]
+        public string MotivoFinalizacion { get; set; }
+
+        [DataMember]
+        public DateTime? FechaFinalizacion { get; set; }
+
+        [DataMember]
+        public IList<OrdenVenta> OrdenesVenta { get; set; }
     }
 }

@@ -169,9 +169,12 @@
           <xs:element minOccurs="0" name="CantidadOV" type="xs:int" />
           <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="FechaFin" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="FechaFinalizacion" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="FechaInicio" type="xs:dateTime" />
           <xs:element minOccurs="0" name="IdPlan" type="xs:int" />
+          <xs:element minOccurs="0" name="MotivoFinalizacion" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OrdenesVenta" nillable="true" type="tns:ArrayOfOrdenVenta" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

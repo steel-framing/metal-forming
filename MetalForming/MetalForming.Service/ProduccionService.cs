@@ -80,5 +80,15 @@ namespace MetalForming.Service
         {
             return _programaBL.ListrarPorPlan(idPlan);
         }
+
+        public string GuardarPrograma(Programa programa)
+        {
+            return _programaBL.Guardar(programa);
+        }
+
+        public void FinalizarPrograma(int idPrograma, string motivo)
+        {
+            _programaBL.Finalizar(idPrograma, motivo);
+        }
     }
 }

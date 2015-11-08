@@ -9,9 +9,9 @@
 
         public class EstadoPrograma
         {
-            public const string Iniciado = "Iniciado";
-            public const string Pendiente = "Finalizado";
-            public const string Programado = "Terminado";
+            public const string Programado = "Programado";
+            public const string Finalizado = "Finalizado";
+            public const string Terminado = "Terminado";
         }
 
         public class EstadoOrdenVenta
