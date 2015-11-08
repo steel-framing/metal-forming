@@ -55,8 +55,7 @@ namespace MetalForming.BusinessLogic
 
                         foreach (var ordenVenta in programa.OrdenesVenta)
                         {
-                            _ordenVentaDA.ActualizarEstado(ordenVenta.Id, Constantes.EstadoOrdenVenta.Programado);
-                            _ordenVentaDA.ActualizarPrograma(ordenVenta.Id, programa.Id);
+                            _ordenVentaDA.ActualizarPrograma(ordenVenta.Id, programa.Id, Constantes.EstadoOrdenVenta.Programado);
                         }
                     }
                     else
@@ -67,8 +66,7 @@ namespace MetalForming.BusinessLogic
 
                         foreach (var ordenVenta in programa.OrdenesVenta)
                         {
-                            _ordenVentaDA.ActualizarEstado(ordenVenta.Id, Constantes.EstadoOrdenVenta.Programado);
-                            _ordenVentaDA.ActualizarPrograma(ordenVenta.Id, programa.Id);
+                            _ordenVentaDA.ActualizarPrograma(ordenVenta.Id, programa.Id, Constantes.EstadoOrdenVenta.Programado);
                         }
                     }
 

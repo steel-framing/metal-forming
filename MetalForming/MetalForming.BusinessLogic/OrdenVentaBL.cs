@@ -28,7 +28,7 @@ namespace MetalForming.BusinessLogic
         {
             try
             {
-                return _orderVentaDA.ListarPorEstado(Constantes.EstadoOrdenVenta.Pendiente);
+                return _orderVentaDA.ListarPendientePrograma();
             }
             catch (Exception ex)
             {

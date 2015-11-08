@@ -9,7 +9,7 @@ namespace MetalForming.Data
     public class OrdenVentaDA : BaseData
     {
         private const string ProcedimientoAlmacenadoListar = "dbo.ListarOrdenVenta";
-        private const string ProcedimientoAlmacenadoListarPorEstado = "dbo.ListarOrdenVentaPorEstado";
+        private const string ProcedimientoAlmacenadoListarPendientesPrograma = "dbo.ListarOrdenVentaPendientePrograma";
         private const string ProcedimientoAlmacenadoListarPorPrograma = "dbo.ListarOrdenVentaPorPrograma";
         private const string ProcedimientoAlmacenadoObtenerPorNumero = "dbo.ObtenerOrdenVentaPorNumero";
         private const string ProcedimientoAlmacenadoActualizarEstado = "dbo.ActualizarEstadoOrdenVenta";
@@ -54,14 +54,12 @@ namespace MetalForming.Data
             return lista;
         }
 
-        public IList<OrdenVenta> ListarPorEstado(string estado)
+        public IList<OrdenVenta> ListarPendientePrograma()
         {
             var lista = new List<OrdenVenta>();
             try
             {
-                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoListarPorEstado);
-
-                Context.Database.AddInParameter(comando, "@Estado", DbType.String, estado);
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoListarPendientesPrograma);
 
                 using (var lector = Context.ExecuteReader(comando))
                 {
@@ -89,7 +87,7 @@ namespace MetalForming.Data
             }
             catch (Exception ex)
             {
-                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarPorEstado);
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarPendientesPrograma);
             }
             return lista;
         }
@@ -191,7 +189,7 @@ namespace MetalForming.Data
             }
         }
 
-        public void ActualizarPrograma(int id, int idPrograma)
+        public void ActualizarPrograma(int id, int idPrograma, string estado)
         {
             try
             {
@@ -199,6 +197,7 @@ namespace MetalForming.Data
 
                 Context.Database.AddInParameter(comando, "@Id", DbType.Int32, id);
                 Context.Database.AddInParameter(comando, "@IdPrograma", DbType.Int32, idPrograma);
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, estado);
 
                 Context.ExecuteNonQuery(comando);
             }

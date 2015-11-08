@@ -389,7 +389,7 @@ namespace MetalForming.Web.Controllers
                 {
                     CantidadProducto = model.CantidadProducto,
                     TomarStock = model.TomarStock,
-                    Estado = Constantes.EstadoOrdenPoduccion.Programado,
+                    Estado = Constantes.EstadoOrdenPoduccion.PendienteAprobar,
                     OrdenVenta = new OrdenVenta
                     {
                         Id = model.IdOrdenVenta,

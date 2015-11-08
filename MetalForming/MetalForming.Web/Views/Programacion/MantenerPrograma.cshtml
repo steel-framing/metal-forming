@@ -159,7 +159,7 @@
                                             <td class="tdIdOrdenVenta hide">@item.Id</td>
                                             <td class="tdSeleccionar">
                                                 <label for="chkHaProducir_@item.Id">
-                                                    @if (item.Estado == Constantes.EstadoOrdenVenta.Programado)
+                                                    @if (item.IdPrograma == Model.Id)
                                                     {
                                                         <input id="chkHaProducir_@item.Id" type="checkbox" class="checkbox-inline chkOV" checked="checked" />
                                                     }

@@ -1,7 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[ActualizarProgramaOrdenVenta]
 (
 	@Id int,
-	@IdPrograma int
+	@IdPrograma int,
+	@Estado varchar(50)
 )
 AS
 BEGIN
@@ -9,7 +10,8 @@ BEGIN
 SET NOCOUNT ON;
 
 UPDATE OrdenVenta
-SET IdPrograma = @IdPrograma
+SET IdPrograma = @IdPrograma,
+	Estado = CASE WHEN Id NOT IN (SELECT IdOrdenVenta FROM OrdenProduccion) THEN @Estado ELSE Estado END
 WHERE Id = @Id;
 
 END

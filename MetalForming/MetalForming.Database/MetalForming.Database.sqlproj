@@ -89,7 +89,6 @@
     <Build Include="Stored Procedures\ObtenerOrdenProduccionPorNumero.sql" />
     <Build Include="Stored Procedures\ObtenerPlanVigente.sql" />
     <Build Include="Stored Procedures\ListarProgramaPorPlan.sql" />
-    <Build Include="Stored Procedures\ListarOrdenVentaPorEstado.sql" />
     <Build Include="Stored Procedures\ListarOrdenVentaPorPrograma.sql" />
     <Build Include="Stored Procedures\InsertarPrograma.sql" />
     <Build Include="Stored Procedures\ActualizarPrograma.sql" />
@@ -97,5 +96,8 @@
     <Build Include="Stored Procedures\ActualizarProgramasHaciaNullOrdenVenta.sql" />
     <Build Include="Stored Procedures\ActualizarEstadoPrograma.sql" />
     <Build Include="Stored Procedures\ObtenerProgramaPorID.sql" />
+    <Build Include="Stored Procedures\ObtenerProgramaPorEstado.sql" />
+    <Build Include="Stored Procedures\ListarOrdenProduccionPorPrograma.sql" />
+    <Build Include="Stored Procedures\ListarOrdenVentaPendientePrograma.sql" />
   </ItemGroup>
 </Project>
