@@ -24,11 +24,13 @@
         public class EstadoOrdenPoduccion
         {
             public const string PendienteAprobar = "Pendiente Aprobar";
-            public const string Rechazado = "Rechazado";
+            public const string Rechazado = "Observado";
             public const string Programado = "Programado";
             public const string ReProgramado = "ReProgramado";
-            public const string EnProceso = "En Proceso";
-            public const string Producido = "Producido";
+            public const string Asignado = "Asignado";
+            public const string Conformado = "Conformado";
+            public const string Detenido = "Detenido";
+            public const string Terminado = "Terminado";
         }
     }
 }
