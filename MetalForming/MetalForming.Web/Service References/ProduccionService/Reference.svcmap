@@ -29,6 +29,7 @@
     <MetadataFile FileName="ProduccionService1.xsd" MetadataType="Schema" ID="b9d3eec6-d68d-47d9-b012-433cd19eceb7" SourceId="1" SourceUrl="http://localhost:7457/ProduccionService.svc?xsd=xsd3" />
     <MetadataFile FileName="ProduccionService2.xsd" MetadataType="Schema" ID="54dc9230-1bbd-4c36-8995-3824bfe503c9" SourceId="1" SourceUrl="http://localhost:7457/ProduccionService.svc?xsd=xsd1" />
     <MetadataFile FileName="ProduccionService3.xsd" MetadataType="Schema" ID="0081cd40-7292-484d-b69c-0760f4df78a4" SourceId="1" SourceUrl="http://localhost:7457/ProduccionService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ProduccionService4.xsd" MetadataType="Schema" ID="624d602e-50c0-4976-8f28-7b4fb5f50638" SourceId="1" SourceUrl="http://localhost:7457/ProduccionService.svc?xsd=xsd4" />
     <MetadataFile FileName="ProduccionService.disco" MetadataType="Disco" ID="eb26db6a-735b-476e-8f5d-d226872983b1" SourceId="1" SourceUrl="http://localhost:7457/ProduccionService.svc?disco" />
   </Metadata>
   <Extensions>

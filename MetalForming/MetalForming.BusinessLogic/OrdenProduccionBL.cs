@@ -128,5 +128,51 @@ namespace MetalForming.BusinessLogic
                 throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
             }
         }
+
+        public void AprobarMasivo(IList<int> ordenesProduccion)
+        {
+            try
+            {
+                var transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted };
+
+                using (var transactionScope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
+                {
+                    foreach (var id in ordenesProduccion)
+                    {
+                        _ordenProduccionDA.ActualizarEstado(id, Constantes.EstadoOrdenPoduccion.Programado);
+                    }
+
+                    transactionScope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
+        public void AprobarIndividual(int id)
+        {
+            try
+            {
+                _ordenProduccionDA.ActualizarEstado(id, Constantes.EstadoOrdenPoduccion.Programado);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
+        public void Rechazar(int id, string motivo)
+        {
+            try
+            {
+                _ordenProduccionDA.Rechazar(id, Constantes.EstadoOrdenPoduccion.Rechazado, motivo);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@
         {
             public const string MantenerPrograma = "Mantener Programa";
             public const string MantenerOrdenProduccion = "Mantener Orden Producción";
+            public const string AsignarOrdenVenta = "Asignar Orden Venta";
 
             public const string EjecutarOrdenProduccion = "Ejecutar OP";
             public const string AsignarOrdenProduccion = "Asignar OP";

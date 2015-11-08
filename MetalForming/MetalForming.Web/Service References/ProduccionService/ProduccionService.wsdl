@@ -6,6 +6,7 @@
       <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" />
       <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" />
+      <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IProduccionService_ListarOrdenesVenta_InputMessage">
@@ -79,6 +80,24 @@
   </wsdl:message>
   <wsdl:message name="IProduccionService_ListarOrdenesProduccionParaEjecucion_OutputMessage">
     <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionParaEjecucionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_AprobarMasivoOrdenesProduccion_InputMessage">
+    <wsdl:part name="parameters" element="tns:AprobarMasivoOrdenesProduccion" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_AprobarMasivoOrdenesProduccion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AprobarMasivoOrdenesProduccionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_AprobarIndividualOrdenProduccion_InputMessage">
+    <wsdl:part name="parameters" element="tns:AprobarIndividualOrdenProduccion" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_AprobarIndividualOrdenProduccion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AprobarIndividualOrdenProduccionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_RechazarOrdenProduccion_InputMessage">
+    <wsdl:part name="parameters" element="tns:RechazarOrdenProduccion" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_RechazarOrdenProduccion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RechazarOrdenProduccionResponse" />
   </wsdl:message>
   <wsdl:message name="IProduccionService_ObtenerPlanVigente_InputMessage">
     <wsdl:part name="parameters" element="tns:ObtenerPlanVigente" />
@@ -158,6 +177,18 @@
     <wsdl:operation name="ListarOrdenesProduccionParaEjecucion">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaEjecucion" message="tns:IProduccionService_ListarOrdenesProduccionParaEjecucion_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaEjecucionResponse" message="tns:IProduccionService_ListarOrdenesProduccionParaEjecucion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AprobarMasivoOrdenesProduccion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/AprobarMasivoOrdenesProduccion" message="tns:IProduccionService_AprobarMasivoOrdenesProduccion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/AprobarMasivoOrdenesProduccionResponse" message="tns:IProduccionService_AprobarMasivoOrdenesProduccion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AprobarIndividualOrdenProduccion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/AprobarIndividualOrdenProduccion" message="tns:IProduccionService_AprobarIndividualOrdenProduccion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/AprobarIndividualOrdenProduccionResponse" message="tns:IProduccionService_AprobarIndividualOrdenProduccion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RechazarOrdenProduccion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/RechazarOrdenProduccion" message="tns:IProduccionService_RechazarOrdenProduccion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/RechazarOrdenProduccionResponse" message="tns:IProduccionService_RechazarOrdenProduccion_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ObtenerPlanVigente">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente" message="tns:IProduccionService_ObtenerPlanVigente_InputMessage" />
@@ -283,6 +314,33 @@
     </wsdl:operation>
     <wsdl:operation name="ListarOrdenesProduccionParaEjecucion">
       <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaEjecucion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AprobarMasivoOrdenesProduccion">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/AprobarMasivoOrdenesProduccion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AprobarIndividualOrdenProduccion">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/AprobarIndividualOrdenProduccion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RechazarOrdenProduccion">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/RechazarOrdenProduccion" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

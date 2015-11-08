@@ -108,7 +108,7 @@ else
                             <h4 class="text-primary">Ordenes de Producción Generadas</h4>
                         </div>
                         <div class="col-md-8">
-                            <a href="javascript:;" class="btn btn-primary-line" id="btnAprobarSeleccionados"> Aprobar seleccionados</a>
+                            <a href="javascript:;" class="btn btn-primary-line" id="btnAprobarMasivo"> Aprobar seleccionados</a>
                         </div>
                     </div>
                 </div>
@@ -137,8 +137,13 @@ else
                                     @foreach (var item in Model.OrdenesProduccion)
                                     {
                                         <tr>
-                                            <td class="tdChk"><input type="checkbox" class="checkbox-inline" /></td>
-                                            <td class="hide">@item.Id</td>
+                                            <td class="tdSeleccionar">
+                                                @if (item.Estado == Constantes.EstadoOrdenPoduccion.PendienteAprobar)
+                                                {
+                                                    <input type="checkbox" class="checkbox-inline" />
+                                                }
+                                            </td>
+                                            <td class="tdIdOrdenProduccion hide">@item.Id</td>
                                             <td>
                                                 <a href="javascript:;" class="btn-link" onclick="VerOrdenProduccion('@item.Numero')">@item.Numero</a>
                                             </td>
@@ -149,7 +154,7 @@ else
                                             <td>
                                                 @if (item.Estado == Constantes.EstadoOrdenPoduccion.PendienteAprobar)
                                                 {
-                                                    <a href="javascript:;" class="btn-link" onclick="DictaminarOrdenProduccion('@item.Numero')">Aprobar</a>
+                                                    <a href="javascript:;" class="btn-link" onclick="ObtenerOrdenProduccion('@item.Numero')">Aprobar</a>
                                                 }
                                             </td>
                                         </tr>
@@ -167,15 +172,138 @@ else
     </main>
 }
 
+<div class="modal fade" id="modalAprobar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-primary">Aprobar Orden producción <strong id="spaNumeroOPTitulo1"></strong></h4>
+            </div>
+            <div class="modal-body" style="font-size: 0.9em;">
+                <input type="hidden" id="hidOrdenProduccion"/>
+                <div class="well">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table class="table table-form">
+                                <tbody>
+                                <tr>
+                                    <td><strong>Num. OP:</strong> <span id="spaNumeroOP"></span></td>
+                                    <td><strong>Num. OV:</strong> <span id="spaNumeroOV"></span></td>
+                                    <td><strong>F.Entrega:</strong> <span id="spaFechaEntrega"></span></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Producto:</strong> <span id="spaProducto"></span></td>
+                                    <td><strong>Cantidad OV:</strong> <span id="spaCantidadOV"></span></td>
+                                    <td><strong>Stock:</strong> <span id="spaStock"></span></td>
+                                    <td><strong>Stock Mínimo:</strong> <span id="spaStockMin"></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="max-height: 150px;">
+                            <table id="tblMateriales" class="table table-striped table-header table-rounded table-condensed">
+                                <thead class="upper">
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th>Material</th>
+                                    <th>Stock</th>
+                                    <th>Stock Mín.</th>
+                                    <th>Requerido</th>
+                                    <th>Reservado</th>
+                                    <th>Comprar</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <br/>
+                        <div class="table-responsive" style="max-height: 150px;">
+                            <table id="tblSecuencia" class="table table-striped table-header table-rounded table-condensed">
+                                <thead class="upper">
+                                <tr>
+                                    <th class="hide">Id</th>
+                                    <th style="width: 5%;">Sec.</th>
+                                    <th style="width: 20%;">Maquina</th>
+                                    <th style="width: 12%;">% Falla</th>
+                                    <th style="width: 14%;">Tiempo (hrs.)</th>
+                                    <th style="width: 22%;">F.Inicio</th>
+                                    <th style="width: 20%;">F.Fin</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="btnAprobarIndividual" href="javascript:;" class="btn btn-primary"><i class="ion-checkmark-round"></i> Aprobar</a>
+                <a id="btnRechazarModal" href="javascript:;" class="btn btn-danger"><i class="ion-close-circled"></i> Rechazar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRechazar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-primary">Rechazar Orden producción <strong id="spaNumeroOPTitulo2"></strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-md-12">Motivo:</div>
+                                <div class="col-md-12">
+                                    <textarea id="txtMotivoRechazo" class="form-control" rows="4"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="btnRechazar" href="javascript:;" class="btn btn-primary"><i class="ion-checkmark-round"></i> Rechazar</a>
+                <a href="javascript:;" class="btn btn-danger" data-dismiss="modal"><i class="ion-close-circled"></i> Cerrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script type="text/javascript">
 
         var urlCrearOrdenProduccion = '@Url.Action("CrearOrdenProduccion")';
         var urlVerOrdenProduccion = '@Url.Action("VerOrdenProduccion")';
+        var urlAprobarOrdenProduccionMasivo = '@Url.Action("AprobarOrdenProduccionMasivo")';
+        var urlObtenerOrdenProduccion = '@Url.Action("ObtenerOrdenProduccion")';
+        var urlAprobarOrdenProduccionIndividual = '@Url.Action("AprobarOrdenProduccionIndividual")';
+        var urlRechazarOrdenProduccion = '@Url.Action("RechazarOrdenProduccion")';
 
         $(function () {
-            $("#chkTodos").on("click", function() {
+            $("#chkTodos").on("click", function () {
                 $("#tblOrdenesProduccion tr td:nth-child(1) input[type=checkbox]").prop("checked", true);
+            });
+            $("#btnAprobarMasivo").on("click", function () {
+                AprobarMasivo();
+            });
+            $("#btnAprobarIndividual").on("click", function() {
+                AprobarIndividual();
+            });
+            $("#btnRechazarModal").on("click", function () {
+                $("#modalAprobar").modal("hide");
+                $("#modalRechazar").modal("show");
+            });
+            $("#btnRechazar").on("click", function () {
+                Rechazar();
             });
         });
 
@@ -186,6 +314,179 @@ else
         function CrearOrdenProduccion(numero) {
             window.location.href = urlCrearOrdenProduccion + '?numero=' + numero;
         }
+
+        function ObtenerOrdenProduccion(numero) {
+            $.ajax({
+                type: 'POST',
+                url: urlObtenerOrdenProduccion,
+                data: JSON.stringify({ numero: numero }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === true) {
+
+                        $("#hidOrdenProduccion").val(response.Data.Id);
+
+                        $("#spaNumeroOPTitulo1").text(response.Data.Numero);
+                        $("#spaNumeroOPTitulo2").text(response.Data.Numero);
+
+                        var fechaEntrega = new Date(parseInt(response.Data.FechaEntrega.substr(6)));
+
+                        $("#spaNumeroOP").text(response.Data.Numero);
+                        $("#spaNumeroOV").text(response.Data.NumeroOrdenVenta);
+                        $("#spaFechaEntrega").text(fechaEntrega.yyyymmdd());
+                        $("#spaProducto").text(response.Data.DescripcionProducto);
+                        $("#spaCantidadOV").text(response.Data.CantidadOrdenVenta);
+                        $("#spaStock").text(response.Data.StockProducto);
+                        $("#spaStockMin").text(response.Data.StockMinimoProducto);
+                        $("#tblMateriales tbody").html("");
+                        $("#tblSecuencia tbody").html("");
+
+                        $.each(response.Data.Materiales, function(index, item) {
+                            var rowHtml = "<tr>";
+                            rowHtml += "<td class='hide'>" + item.IdMaterial + "</td>";
+                            rowHtml += "<td>" + item.DescripcionMaterial + "</td>";
+                            rowHtml += "<td>" + item.Stock + "</td>";
+                            rowHtml += "<td>" + item.StockMinimo + "</td>";
+                            rowHtml += "<td>" + item.Requerido + "</td>";
+                            rowHtml += "<td>" + item.Reservado + "</td>";
+                            rowHtml += "<td>" + item.Comprar + "</td>";
+                            rowHtml += "</tr>";
+                            $("#tblMateriales tbody").append(rowHtml);
+                        });
+
+                        $.each(response.Data.Secuencia, function (index, item) {
+                            var fechaInicio = new Date(parseInt(item.FechaInicio.substr(6)));
+                            var fechaFin = new Date(parseInt(item.FechaFin.substr(6)));
+
+                            var rowHtml = "<tr>";
+                            rowHtml += "<td class='hide'>" + item.IdMaquina + "</td>";
+                            rowHtml += "<td>" + item.Secuencia + "</td>";
+                            rowHtml += "<td>" + item.DescripcionMaquina + "</td>";
+                            rowHtml += "<td>" + item.PorcentajeFalla + " %</td>";
+                            rowHtml += "<td>" + item.Tiempo + "</td>";
+                            rowHtml += "<td>" + fechaInicio.yyyymmddhhmm() + "</td>";
+                            rowHtml += "<td>" + fechaFin.yyyymmddhhmm() + "</td>";
+                            rowHtml += "</tr>";
+                            $("#tblSecuencia tbody").append(rowHtml);
+                        });
+
+                        $("#modalAprobar").modal("show");
+
+                    } else {
+                        app.showMessageDialog(response.Message);
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                }
+            });
+        }
+
+        function AprobarMasivo() {
+            var ordenesProduccion = new Array();
+
+            $('#tblOrdenesProduccion').find("tbody tr").each(function () {
+                var seleccionado = $(this).find("td.tdSeleccionar input").is(':checked');
+                if (seleccionado == true) {
+                    var idOrdenProduccion = parseInt($.trim($(this).find("td.tdIdOrdenProduccion").text()));
+                    ordenesProduccion.push(idOrdenProduccion);
+                }
+            });
+
+            if (ordenesProduccion.length > 0) {
+                app.showConfirmDialog("Está seguro de aprobar las " + ordenesProduccion.length + " Ordenes de Producción seleccionadas", function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: urlAprobarOrdenProduccionMasivo,
+                        data: JSON.stringify({ ordenesProduccion: ordenesProduccion }),
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (response) {
+                            if (response.Success === true) {
+                                app.showMessageDialog("Las ordenes de producción fueron aprobadas correctamente.", Refrescar);
+                            } else {
+                                app.showMessageDialog(response.Message);
+                            }
+                        },
+                        error: function (x, xh, xhr) {
+                            console.error(xh);
+                        }
+                    });
+                });
+            } else {
+                app.showMessageDialog("No selecciono ninguna orden de producción.");
+            }
+        }
+
+        function AprobarIndividual() {
+            var idOrdenProduccion = parseInt($("#hidOrdenProduccion").val());
+            var numeroOrdenProduccion = $("#spaNumeroOP").text();
+
+            app.showConfirmDialog("Está seguro de aprobar la Orden de producción N° " + numeroOrdenProduccion, function () {
+                $.ajax({
+                    type: 'POST',
+                    url: urlAprobarOrdenProduccionIndividual,
+                    data: JSON.stringify({ id: idOrdenProduccion }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (response) {
+                        if (response.Success === true) {
+                            app.showMessageDialog("La Orden de producción fue aprobada correctamente.", Refrescar);
+                        } else {
+                            app.showMessageDialog(response.Message);
+                        }
+                    },
+                    error: function (x, xh, xhr) {
+                        console.error(xh);
+                    }
+                });
+            });
+        }
+
+        function Rechazar() {
+            var idOrdenProduccion = parseInt($("#hidOrdenProduccion").val());
+            var numeroOrdenProduccion = $("#spaNumeroOP").text();
+            var motivoRechazo = $("#txtMotivoRechazo").val();
+
+            $.ajax({
+                type: 'POST',
+                url: urlRechazarOrdenProduccion,
+                data: JSON.stringify({ id: idOrdenProduccion, motivo: motivoRechazo }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === true) {
+                        app.showMessageDialog("La Orden de producción N° " + numeroOrdenProduccion +" fue rechazada.", Refrescar);
+                    } else {
+                        app.showMessageDialog(response.Message);
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                }
+            });
+        }
+
+        function Refrescar() {
+            window.location.reload();
+        }
+
+        Date.prototype.yyyymmdd = function () {
+            var yyyy = this.getFullYear();
+            var mm = this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1); // getMonth() is zero-based
+            var dd = this.getDate() < 10 ? "0" + this.getDate() : this.getDate();
+            return "".concat(dd).concat("/").concat(mm).concat("/").concat(yyyy);
+        };
+
+        Date.prototype.yyyymmddhhmm = function () {
+            var yyyy = this.getFullYear();
+            var mm = this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1); // getMonth() is zero-based
+            var dd = this.getDate() < 10 ? "0" + this.getDate() : this.getDate();
+            var hh = this.getHours() < 10 ? "0" + this.getHours() : this.getHours();
+            var min = this.getMinutes() < 10 ? "0" + this.getMinutes() : this.getMinutes();
+            return "".concat(dd).concat("/").concat(mm).concat("/").concat(yyyy).concat(" ").concat(hh).concat(":").concat(min);
+        };
 
     </script>
 }

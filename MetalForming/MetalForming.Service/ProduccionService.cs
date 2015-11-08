@@ -92,6 +92,21 @@ namespace MetalForming.Service
             return _ordenProduccionBL.ListarParaEjecucion();
         }
 
+        public void AprobarMasivoOrdenesProduccion(IList<int> ordenesProduccion)
+        {
+            _ordenProduccionBL.AprobarMasivo(ordenesProduccion);
+        }
+
+        public void AprobarIndividualOrdenProduccion(int idOrdenProduccion)
+        {
+            _ordenProduccionBL.AprobarIndividual(idOrdenProduccion);
+        }
+
+        public void RechazarOrdenProduccion(int idOrdenProduccion, string motivoRechazo)
+        {
+            _ordenProduccionBL.Rechazar(idOrdenProduccion, motivoRechazo);
+        }
+
         #endregion
 
         #region Plan
