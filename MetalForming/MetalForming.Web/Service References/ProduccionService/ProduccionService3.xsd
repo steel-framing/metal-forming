@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" />
+  <xs:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:element name="ListarOrdenesVenta">
     <xs:complexType>
       <xs:sequence />
@@ -164,6 +165,43 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="AprobarMasivoOrdenesProduccion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ordenesProduccion" nillable="true" type="q13:ArrayOfint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AprobarMasivoOrdenesProduccionResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AprobarIndividualOrdenProduccion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idOrdenProduccion" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AprobarIndividualOrdenProduccionResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RechazarOrdenProduccion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idOrdenProduccion" type="xs:int" />
+        <xs:element minOccurs="0" name="motivoRechazo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RechazarOrdenProduccionResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="ObtenerPlanVigente">
     <xs:complexType>
       <xs:sequence />
@@ -172,7 +210,7 @@
   <xs:element name="ObtenerPlanVigenteResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerPlanVigenteResult" nillable="true" type="q13:Plan" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerPlanVigenteResult" nillable="true" type="q14:Plan" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -186,7 +224,7 @@
   <xs:element name="ListrarProgramasPorPlanResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListrarProgramasPorPlanResult" nillable="true" type="q14:ArrayOfPrograma" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListrarProgramasPorPlanResult" nillable="true" type="q15:ArrayOfPrograma" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -198,14 +236,14 @@
   <xs:element name="ObtenerProgramaVigenteResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerProgramaVigenteResult" nillable="true" type="q15:Programa" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerProgramaVigenteResult" nillable="true" type="q16:Programa" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GuardarPrograma">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="programa" nillable="true" type="q16:Programa" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="programa" nillable="true" type="q17:Programa" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

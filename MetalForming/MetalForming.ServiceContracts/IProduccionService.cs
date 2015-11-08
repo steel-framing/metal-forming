@@ -57,6 +57,15 @@ namespace MetalForming.ServiceContracts
         [OperationContract]
         IList<OrdenProduccion> ListarOrdenesProduccionParaEjecucion();
 
+        [OperationContract]
+        void AprobarMasivoOrdenesProduccion(IList<int> ordenesProduccion);
+
+        [OperationContract]
+        void AprobarIndividualOrdenProduccion(int idOrdenProduccion);
+
+        [OperationContract]
+        void RechazarOrdenProduccion(int idOrdenProduccion, string motivoRechazo);
+
         #endregion
 
         #region Plan

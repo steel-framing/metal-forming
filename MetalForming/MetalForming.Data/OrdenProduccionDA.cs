@@ -3,6 +3,7 @@ using MetalForming.Data.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace MetalForming.Data
 {
@@ -16,6 +17,8 @@ namespace MetalForming.Data
         private const string ProcedimientoAlmacenadoInsertarOrdenProduccion = "dbo.InsertarOrdenProduccion";
         private const string ProcedimientoAlmacenadoInsertarOrdenProduccionMaterial = "dbo.InsertarOrdenProduccionMaterial";
         private const string ProcedimientoAlmacenadoInsertarOrdenProduccionSecuencia = "dbo.InsertarOrdenProduccionSecuencia";
+        private const string ProcedimientoAlmacenadoActualizarEstado = "dbo.ActualizarEstadoOrdenProduccion";
+        private const string ProcedimientoAlmacenadoActualizarPorRechazo = "dbo.ActualizarOrdenProduccionPorRechazo";
 
         public IList<OrdenProduccion> Listar()
         {
@@ -272,6 +275,41 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoInsertarOrdenProduccionSecuencia);
+            }
+        }
+
+        public void ActualizarEstado(int id, string estado)
+        {
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizarEstado);
+
+                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, id);
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, estado);
+
+                Context.ExecuteNonQuery(comando);
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarEstado);
+            }
+        }
+
+        public void Rechazar(int id, string estado, string motivo)
+        {
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizarPorRechazo);
+
+                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, id);
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, estado);
+                Context.Database.AddInParameter(comando, "@MotivoRechazo", DbType.String, motivo);
+
+                Context.ExecuteNonQuery(comando);
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarPorRechazo);
             }
         }
     }

@@ -1104,6 +1104,24 @@ namespace MetalForming.Web.ProduccionService {
             "e")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion>> ListarOrdenesProduccionParaEjecucionAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/AprobarMasivoOrdenesProduccion", ReplyAction="http://tempuri.org/IProduccionService/AprobarMasivoOrdenesProduccionResponse")]
+        void AprobarMasivoOrdenesProduccion(System.Collections.Generic.List<int> ordenesProduccion);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/AprobarMasivoOrdenesProduccion", ReplyAction="http://tempuri.org/IProduccionService/AprobarMasivoOrdenesProduccionResponse")]
+        System.Threading.Tasks.Task AprobarMasivoOrdenesProduccionAsync(System.Collections.Generic.List<int> ordenesProduccion);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/AprobarIndividualOrdenProduccion", ReplyAction="http://tempuri.org/IProduccionService/AprobarIndividualOrdenProduccionResponse")]
+        void AprobarIndividualOrdenProduccion(int idOrdenProduccion);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/AprobarIndividualOrdenProduccion", ReplyAction="http://tempuri.org/IProduccionService/AprobarIndividualOrdenProduccionResponse")]
+        System.Threading.Tasks.Task AprobarIndividualOrdenProduccionAsync(int idOrdenProduccion);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/RechazarOrdenProduccion", ReplyAction="http://tempuri.org/IProduccionService/RechazarOrdenProduccionResponse")]
+        void RechazarOrdenProduccion(int idOrdenProduccion, string motivoRechazo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/RechazarOrdenProduccion", ReplyAction="http://tempuri.org/IProduccionService/RechazarOrdenProduccionResponse")]
+        System.Threading.Tasks.Task RechazarOrdenProduccionAsync(int idOrdenProduccion, string motivoRechazo);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente", ReplyAction="http://tempuri.org/IProduccionService/ObtenerPlanVigenteResponse")]
         MetalForming.Web.ProduccionService.Plan ObtenerPlanVigente();
         
@@ -1256,6 +1274,30 @@ namespace MetalForming.Web.ProduccionService {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion>> ListarOrdenesProduccionParaEjecucionAsync() {
             return base.Channel.ListarOrdenesProduccionParaEjecucionAsync();
+        }
+        
+        public void AprobarMasivoOrdenesProduccion(System.Collections.Generic.List<int> ordenesProduccion) {
+            base.Channel.AprobarMasivoOrdenesProduccion(ordenesProduccion);
+        }
+        
+        public System.Threading.Tasks.Task AprobarMasivoOrdenesProduccionAsync(System.Collections.Generic.List<int> ordenesProduccion) {
+            return base.Channel.AprobarMasivoOrdenesProduccionAsync(ordenesProduccion);
+        }
+        
+        public void AprobarIndividualOrdenProduccion(int idOrdenProduccion) {
+            base.Channel.AprobarIndividualOrdenProduccion(idOrdenProduccion);
+        }
+        
+        public System.Threading.Tasks.Task AprobarIndividualOrdenProduccionAsync(int idOrdenProduccion) {
+            return base.Channel.AprobarIndividualOrdenProduccionAsync(idOrdenProduccion);
+        }
+        
+        public void RechazarOrdenProduccion(int idOrdenProduccion, string motivoRechazo) {
+            base.Channel.RechazarOrdenProduccion(idOrdenProduccion, motivoRechazo);
+        }
+        
+        public System.Threading.Tasks.Task RechazarOrdenProduccionAsync(int idOrdenProduccion, string motivoRechazo) {
+            return base.Channel.RechazarOrdenProduccionAsync(idOrdenProduccion, motivoRechazo);
         }
         
         public MetalForming.Web.ProduccionService.Plan ObtenerPlanVigente() {

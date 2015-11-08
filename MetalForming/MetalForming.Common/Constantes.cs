@@ -24,6 +24,7 @@
         public class EstadoOrdenPoduccion
         {
             public const string PendienteAprobar = "Pendiente Aprobar";
+            public const string Rechazado = "Rechazado";
             public const string Programado = "Programado";
             public const string ReProgramado = "ReProgramado";
             public const string EnProceso = "En Proceso";
