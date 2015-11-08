@@ -15,6 +15,7 @@
           <xs:element minOccurs="0" name="Cliente" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="FechaEntrega" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="IdPrograma" type="xs:int" />
           <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Producto" nillable="true" type="tns:Producto" />
         </xs:sequence>
@@ -142,4 +143,41 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfOrdenProduccion" nillable="true" type="tns:ArrayOfOrdenProduccion" />
+  <xs:complexType name="Plan">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q8:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Codigo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FechaFin" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="FechaInicio" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Plan" nillable="true" type="tns:Plan" />
+  <xs:complexType name="ArrayOfPrograma">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Programa" nillable="true" type="tns:Programa" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPrograma" nillable="true" type="tns:ArrayOfPrograma" />
+  <xs:complexType name="Programa">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q9:BaseEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CantidadOV" type="xs:int" />
+          <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FechaFin" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="FechaFinalizacion" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="FechaInicio" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="IdPlan" type="xs:int" />
+          <xs:element minOccurs="0" name="MotivoFinalizacion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OrdenesVenta" nillable="true" type="tns:ArrayOfOrdenVenta" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Programa" nillable="true" type="tns:Programa" />
 </xs:schema>

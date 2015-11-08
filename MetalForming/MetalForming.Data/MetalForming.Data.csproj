@@ -68,7 +68,9 @@
     <Compile Include="OrdenProduccionDA.cs" />
     <Compile Include="OrdenVentaDA.cs" />
     <Compile Include="MaterialDA.cs" />
+    <Compile Include="PlanDA.cs" />
     <Compile Include="ProductoDA.cs" />
+    <Compile Include="ProgramaDA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,12 @@ namespace MetalForming.ServiceContracts
         IList<OrdenVenta> ListarOrdenesVenta();
 
         [OperationContract]
+        IList<OrdenVenta> ListarOrdenesVentaPendiente();
+
+        [OperationContract]
+        IList<OrdenVenta> ListarOrdenesVentaPorPrograma(int idPrograma);
+
+        [OperationContract]
         OrdenVenta ObtenerOrdenVentaPorNumero(string numero);
 
         [OperationContract]
@@ -31,5 +37,20 @@ namespace MetalForming.ServiceContracts
 
         [OperationContract]
         OrdenProduccion ObetenerOrdenProduccionPorNumero(string numero);
+
+        [OperationContract]
+        IList<OrdenProduccion> ListarOrdenesProduccionParaEjecucion();
+
+        [OperationContract]
+        Plan ObtenerPlanVigente();
+
+        [OperationContract]
+        IList<Programa> ListrarProgramasPorPlan(int idPlan);
+
+        [OperationContract]
+        string GuardarPrograma(Programa programa);
+
+        [OperationContract]
+        void FinalizarPrograma(int idPrograma, string motivo);
     }
 }

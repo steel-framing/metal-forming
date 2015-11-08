@@ -1,5 +1,10 @@
 ﻿@model OrdenProduccionModel
 
+@{
+    ViewBag.MenuActual = ConstantesWeb.Menu.Programacion;
+    ViewBag.MenuItemActual = ConstantesWeb.MenuItem.MantenerOrdenProduccion;
+}
+
 @Html.HiddenFor(p => p.Id)
 @Html.HiddenFor(p => p.IdOrdenVenta)
 @Html.HiddenFor(p => p.IdProducto)
@@ -50,42 +55,42 @@
                                 </td>
                                 @if (Model.CantidadProducto <= -1000)
                                 {
-                                <td>
-                                    <label for="chkTomarStock">
-                                        <input id="chkTomarStock" type="checkbox" class="checkbox-inline" checked="checked" /> Tomar de stock
-                                    </label>
-                                </td>
+                                    <td>
+                                        <label for="chkTomarStock">
+                                            <input id="chkTomarStock" type="checkbox" class="checkbox-inline" checked="checked" /> Tomar de stock
+                                        </label>
+                                    </td>
                                 }
                                 else if (Model.CantidadProducto > -1000 && Model.CantidadProducto <= 0)
                                 {
-                                <td>
-                                    <label for="chkHaProducir">
-                                        <input id="chkHaProducir" type="checkbox" class="checkbox-inline" checked="checked" /> Ha Producir
-                                    </label>
-                                </td>
-                                <td>
-                                    <div class="col-xs-5">
-                                        <input id="txtLimiteProduccion" type="text" class="form-control" value="1000" data-value-max="1000" data-value-min="0" onkeypress=" return ValidarSoloNumeros(event); " />
-                                    </div>
-                                </td>
-                                <td>
-                                    <label for="chkTomarStock">
-                                        <input id="chkTomarStock" type="checkbox" class="checkbox-inline" /> Tomar de stock
-                                    </label>
-                                </td>
+                                    <td>
+                                        <label for="chkHaProducir">
+                                            <input id="chkHaProducir" type="checkbox" class="checkbox-inline" checked="checked" /> Ha Producir
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="col-xs-5">
+                                            <input id="txtLimiteProduccion" type="text" class="form-control" value="@(Model.CantidadProducto < 0 ? 0 : Model.CantidadProducto)" data-value-max="1000" data-value-min="0" onkeypress=" return ValidarSoloNumeros(event); " />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label for="chkTomarStock">
+                                            <input id="chkTomarStock" type="checkbox" class="checkbox-inline" /> Tomar de stock
+                                        </label>
+                                    </td>
                                 }
                                 else
                                 {
-                                <td>
-                                    <label for="chkHaProducir">
-                                        <input id="chkHaProducir" type="checkbox" class="checkbox-inline" checked="checked" /> Ha Producir
-                                    </label>
-                                </td>
-                                <td>
-                                    <div class="col-xs-5">
-                                        <input id="txtLimiteProduccion" type="text" class="form-control" value="1000" data-value-max="@(Model.CantidadProducto + 1000)" data-value-min="@Model.CantidadProducto" onkeypress="return ValidarSoloNumeros(event);" />
-                                    </div>
-                                </td>
+                                    <td>
+                                        <label for="chkHaProducir">
+                                            <input id="chkHaProducir" type="checkbox" class="checkbox-inline" checked="checked" /> Ha Producir
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="col-xs-5">
+                                            <input id="txtLimiteProduccion" type="text" class="form-control" value="@(Model.CantidadProducto < 0 ? 0 : Model.CantidadProducto)" data-value-max="@(Model.CantidadProducto + 1000)" data-value-min="@Model.CantidadProducto" onkeypress="return ValidarSoloNumeros(event);" />
+                                        </div>
+                                    </td>
                                 }
                             </tr>
                         </table>
@@ -225,7 +230,7 @@
                             <a id="btnCerrar" href="javascript:;" class="btn btn-primary-line"><i class="ion-close-round"></i> Cerrar</a>
                             @if (Model.Id == 0)
                             {
-                            <a id="btnGuardar" href="javascript:;" class="btn btn-primary-line"><i class="ion-checkmark-round"></i> Guardar</a>
+                                <a id="btnGuardar" href="javascript:;" class="btn btn-primary-line"><i class="ion-checkmark-round"></i> Guardar</a>
                             }
                         </div>
                     </div>
@@ -364,10 +369,10 @@
 
     <script type="text/javascript">
 
-        var urlCerrar = '@Url.Action("Index")';
+        var urlCerrar = '@Url.Action("MantenerOrdenProduccion")';
         var urlBuscarMaquina = '@Url.Action("BuscarMaquina")';
         var urlObtenerMaquina = '@Url.Action("ObtenerMaquina")';
-        var urlGuardar = '@Url.Action("Guardar")';
+        var urlGuardar = '@Url.Action("GuardarOrdenProduccion")';
 
         $(function () {
 
@@ -458,13 +463,20 @@
 
             $("#tblMateriales tbody tr").each(function (index, item) {
                 var stock = parseInt($(this).find("td.StockMaterial").text());
-                var stockMinimo = parseInt($(this).find("td.StockMaterial").text());
+                var stockMinimo = parseInt($(this).find("td.StockMinimoMaterial").text());
                 var requerido = parseInt($(this).find("td.RequeridoMaterialPorUnidad").text());
+                var reservado = requerido;
 
-                requerido = cantidadHaProducir * requerido;
-                $(this).find("td.RequeridoMaterial").text(requerido);
+                if (stock < requerido) {
+                    reservado = stock;
+                }
+                //requerido = cantidadHaProducir * requerido;
+                $(this).find("td.ReservadoMaterial").text(reservado);
 
-                var comprar = requerido + stockMinimo - stock;
+                var comprar = 0;
+                if (requerido + stockMinimo > stock) {
+                    comprar = requerido + stockMinimo - stock;
+                }
                 if (comprar < 0) {
                     comprar = 0;
                 }

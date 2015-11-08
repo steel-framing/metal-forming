@@ -51,15 +51,18 @@ var app = function() {
             createMessageDialog();
             createConfirmDialog();
         },
-        showMessageDialog: function (message, fnAceptar) {
+        showMessageDialog: function (message, fnAceptar, fnCerrar) {
             $('#popupMensaje .modal-body').html(message);
             $('#popupMensaje').modal('show');
 
             if ($.isFunction(fnAceptar)) {
                 $('#popupMensaje .btn-aceptar').off('click');
-                $('#popupMensaje .close').off('click');
                 $('#popupMensaje .btn-aceptar').on('click', fnAceptar);
-                $('#popupMensaje .close').on('click', fnAceptar);
+            }
+
+            if ($.isFunction(fnCerrar)) {
+                $('#popupMensaje .close').off('click');
+                $('#popupMensaje .close').on('click', fnCerrar);
             }
         },
         showConfirmDialog: function (message, fnSuccess, fnCancel) {

@@ -1,11 +1,11 @@
-﻿using MetalForming.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using MetalForming.Common;
 using MetalForming.Web.Core;
 using MetalForming.Web.Models;
 using MetalForming.Web.ProduccionService;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
-using System.Web.Mvc;
 
 namespace MetalForming.Web.Controllers
 {
@@ -13,8 +13,139 @@ namespace MetalForming.Web.Controllers
     {
         #region Acciones
 
+        #region Mantener Programa
+
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult MantenerPrograma()
+        {
+            var model = new ProgramaModel();
+            try
+            {
+                using (var service = new ProduccionServiceClient())
+                {
+                    model.PlanVigente = service.ObtenerPlanVigente();
+                }
+
+                using (var service = new ProduccionServiceClient())
+                {
+                    model.OrdenesVenta = service.ListarOrdenesVentaPendiente();
+                }
+
+                if (model.PlanVigente != null && model.PlanVigente.Estado == Constantes.EstadoPlan.Pendiente)
+                {
+                    using (var service = new ProduccionServiceClient())
+                    {
+                        model.ProgramasAnteriores = service.ListrarProgramasPorPlan(model.PlanVigente.Id);
+                    }
+
+                    if (model.ProgramasAnteriores.Any(p => p.Estado == Constantes.EstadoPrograma.Programado))
+                    {
+                        var programaVigente =
+                            model.ProgramasAnteriores.LastOrDefault(
+                                p => p.Estado == Constantes.EstadoOrdenPoduccion.Programado);
+
+                        if (programaVigente != null)
+                        {
+                            model.Id = programaVigente.Id;
+                            model.Numero = programaVigente.Numero;
+                            model.FechaInicio = programaVigente.FechaInicio;
+                            model.FechaFin = programaVigente.FechaFin;
+                            model.CantidadOV = programaVigente.CantidadOV;
+                            model.Estado = programaVigente.Estado;
+
+                            model.ProgramasAnteriores.Remove(programaVigente);   
+                        }
+
+                        IList<OrdenVenta> ordenesVentaPorPrograma;
+                        using (var service = new ProduccionServiceClient())
+                        {
+                             ordenesVentaPorPrograma = service.ListarOrdenesVentaPorPrograma(model.Id);
+                        }
+                        if (ordenesVentaPorPrograma.Count > 0)
+                        {
+                            foreach (var ordenVenta in ordenesVentaPorPrograma)
+                            {
+                                model.OrdenesVenta.Add(ordenVenta);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult GuardarPrograma(ProgramaModel model)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                var fechaInicio = Utils.ConvertDate(model.FechaInicioStr, "dd/MM/yyyy");
+                var fechaFin = Utils.ConvertDate(model.FechaFinStr, "dd/MM/yyyy");
+
+                var programa = new Programa
+                {
+                    Id = model.Id,
+                    Numero = model.Numero,
+                    FechaInicio = fechaInicio.Value,
+                    FechaFin = fechaFin.Value,
+                    CantidadOV = model.CantidadOV,
+                    Estado = model.Estado,
+                    IdPlan = model.IdPlan,
+                    OrdenesVenta =  new List<OrdenVenta>()
+                };
+
+                foreach (var ordenVenta in model.OrdenesVenta)
+                {
+                    programa.OrdenesVenta.Add(ordenVenta);
+                }
+
+                using (var service = new ProduccionServiceClient())
+                {
+                    response.Data = service.GuardarPrograma(programa);
+                }
+
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                response.Message = ex.Message;
+            }
+            return Json(response);
+        }
+
+        [HttpPost]
+        public JsonResult FinalizarPrograma(int idPrograma, string motivo)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                using (var service = new ProduccionServiceClient())
+                {
+                    service.FinalizarPrograma(idPrograma, motivo);
+                }
+
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                response.Message = ex.Message;
+            }
+            return Json(response);
+        }
+
+        #endregion
+
+        #region Mantener Orden Producción
+
+        [HttpGet]
+        public ActionResult MantenerOrdenProduccion()
         {
             var model = new ProgramacionModel();
             try
@@ -64,6 +195,68 @@ namespace MetalForming.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult VerOrdenProduccion(string numero)
+        {
+            var model = new OrdenProduccionModel();
+            try
+            {
+                OrdenProduccion ordenProduccion;
+                using (var service = new ProduccionServiceClient())
+                {
+                    ordenProduccion = service.ObetenerOrdenProduccionPorNumero(numero);
+                }
+
+                if (ordenProduccion == null)
+                {
+                    throw new Exception("El número (" + numero + ") de Orden de Producción no existe.");
+                }
+
+                model.Id = ordenProduccion.Id;
+                model.Numero = ordenProduccion.Numero;
+                model.CantidadOrdenVenta = ordenProduccion.OrdenVenta.Cantidad;
+                model.DescripcionProducto = ordenProduccion.OrdenVenta.Producto.Descripcion;
+                model.FechaEntrega = ordenProduccion.OrdenVenta.FechaEntrega;
+                model.NumeroOrdenVenta = ordenProduccion.Numero;
+                model.StockMinimoProducto = ordenProduccion.OrdenVenta.Producto.StockMinimo;
+                model.StockProducto = ordenProduccion.OrdenVenta.Producto.Stock;
+                model.CantidadProducto = ordenProduccion.OrdenVenta.Cantidad + ordenProduccion.OrdenVenta.Producto.StockMinimo - ordenProduccion.OrdenVenta.Producto.Stock;
+
+                foreach (var item in ordenProduccion.Materiales)
+                {
+                    model.Materiales.Add(new OrdenProduccionMaterialModel
+                    {
+                        IdMaterial = item.Material.Id,
+                        DescripcionMaterial = item.Material.Descripcion,
+                        Stock = item.Material.Stock,
+                        StockMinimo = item.Material.StockMinimo,
+                        Requerido = item.Requerido,
+                        Reservado = item.Material.Reservado,
+                        Comprar = item.Comprar
+                    });
+                }
+
+                foreach (var item in ordenProduccion.Secuencia)
+                {
+                    model.Secuencia.Add(new OrdenProduccionSecuenciaModel
+                    {
+                        IdMaquina = item.Maquina.Id,
+                        Secuencia = item.Secuencia,
+                        DescripcionMaquina = item.Maquina.Descripcion,
+                        PorcentajeFalla = item.Maquina.PorcentajeFalla,
+                        Tiempo = item.Maquina.Tiempo,
+                        FechaInicio = item.FechaInicio,
+                        FechaFin = item.FechaFin
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return View("OrdenProduccion", model);
+        }
+
+        [HttpGet]
         public ActionResult CrearOrdenProduccion(string numero)
         {
             var model = new OrdenProduccionModel();
@@ -109,7 +302,7 @@ namespace MetalForming.Web.Controllers
                     };
 
                     model.Materiales.Add(materialRequerido);
-                }   
+                }
             }
             catch (Exception ex)
             {
@@ -169,7 +362,7 @@ namespace MetalForming.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Guardar(OrdenProduccionModel model)
+        public JsonResult GuardarOrdenProduccion(OrdenProduccionModel model)
         {
             var response = new JsonResponse();
             try
@@ -178,7 +371,7 @@ namespace MetalForming.Web.Controllers
                 {
                     CantidadProducto = model.CantidadProducto,
                     TomarStock = model.TomarStock,
-                    Estado = "Pendiente",
+                    Estado = Constantes.EstadoOrdenPoduccion.Programado,
                     OrdenVenta = new OrdenVenta
                     {
                         Id = model.IdOrdenVenta,
@@ -194,7 +387,7 @@ namespace MetalForming.Web.Controllers
                     {
                         Comprar = material.Comprar,
                         Requerido = material.Requerido,
-                        Material = new Material {Id = material.IdMaterial}
+                        Material = new Material { Id = material.IdMaterial }
                     });
                 }
 
@@ -206,7 +399,7 @@ namespace MetalForming.Web.Controllers
                     ordenProduccion.Secuencia.Add(new OrdenProduccionSecuencia
                     {
                         Secuencia = secuencia.Secuencia,
-                        Maquina = new Maquina {Id = secuencia.IdMaquina},
+                        Maquina = new Maquina { Id = secuencia.IdMaquina },
                         FechaInicio = fechaInicio.Value,
                         FechaFin = fechaFin.Value
                     });
@@ -231,67 +424,7 @@ namespace MetalForming.Web.Controllers
             return Json(response);
         }
 
-        [HttpGet]
-        public ActionResult VerOrdenProduccion(string numero)
-        {
-            var model = new OrdenProduccionModel();
-            try
-            {
-                OrdenProduccion ordenProduccion;
-                using (var service = new ProduccionServiceClient())
-                {
-                    ordenProduccion = service.ObetenerOrdenProduccionPorNumero(numero);
-                }
-
-                if (ordenProduccion == null)
-                {
-                    throw new Exception("El número (" + numero + ") de Orden de Producción no existe.");
-                }
-
-                model.Id = ordenProduccion.Id;
-                model.Numero = ordenProduccion.Numero;
-                model.CantidadOrdenVenta = ordenProduccion.OrdenVenta.Cantidad;
-                model.DescripcionProducto = ordenProduccion.OrdenVenta.Producto.Descripcion;
-                model.FechaEntrega = ordenProduccion.OrdenVenta.FechaEntrega;
-                model.NumeroOrdenVenta = ordenProduccion.Numero;
-                model.StockMinimoProducto = ordenProduccion.OrdenVenta.Producto.StockMinimo;
-                model.StockProducto = ordenProduccion.OrdenVenta.Producto.Stock;
-                model.CantidadProducto = ordenProduccion.CantidadProducto;
-
-                foreach (var item in ordenProduccion.Materiales)
-                {
-                    model.Materiales.Add(new OrdenProduccionMaterialModel
-                    {
-                        IdMaterial = item.Material.Id,
-                        DescripcionMaterial = item.Material.Descripcion,
-                        Stock = item.Material.Stock,
-                        StockMinimo = item.Material.StockMinimo,
-                        Requerido = item.Requerido,
-                        Reservado = item.Material.Reservado,
-                        Comprar = item.Comprar
-                    });
-                }
-
-                foreach (var item in ordenProduccion.Secuencia)
-                {
-                    model.Secuencia.Add(new OrdenProduccionSecuenciaModel
-                    {
-                        IdMaquina = item.Maquina.Id,
-                        Secuencia = item.Secuencia,
-                        DescripcionMaquina = item.Maquina.Descripcion,
-                        PorcentajeFalla = item.Maquina.PorcentajeFalla,
-                        Tiempo = item.Maquina.Tiempo,
-                        FechaInicio = item.FechaInicio,
-                        FechaFin = item.FechaFin
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-            }
-            return View("OrdenProduccion", model);
-        }
+        #endregion
 
         #endregion
     }

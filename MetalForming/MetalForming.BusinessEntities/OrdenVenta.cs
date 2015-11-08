@@ -24,5 +24,8 @@ namespace MetalForming.BusinessEntities
 
         [DataMember]
         public Producto Producto { get; set; }
+
+        [DataMember]
+        public int IdPrograma { get; set; }
     }
 }
