@@ -10,7 +10,7 @@ SET NOCOUNT ON;
 
 UPDATE OrdenVenta
 SET IdPrograma = NULL,
-	Estado = @Estado
+	Estado = CASE WHEN Id NOT IN (SELECT IdOrdenVenta FROM OrdenProduccion) THEN @Estado ELSE Estado END
 WHERE IdPrograma = @IdPrograma;
 
 END

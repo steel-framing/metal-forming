@@ -5,130 +5,167 @@
     ViewBag.MenuItemActual = ConstantesWeb.MenuItem.MantenerOrdenProduccion;
 }
 
-<header class="header-crumb">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-7">
-                <table class="table table-form">
-                    <tbody>
-                        <tr>
-                            <td class="text-white"><strong>Programa Num.:</strong> 00000025447</td>
-                            <td class="text-white"><strong>F.Inicio:</strong> 20/09/2015</td>
-                            <td class="text-white"><strong>F.Fin:</strong> 26/09/2015</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-sm-5">
-                <div class="text-right">
-                    <a href="javascript:;" class="btn btn-primary-line"><i class="ion-ios-close-outline"></i> Anular Programa</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+@section styles{
+    <style type="text/css">
+        .well {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+}
 
-<main>
-    <section>
-        <div class="container">
-            <div class="well">
-                <h3 class="text-primary">Ordenes de Venta por atender</h3>
-            </div>
-        </div>
-    </section>
-
-    <section>
+@if (Model.ProgramaVigente == null)
+{
+    <header class="header-crumb">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="table-responsive ">
-                        <table class="table table-striped table-header table-rounded">
-                            <thead class="upper">
-                                <tr>
-                                    <th class="hide"></th>
-                                    <th>Orden de Venta</th>
-                                    <th>Cliente</th>
-                                    <th>Fecha de Entrega</th>
-                                    <th>Estado</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.OrdenesVenta)
-                                {
-                                    <tr>
-                                        <td class="hide">@item.Id</td>
-                                        <td>@item.Numero</td>
-                                        <td>@item.Cliente</td>
-                                        <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
-                                        <td>@item.Estado</td>
-                                        <td>
-                                            @if (item.Estado == Constantes.EstadoOrdenVenta.Programado)
-                                            {
-                                                <a href="javascript:;" class="btn-link" onclick="CrearOrdenProduccion('@item.Numero');">Crear OP</a>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                    <h3>No existe un Programa Vigente.</h3>
                 </div>
             </div>
         </div>
-    </section>
-
-    <br />
-
-    <section>
-        <div class="container">
-            <div class="well">
-                <h3 class="text-primary">Ordenes de Producción Generadas</h3>
-            </div>
-        </div>
-    </section>
-
-    <section>
+    </header>
+}
+else
+{
+    <header class="header-crumb">
         <div class="container">
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="table-responsive ">
-                        <table class="table table-striped table-header table-rounded">
-                            <thead class="upper">
+                <div class="col-sm-7">
+                    <table class="table table-form">
+                        <tbody>
                             <tr>
-                                <th class="hide"></th>
-                                <th>Num. OP</th>
-                                <th>Num. OV</th>
-                                <th>F.Entrega</th>
-                                <th>Producto</th>
-                                <th>Estado</th>
+                                <td class="text-white"><strong>Programa Num.:</strong> @Model.ProgramaVigente.Numero</td>
+                                <td class="text-white"><strong>F.Inicio:</strong> @Model.ProgramaVigente.FechaInicio.ToString("dd/MM/yyyy")</td>
+                                <td class="text-white"><strong>F.Fin:</strong> @Model.ProgramaVigente.FechaFin.ToString("dd/MM/yyyy")</td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            @foreach (var item in Model.OrdenesProduccion)
-                            {
-                                <tr>
-                                    <td class="hide">@item.Id</td>
-                                    <td>
-                                        <a href="javascript:;" class="btn-link" onclick="VerOrdenProduccion('@item.Numero')">@item.Numero</a>
-                                    </td>
-                                    <td>@item.NumeroOrdenVenta</td>
-                                    <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
-                                    <td>@item.DescripcionProducto</td>
-                                    <td>@item.Estado</td>
-                                </tr>
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
+    <main>
+        <section>
+            <div class="container">
+                <div class="well">
+                    <h4 class="text-primary">Ordenes de Venta por atender</h4>
+                </div>
+            </div>
+        </section>
 
-    <br/>
-    <br/>
-</main>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-responsive ">
+                            <table class="table table-striped table-header table-rounded">
+                                <thead class="upper">
+                                    <tr>
+                                        <th class="hide"></th>
+                                        <th>Orden de Venta</th>
+                                        <th>Cliente</th>
+                                        <th>Fecha de Entrega</th>
+                                        <th>Estado</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrdenesVenta)
+                                    {
+                                        <tr>
+                                            <td class="hide">@item.Id</td>
+                                            <td>@item.Numero</td>
+                                            <td>@item.Cliente</td>
+                                            <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.Estado</td>
+                                            <td>
+                                                @if (item.Estado == Constantes.EstadoOrdenVenta.Programado)
+                                                {
+                                                    <a href="javascript:;" class="btn-link" onclick="CrearOrdenProduccion('@item.Numero');">Crear OP</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <br />
+
+        <section>
+            <div class="container">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4 class="text-primary">Ordenes de Producción Generadas</h4>
+                        </div>
+                        <div class="col-md-8">
+                            <a href="javascript:;" class="btn btn-primary-line" id="btnAprobarSeleccionados"> Aprobar seleccionados</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-responsive ">
+                            <table id="tblOrdenesProduccion" class="table table-striped table-header table-rounded">
+                                <thead class="upper">
+                                    <tr>
+                                        <th><input id="chkTodos" type="checkbox" class="checkbox-inline" /></th>
+                                        <th class="hide"></th>
+                                        <th>Num. OP</th>
+                                        <th>Num. OV</th>
+                                        <th>F.Entrega</th>
+                                        <th>Producto</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrdenesProduccion)
+                                    {
+                                        <tr>
+                                            <td class="tdChk"><input type="checkbox" class="checkbox-inline" /></td>
+                                            <td class="hide">@item.Id</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn-link" onclick="VerOrdenProduccion('@item.Numero')">@item.Numero</a>
+                                            </td>
+                                            <td>@item.NumeroOrdenVenta</td>
+                                            <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.DescripcionProducto</td>
+                                            <td>@item.Estado</td>
+                                            <td>
+                                                @if (item.Estado == Constantes.EstadoOrdenPoduccion.PendienteAprobar)
+                                                {
+                                                    <a href="javascript:;" class="btn-link" onclick="DictaminarOrdenProduccion('@item.Numero')">Aprobar</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <br />
+        <br />
+    </main>
+}
 
 @section scripts{
     <script type="text/javascript">
@@ -137,7 +174,9 @@
         var urlVerOrdenProduccion = '@Url.Action("VerOrdenProduccion")';
 
         $(function () {
-
+            $("#chkTodos").on("click", function() {
+                $("#tblOrdenesProduccion tr td:nth-child(1) input[type=checkbox]").prop("checked", true);
+            });
         });
 
         function VerOrdenProduccion(numero) {

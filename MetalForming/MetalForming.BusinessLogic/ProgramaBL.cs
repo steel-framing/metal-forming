@@ -26,6 +26,18 @@ namespace MetalForming.BusinessLogic
             }
         }
 
+        public Programa ObtenerVigente()
+        {
+            try
+            {
+                return _programaDA.ObtenerPorEstado(Constantes.EstadoPrograma.Programado);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
         public string Guardar(Programa programa)
         {
             string numeroPrograma;
@@ -43,8 +55,7 @@ namespace MetalForming.BusinessLogic
 
                         foreach (var ordenVenta in programa.OrdenesVenta)
                         {
-                            _ordenVentaDA.ActualizarEstado(ordenVenta.Id, Constantes.EstadoOrdenVenta.Programado);
-                            _ordenVentaDA.ActualizarPrograma(ordenVenta.Id, programa.Id);
+                            _ordenVentaDA.ActualizarPrograma(ordenVenta.Id, programa.Id, Constantes.EstadoOrdenVenta.Programado);
                         }
                     }
                     else
@@ -55,8 +66,7 @@ namespace MetalForming.BusinessLogic
 
                         foreach (var ordenVenta in programa.OrdenesVenta)
                         {
-                            _ordenVentaDA.ActualizarEstado(ordenVenta.Id, Constantes.EstadoOrdenVenta.Programado);
-                            _ordenVentaDA.ActualizarPrograma(ordenVenta.Id, programa.Id);
+                            _ordenVentaDA.ActualizarPrograma(ordenVenta.Id, programa.Id, Constantes.EstadoOrdenVenta.Programado);
                         }
                     }
 

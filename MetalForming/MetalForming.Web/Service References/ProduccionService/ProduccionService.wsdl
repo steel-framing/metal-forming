@@ -62,6 +62,12 @@
   <wsdl:message name="IProduccionService_ListarOrdenesProduccion_OutputMessage">
     <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionResponse" />
   </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesProduccionPorPrograma_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionPorPrograma" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesProduccionPorPrograma_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionPorProgramaResponse" />
+  </wsdl:message>
   <wsdl:message name="IProduccionService_ObetenerOrdenProduccionPorNumero_InputMessage">
     <wsdl:part name="parameters" element="tns:ObetenerOrdenProduccionPorNumero" />
   </wsdl:message>
@@ -85,6 +91,12 @@
   </wsdl:message>
   <wsdl:message name="IProduccionService_ListrarProgramasPorPlan_OutputMessage">
     <wsdl:part name="parameters" element="tns:ListrarProgramasPorPlanResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ObtenerProgramaVigente_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerProgramaVigente" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ObtenerProgramaVigente_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerProgramaVigenteResponse" />
   </wsdl:message>
   <wsdl:message name="IProduccionService_GuardarPrograma_InputMessage">
     <wsdl:part name="parameters" element="tns:GuardarPrograma" />
@@ -135,6 +147,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccion" message="tns:IProduccionService_ListarOrdenesProduccion_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionResponse" message="tns:IProduccionService_ListarOrdenesProduccion_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="ListarOrdenesProduccionPorPrograma">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorPrograma" message="tns:IProduccionService_ListarOrdenesProduccionPorPrograma_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorProgramaResponse" message="tns:IProduccionService_ListarOrdenesProduccionPorPrograma_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ObetenerOrdenProduccionPorNumero">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumero" message="tns:IProduccionService_ObetenerOrdenProduccionPorNumero_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumeroResponse" message="tns:IProduccionService_ObetenerOrdenProduccionPorNumero_OutputMessage" />
@@ -150,6 +166,10 @@
     <wsdl:operation name="ListrarProgramasPorPlan">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListrarProgramasPorPlan" message="tns:IProduccionService_ListrarProgramasPorPlan_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListrarProgramasPorPlanResponse" message="tns:IProduccionService_ListrarProgramasPorPlan_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerProgramaVigente">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObtenerProgramaVigente" message="tns:IProduccionService_ObtenerProgramaVigente_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ObtenerProgramaVigenteResponse" message="tns:IProduccionService_ObtenerProgramaVigente_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GuardarPrograma">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/GuardarPrograma" message="tns:IProduccionService_GuardarPrograma_InputMessage" />
@@ -243,6 +263,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ListarOrdenesProduccionPorPrograma">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorPrograma" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="ObetenerOrdenProduccionPorNumero">
       <soap:operation soapAction="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumero" style="document" />
       <wsdl:input>
@@ -272,6 +301,15 @@
     </wsdl:operation>
     <wsdl:operation name="ListrarProgramasPorPlan">
       <soap:operation soapAction="http://tempuri.org/IProduccionService/ListrarProgramasPorPlan" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerProgramaVigente">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ObtenerProgramaVigente" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

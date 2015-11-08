@@ -124,6 +124,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="ListarOrdenesProduccionPorPrograma">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idPrograma" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarOrdenesProduccionPorProgramaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesProduccionPorProgramaResult" nillable="true" type="q10:ArrayOfOrdenProduccion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="ObetenerOrdenProduccionPorNumero">
     <xs:complexType>
       <xs:sequence>
@@ -134,7 +148,7 @@
   <xs:element name="ObetenerOrdenProduccionPorNumeroResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObetenerOrdenProduccionPorNumeroResult" nillable="true" type="q10:OrdenProduccion" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObetenerOrdenProduccionPorNumeroResult" nillable="true" type="q11:OrdenProduccion" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -146,7 +160,7 @@
   <xs:element name="ListarOrdenesProduccionParaEjecucionResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesProduccionParaEjecucionResult" nillable="true" type="q11:ArrayOfOrdenProduccion" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesProduccionParaEjecucionResult" nillable="true" type="q12:ArrayOfOrdenProduccion" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -158,7 +172,7 @@
   <xs:element name="ObtenerPlanVigenteResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerPlanVigenteResult" nillable="true" type="q12:Plan" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerPlanVigenteResult" nillable="true" type="q13:Plan" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -172,14 +186,26 @@
   <xs:element name="ListrarProgramasPorPlanResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListrarProgramasPorPlanResult" nillable="true" type="q13:ArrayOfPrograma" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListrarProgramasPorPlanResult" nillable="true" type="q14:ArrayOfPrograma" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerProgramaVigente">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerProgramaVigenteResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ObtenerProgramaVigenteResult" nillable="true" type="q15:Programa" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GuardarPrograma">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="programa" nillable="true" type="q14:Programa" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="programa" nillable="true" type="q16:Programa" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

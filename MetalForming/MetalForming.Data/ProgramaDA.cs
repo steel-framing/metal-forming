@@ -10,6 +10,7 @@ namespace MetalForming.Data
     {
         private const string ProcedimientoAlmacenadoListarPorPlan = "dbo.ListarProgramaPorPlan";
         private const string ProcedimientoAlmacenadoObtenerPorID = "dbo.ObtenerProgramaPorID";
+        private const string ProcedimientoAlmacenadoObtenerPorEstado = "dbo.ObtenerProgramaPorEstado";
         private const string ProcedimientoAlmacenadoRegistrar = "dbo.InsertarPrograma";
         private const string ProcedimientoAlmacenadoActualizar = "dbo.ActualizarPrograma";
         private const string ProcedimientoAlmacenadoActualizarEstado = "dbo.ActualizarEstadoPrograma";
@@ -78,6 +79,39 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoObtenerPorID);
+            }
+            return entidad;
+        }
+
+        public Programa ObtenerPorEstado(string estado)
+        {
+            Programa entidad = null;
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoObtenerPorEstado);
+
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, estado);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    if (lector.Read())
+                    {
+                        entidad = new Programa
+                        {
+                            Id = GetDataValue<int>(lector, "Id"),
+                            Numero = GetDataValue<string>(lector, "Numero"),
+                            FechaInicio = GetDataValue<DateTime>(lector, "FechaInicio"),
+                            FechaFin = GetDataValue<DateTime>(lector, "FechaFin"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
+                            CantidadOV = GetDataValue<int>(lector, "CantidadOV"),
+                            IdPlan = GetDataValue<int>(lector, "IdPlan")
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoObtenerPorEstado);
             }
             return entidad;
         }

@@ -13,5 +13,7 @@ namespace MetalForming.Web.Models
         public DateTime FechaEntrega { get; set; }
 
         public string Estado { get; set; }
+
+        public int IdPrograma { get; set; }
     }
 }
