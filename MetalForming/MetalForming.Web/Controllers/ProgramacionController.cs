@@ -150,41 +150,59 @@ namespace MetalForming.Web.Controllers
             var model = new ProgramacionModel();
             try
             {
-                IList<OrdenVenta> ordenesVenta;
+                Programa programaVigente;
                 using (var service = new ProduccionServiceClient())
                 {
-                    ordenesVenta = service.ListarOrdenesVenta();
+                    programaVigente = service.ObtenerProgramaVigente();
                 }
 
-                foreach (var item in ordenesVenta)
+                if (programaVigente != null)
                 {
-                    model.OrdenesVenta.Add(new OrdenVentaModel
+                    model.ProgramaVigente = new ProgramaModel
                     {
-                        Id = item.Id,
-                        Numero = item.Numero,
-                        Cliente = item.Cliente,
-                        FechaEntrega = item.FechaEntrega,
-                        Estado = item.Estado
-                    });
-                }
+                        Id = programaVigente.Id,
+                        Numero = programaVigente.Numero,
+                        FechaInicio = programaVigente.FechaInicio,
+                        FechaFin = programaVigente.FechaFin
+                    };
 
-                IList<OrdenProduccion> ordenesProduccion;
-                using (var service = new ProduccionServiceClient())
-                {
-                    ordenesProduccion = service.ListarOrdenesProduccion();
-                }
-
-                foreach (var item in ordenesProduccion)
-                {
-                    model.OrdenesProduccion.Add(new OrdenProduccionModel
+                    IList<OrdenVenta> ordenesVenta;
+                    using (var service = new ProduccionServiceClient())
                     {
-                        Id = item.Id,
-                        Numero = item.Numero,
-                        NumeroOrdenVenta = item.OrdenVenta.Numero,
-                        FechaEntrega = item.OrdenVenta.FechaEntrega,
-                        DescripcionProducto = item.OrdenVenta.Producto.Descripcion,
-                        Estado = item.Estado
-                    });
+                        ordenesVenta = service.ListarOrdenesVentaPorPrograma(model.ProgramaVigente.Id);
+                    }
+
+                    foreach (var item in ordenesVenta)
+                    {
+                        model.OrdenesVenta.Add(new OrdenVentaModel
+                        {
+                            Id = item.Id,
+                            Numero = item.Numero,
+                            Cliente = item.Cliente,
+                            FechaEntrega = item.FechaEntrega,
+                            Estado = item.Estado,
+                            IdPrograma = item.IdPrograma
+                        });
+                    }
+
+                    IList<OrdenProduccion> ordenesProduccion;
+                    using (var service = new ProduccionServiceClient())
+                    {
+                        ordenesProduccion = service.ListarOrdenesProduccionPorPrograma(model.ProgramaVigente.Id);
+                    }
+
+                    foreach (var item in ordenesProduccion)
+                    {
+                        model.OrdenesProduccion.Add(new OrdenProduccionModel
+                        {
+                            Id = item.Id,
+                            Numero = item.Numero,
+                            NumeroOrdenVenta = item.OrdenVenta.Numero,
+                            FechaEntrega = item.OrdenVenta.FechaEntrega,
+                            DescripcionProducto = item.OrdenVenta.Producto.Descripcion,
+                            Estado = item.Estado
+                        });
+                    }   
                 }
             }
             catch (Exception ex)

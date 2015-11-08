@@ -16,6 +16,9 @@ namespace MetalForming.Service
         private readonly PlanBL _planBL = new PlanBL();
         private readonly ProgramaBL _programaBL = new ProgramaBL();
 
+        #region Orden Venta
+
+        //depurar
         public IList<OrdenVenta> ListarOrdenesVenta()
         {
             return _ordenVentaBL.Listar();
@@ -36,10 +39,18 @@ namespace MetalForming.Service
             return _ordenVentaBL.ObtenerPorNumero(numero);
         }
 
+        #endregion
+
+        #region Material
+
         public IList<Material> ListarMaterialesPorProducto(int idProducto)
         {
             return _materialBL.ListarPorProducto(idProducto);
         }
+
+        #endregion
+
+        #region Maquina
 
         public IList<Maquina> ListarMaquinaPorBusqueda(string descripcion, string tipo, string pld, string configuracion)
         {
@@ -51,14 +62,24 @@ namespace MetalForming.Service
             return _maquinaBL.ObtenerPorID(idMaquina);
         }
 
+        #endregion
+
+        #region Orden Produccion
+
         public int RegistrarOrdenProduccion(OrdenProduccion ordenProduccion)
         {
             return _ordenProduccionBL.Registrar(ordenProduccion);
         }
 
+        //depurar
         public IList<OrdenProduccion> ListarOrdenesProduccion()
         {
             return _ordenProduccionBL.Listar();
+        }
+
+        public IList<OrdenProduccion> ListarOrdenesProduccionPorPrograma(int idPrograma)
+        {
+            return _ordenProduccionBL.ListarPorPrograma(idPrograma);
         }
 
         public OrdenProduccion ObetenerOrdenProduccionPorNumero(string numero)
@@ -71,14 +92,27 @@ namespace MetalForming.Service
             return _ordenProduccionBL.ListarParaEjecucion();
         }
 
+        #endregion
+
+        #region Plan
+
         public Plan ObtenerPlanVigente()
         {
             return _planBL.ObtenerVigente();
         }
 
+        #endregion
+
+        #region Programa
+
         public IList<Programa> ListrarProgramasPorPlan(int idPlan)
         {
             return _programaBL.ListrarPorPlan(idPlan);
+        }
+
+        public Programa ObtenerProgramaVigente()
+        {
+            return _programaBL.ObtenerVigente();
         }
 
         public string GuardarPrograma(Programa programa)
@@ -90,5 +124,7 @@ namespace MetalForming.Service
         {
             _programaBL.Finalizar(idPrograma, motivo);
         }
+
+        #endregion
     }
 }

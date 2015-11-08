@@ -26,6 +26,18 @@ namespace MetalForming.BusinessLogic
             }
         }
 
+        public Programa ObtenerVigente()
+        {
+            try
+            {
+                return _programaDA.ObtenerPorEstado(Constantes.EstadoPrograma.Programado);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
         public string Guardar(Programa programa)
         {
             string numeroPrograma;

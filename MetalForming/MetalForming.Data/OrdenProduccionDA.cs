@@ -9,6 +9,7 @@ namespace MetalForming.Data
     public class OrdenProduccionDA : BaseData
     {
         private const string ProcedimientoAlmacenadoListar = "dbo.ListarOrdenProduccion";
+        private const string ProcedimientoAlmacenadoListarPorPrograma = "dbo.ListarOrdenProduccionPorPrograma";
         private const string ProcedimientoAlmacenadoObtenerPorNumero = "dbo.ObtenerOrdenProduccionPorNumero";
         private const string ProcedimientoAlmacenadoListarMaterial = "dbo.ListarOrdenProduccionMaterial";
         private const string ProcedimientoAlmacenadoListarSecuencia = "dbo.ListarOrdenProduccionSecuencia";
@@ -51,6 +52,47 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListar);
+            }
+            return lista;
+        }
+
+        public IList<OrdenProduccion> ListarPorPrograma(int idPrograma)
+        {
+            var lista = new List<OrdenProduccion>();
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoListarPorPrograma);
+
+                Context.Database.AddInParameter(comando, "@IdPrograma", DbType.Int32, idPrograma);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    while (lector.Read())
+                    {
+                        var entidad = new OrdenProduccion
+                        {
+                            Id = GetDataValue<int>(lector, "Id"),
+                            Numero = GetDataValue<string>(lector, "Numero"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
+                            OrdenVenta = new OrdenVenta
+                            {
+                                Id = GetDataValue<int>(lector, "IdOrdenVenta"),
+                                Numero = GetDataValue<string>(lector, "NumeroOrdenVenta"),
+                                FechaEntrega = GetDataValue<DateTime>(lector, "FechaEntrega"),
+                                Producto = new Producto
+                                {
+                                    Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
+                                }
+                            }
+                        };
+
+                        lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarPorPrograma);
             }
             return lista;
         }

@@ -1084,6 +1084,12 @@ namespace MetalForming.Web.ProduccionService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccion", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion>> ListarOrdenesProduccionAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorPrograma", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorProgramaResponse")]
+        System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion> ListarOrdenesProduccionPorPrograma(int idPrograma);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorPrograma", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorProgramaResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion>> ListarOrdenesProduccionPorProgramaAsync(int idPrograma);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumero", ReplyAction="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumeroResponse")]
         MetalForming.Web.ProduccionService.OrdenProduccion ObetenerOrdenProduccionPorNumero(string numero);
         
@@ -1109,6 +1115,12 @@ namespace MetalForming.Web.ProduccionService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListrarProgramasPorPlan", ReplyAction="http://tempuri.org/IProduccionService/ListrarProgramasPorPlanResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.Programa>> ListrarProgramasPorPlanAsync(int idPlan);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObtenerProgramaVigente", ReplyAction="http://tempuri.org/IProduccionService/ObtenerProgramaVigenteResponse")]
+        MetalForming.Web.ProduccionService.Programa ObtenerProgramaVigente();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObtenerProgramaVigente", ReplyAction="http://tempuri.org/IProduccionService/ObtenerProgramaVigenteResponse")]
+        System.Threading.Tasks.Task<MetalForming.Web.ProduccionService.Programa> ObtenerProgramaVigenteAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/GuardarPrograma", ReplyAction="http://tempuri.org/IProduccionService/GuardarProgramaResponse")]
         string GuardarPrograma(MetalForming.Web.ProduccionService.Programa programa);
@@ -1222,6 +1234,14 @@ namespace MetalForming.Web.ProduccionService {
             return base.Channel.ListarOrdenesProduccionAsync();
         }
         
+        public System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion> ListarOrdenesProduccionPorPrograma(int idPrograma) {
+            return base.Channel.ListarOrdenesProduccionPorPrograma(idPrograma);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenProduccion>> ListarOrdenesProduccionPorProgramaAsync(int idPrograma) {
+            return base.Channel.ListarOrdenesProduccionPorProgramaAsync(idPrograma);
+        }
+        
         public MetalForming.Web.ProduccionService.OrdenProduccion ObetenerOrdenProduccionPorNumero(string numero) {
             return base.Channel.ObetenerOrdenProduccionPorNumero(numero);
         }
@@ -1252,6 +1272,14 @@ namespace MetalForming.Web.ProduccionService {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.Programa>> ListrarProgramasPorPlanAsync(int idPlan) {
             return base.Channel.ListrarProgramasPorPlanAsync(idPlan);
+        }
+        
+        public MetalForming.Web.ProduccionService.Programa ObtenerProgramaVigente() {
+            return base.Channel.ObtenerProgramaVigente();
+        }
+        
+        public System.Threading.Tasks.Task<MetalForming.Web.ProduccionService.Programa> ObtenerProgramaVigenteAsync() {
+            return base.Channel.ObtenerProgramaVigenteAsync();
         }
         
         public string GuardarPrograma(MetalForming.Web.ProduccionService.Programa programa) {

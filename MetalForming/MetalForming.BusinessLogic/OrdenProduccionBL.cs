@@ -28,6 +28,18 @@ namespace MetalForming.BusinessLogic
             }
         }
 
+        public IList<OrdenProduccion> ListarPorPrograma(int idPrograma)
+        {
+            try
+            {
+                return _ordenProduccionDA.ListarPorPrograma(idPrograma);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
         public IList<OrdenProduccion> ListarParaEjecucion()
         {
             try

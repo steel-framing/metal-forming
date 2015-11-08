@@ -59,5 +59,43 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables\" />
+    <Folder Include="Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\Maquina.sql" />
+    <Build Include="Tables\Material.sql" />
+    <Build Include="Tables\OrdenProduccionMaterial.sql" />
+    <Build Include="Tables\OrdenVenta.sql" />
+    <Build Include="Tables\Producto.sql" />
+    <Build Include="Tables\ProductoMaterial.sql" />
+    <Build Include="Tables\OrdenProduccion.sql" />
+    <Build Include="Tables\OrdenProduccionSecuencia.sql" />
+    <Build Include="Tables\Plan.sql" />
+    <Build Include="Tables\Programa.sql" />
+    <Build Include="Stored Procedures\ActualizarEstadoOrdenVenta.sql" />
+    <Build Include="Stored Procedures\ActualizarStockProducto.sql" />
+    <Build Include="Stored Procedures\InsertarOrdenProduccion.sql" />
+    <Build Include="Stored Procedures\InsertarOrdenProduccionMaterial.sql" />
+    <Build Include="Stored Procedures\InsertarOrdenProduccionSecuencia.sql" />
+    <Build Include="Stored Procedures\ListarMaquinaPorBusqueda.sql" />
+    <Build Include="Stored Procedures\ListarMaterialPorProducto.sql" />
+    <Build Include="Stored Procedures\ListarOrdenProduccion.sql" />
+    <Build Include="Stored Procedures\ListarOrdenProduccionMaterial.sql" />
+    <Build Include="Stored Procedures\ListarOrdenProduccionSecuencia.sql" />
+    <Build Include="Stored Procedures\ListarOrdenVenta.sql" />
+    <Build Include="Stored Procedures\ObtenerMaquinaPorID.sql" />
+    <Build Include="Stored Procedures\ObtenerOrdenVentaPorNumero.sql" />
+    <Build Include="Stored Procedures\ObtenerOrdenProduccionPorNumero.sql" />
+    <Build Include="Stored Procedures\ObtenerPlanVigente.sql" />
+    <Build Include="Stored Procedures\ListarProgramaPorPlan.sql" />
+    <Build Include="Stored Procedures\ListarOrdenVentaPorEstado.sql" />
+    <Build Include="Stored Procedures\ListarOrdenVentaPorPrograma.sql" />
+    <Build Include="Stored Procedures\InsertarPrograma.sql" />
+    <Build Include="Stored Procedures\ActualizarPrograma.sql" />
+    <Build Include="Stored Procedures\ActualizarProgramaOrdenVenta.sql" />
+    <Build Include="Stored Procedures\ActualizarProgramasHaciaNullOrdenVenta.sql" />
+    <Build Include="Stored Procedures\ActualizarEstadoPrograma.sql" />
+    <Build Include="Stored Procedures\ObtenerProgramaPorID.sql" />
   </ItemGroup>
 </Project>
