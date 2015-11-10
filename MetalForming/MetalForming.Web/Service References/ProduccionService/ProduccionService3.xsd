@@ -2,18 +2,6 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" />
   <xs:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:element name="ListarOrdenesVenta">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ListarOrdenesVentaResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesVentaResult" nillable="true" type="q1:ArrayOfOrdenVenta" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="ListarOrdenesVentaPendiente">
     <xs:complexType>
       <xs:sequence />
@@ -22,7 +10,21 @@
   <xs:element name="ListarOrdenesVentaPendienteResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesVentaPendienteResult" nillable="true" type="q2:ArrayOfOrdenVenta" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesVentaPendienteResult" nillable="true" type="q1:ArrayOfOrdenVenta" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarOrdenesVentaParaAsignar">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idPrograma" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarOrdenesVentaParaAsignarResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities" minOccurs="0" name="ListarOrdenesVentaParaAsignarResult" nillable="true" type="q2:ArrayOfOrdenVenta" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

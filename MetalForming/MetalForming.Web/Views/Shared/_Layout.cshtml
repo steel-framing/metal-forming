@@ -46,8 +46,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.MantenerPrograma ? "active" : "")"><a href="@Url.Action("MantenerPrograma", "Programacion")">@ConstantesWeb.MenuItem.MantenerPrograma</a></li>
-                            <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.MantenerOrdenProduccion ? "active" : "")"><a href="@Url.Action("MantenerOrdenProduccion", "Programacion")">@ConstantesWeb.MenuItem.MantenerOrdenProduccion</a></li>
                             <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.AsignarOrdenVenta ? "active" : "")"><a href="@Url.Action("AsignarOrdenVenta", "Programacion")">@ConstantesWeb.MenuItem.AsignarOrdenVenta</a></li>
+                            <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.MantenerOrdenProduccion ? "active" : "")"><a href="@Url.Action("MantenerOrdenProduccion", "Programacion")">@ConstantesWeb.MenuItem.MantenerOrdenProduccion</a></li>
                         </ul>
                     </li>
                     <li class="dropdown @(ViewBag.MenuActual == ConstantesWeb.Menu.Produccion ? "active" : "")">

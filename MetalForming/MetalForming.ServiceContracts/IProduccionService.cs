@@ -10,10 +10,10 @@ namespace MetalForming.ServiceContracts
         #region Orden Venta
 
         [OperationContract]
-        IList<OrdenVenta> ListarOrdenesVenta();
+        IList<OrdenVenta> ListarOrdenesVentaPendiente();
 
         [OperationContract]
-        IList<OrdenVenta> ListarOrdenesVentaPendiente();
+        IList<OrdenVenta> ListarOrdenesVentaParaAsignar(int idPrograma);
 
         [OperationContract]
         IList<OrdenVenta> ListarOrdenesVentaPorPrograma(int idPrograma);

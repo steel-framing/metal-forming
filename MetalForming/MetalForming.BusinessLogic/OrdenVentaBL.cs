@@ -12,11 +12,11 @@ namespace MetalForming.BusinessLogic
     {
         private readonly OrdenVentaDA _orderVentaDA = new OrdenVentaDA();
 
-        public IList<OrdenVenta> Listar()
+        public IList<OrdenVenta> ListarPendientes()
         {
             try
             {
-                return _orderVentaDA.Listar();
+                return _orderVentaDA.ListarPendientePrograma();
             }
             catch (Exception ex)
             {
@@ -24,11 +24,11 @@ namespace MetalForming.BusinessLogic
             }
         }
 
-        public IList<OrdenVenta> ListarPendientes()
+        public IList<OrdenVenta> ListarParaAsignar(int idPrograma)
         {
             try
             {
-                return _orderVentaDA.ListarPendientePrograma();
+                return _orderVentaDA.ListarParaAsignar(idPrograma, Constantes.EstadoOrdenVenta.Asignado, Constantes.EstadoOrdenVenta.PendienteAsignar);
             }
             catch (Exception ex)
             {

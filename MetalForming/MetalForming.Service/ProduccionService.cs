@@ -18,15 +18,14 @@ namespace MetalForming.Service
 
         #region Orden Venta
 
-        //depurar
-        public IList<OrdenVenta> ListarOrdenesVenta()
-        {
-            return _ordenVentaBL.Listar();
-        }
-
         public IList<OrdenVenta> ListarOrdenesVentaPendiente()
         {
             return _ordenVentaBL.ListarPendientes();
+        }
+
+        public IList<OrdenVenta> ListarOrdenesVentaParaAsignar(int idPrograma)
+        {
+            return _ordenVentaBL.ListarParaAsignar(idPrograma);
         }
 
         public IList<OrdenVenta> ListarOrdenesVentaPorPrograma(int idPrograma)

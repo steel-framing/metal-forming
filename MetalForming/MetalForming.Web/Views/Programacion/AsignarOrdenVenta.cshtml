@@ -21,36 +21,27 @@
 {
     <header class="header-crumb">
         <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <h3>No existe un Programa Vigente.</h3>
-                </div>
-            </div>
+            <h2>Asignar ordenes de venta</h2>
         </div>
     </header>
+
+    <main>
+        <section>
+            <div class="well">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h3>No existe un Programa Vigente.</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 }
 else
 {
     <header class="header-crumb">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-7">
-                    <table class="table table-form">
-                        <tbody>
-                        <tr>
-                            <td class="text-white"><strong>Programa Num.:</strong> @Model.ProgramaVigente.Numero</td>
-                            <td class="text-white"><strong>F.Inicio:</strong> @Model.ProgramaVigente.FechaInicio.ToString("dd/MM/yyyy")</td>
-                            <td class="text-white"><strong>F.Fin:</strong> @Model.ProgramaVigente.FechaFin.ToString("dd/MM/yyyy")</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-sm-5">
-                    <div class="text-right">
-                        
-                    </div>
-                </div>
-            </div>
+            <h2>Asignar ordenes de venta</h2>
         </div>
     </header>
     
@@ -59,12 +50,20 @@ else
             <div class="container">
                 <div class="well">
                     <div class="row">
-                        <div class="col-md-8">
-                            <h4 class="text-primary">Ordenes de Venta</h4>
+                        <div class="col-md-7">
+                            <table class="table table-form">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Programa N°:</strong> @Model.ProgramaVigente.Numero</td>
+                                        <td><strong>F.Inicio:</strong> @Model.ProgramaVigente.FechaInicio.ToString("dd/MM/yyyy")</td>
+                                        <td><strong>F.Fin:</strong> @Model.ProgramaVigente.FechaFin.ToString("dd/MM/yyyy")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="text-right">
-                                <a href="javascript:;" class="btn btn-primary-line">Asignar seleccionados</a>
+                                <a id="btnAsignarModal" href="javascript:;" class="btn btn-primary-line">Asignar seleccionados</a>
                             </div>
                         </div>
                     </div>
@@ -86,7 +85,7 @@ else
                                     <th>Cliente</th>
                                     <th>Fecha de Entrega</th>
                                     <th>Estado</th>
-                                    <th>Acción</th>
+                                    <th>Responsable</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -96,17 +95,12 @@ else
                                         <td class="tdSeleccionar">
                                             <input type="checkbox" class="checkbox-inline" />
                                         </td>
-                                        <td class="hide">@item.Id</td>
+                                        <td class="tdIdOrdenVenta hide">@item.Id</td>
                                         <td>@item.Numero</td>
                                         <td>@item.Cliente</td>
                                         <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
                                         <td>@item.Estado</td>
-                                        <td>
-                                            @if (item.Estado == Constantes.EstadoOrdenVenta.Programado)
-                                            {
-                                                <a href="javascript:;" class="btn-link" onclick=" CrearOrdenProduccion('@item.Numero'); ">Crear OP</a>
-                                            }
-                                        </td>
+                                        <td>@item.NombreAsistentePlaneamiento</td>
                                     </tr>
                                 }
                                 </tbody>
@@ -122,67 +116,44 @@ else
     </main>
 }
 
-<div class="modal fade" id="modalAprobar">
+<div class="modal fade" id="modalAsignar">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title text-primary">Aprobar Orden producción <strong id="spaNumeroOPTitulo1"></strong></h4>
+                <h4 class="modal-title text-primary">Asignar ordenes de venta</h4>
             </div>
             <div class="modal-body" style="font-size: 0.9em;">
-                <input type="hidden" id="hidOrdenProduccion"/>
-                <div class="well">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <table class="table table-form">
-                                <tbody>
-                                <tr>
-                                    <td><strong>Num. OP:</strong> <span id="spaNumeroOP"></span></td>
-                                    <td><strong>Num. OV:</strong> <span id="spaNumeroOV"></span></td>
-                                    <td><strong>F.Entrega:</strong> <span id="spaFechaEntrega"></span></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Producto:</strong> <span id="spaProducto"></span></td>
-                                    <td><strong>Cantidad OV:</strong> <span id="spaCantidadOV"></span></td>
-                                    <td><strong>Stock:</strong> <span id="spaStock"></span></td>
-                                    <td><strong>Stock Mínimo:</strong> <span id="spaStockMin"></span></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-md-12">
+                        <h3 class="text-primary">Ordenes de Venta</h3>
                         <div class="table-responsive" style="max-height: 150px;">
-                            <table id="tblMateriales" class="table table-striped table-header table-rounded table-condensed">
+                            <table id="tblOrdenVentaModal" class="table table-striped table-header table-rounded table-condensed">
                                 <thead class="upper">
                                 <tr>
+                                    <th>Sel.</th>
                                     <th class="hide"></th>
-                                    <th>Material</th>
-                                    <th>Stock</th>
-                                    <th>Stock Mín.</th>
-                                    <th>Requerido</th>
-                                    <th>Reservado</th>
-                                    <th>Comprar</th>
+                                    <th>Número</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha entrega</th>
+                                    <th>Estado</th>
+                                    <th>Responsable</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
                         </div>
                         <br/>
+                        <h3 class="text-primary">Asistentes de planeamiento</h3>
                         <div class="table-responsive" style="max-height: 150px;">
-                            <table id="tblSecuencia" class="table table-striped table-header table-rounded table-condensed">
+                            <table id="tblAsistentePlaneamientoModal" class="table table-striped table-header table-rounded table-condensed">
                                 <thead class="upper">
                                 <tr>
+                                    <th>Sel.</th>
                                     <th class="hide">Id</th>
-                                    <th style="width: 5%;">Sec.</th>
-                                    <th style="width: 20%;">Maquina</th>
-                                    <th style="width: 12%;">% Falla</th>
-                                    <th style="width: 14%;">Tiempo (hrs.)</th>
-                                    <th style="width: 22%;">F.Inicio</th>
-                                    <th style="width: 20%;">F.Fin</th>
+                                    <th>Usuario</th>
+                                    <th>Nombre</th>
+                                    <th>Cantidad OV</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -192,8 +163,8 @@ else
                 </div>
             </div>
             <div class="modal-footer">
-                <a id="btnAprobarIndividual" href="javascript:;" class="btn btn-primary"><i class="ion-checkmark-round"></i> Aprobar</a>
-                <a id="btnRechazarModal" href="javascript:;" class="btn btn-danger"><i class="ion-close-circled"></i> Rechazar</a>
+                <a id="btnAsignar" href="javascript:;" class="btn btn-primary"><i class="ion-checkmark-round"></i> Asignar</a>
+                <a href="javascript:;" class="btn btn-danger"><i class="ion-close-circled"></i> Cerrar</a>
             </div>
         </div>
     </div>
@@ -203,13 +174,38 @@ else
     <script type="text/javascript">
 
         var urlCrearOrdenProduccion = '@Url.Action("CrearOrdenProduccion")';
-        
-        $(function () {
-            $("#chkTodos").on("click", function () {
-                $("#tblOrdenesVenta tr td:nth-child(1) input[type=checkbox]").prop("checked", true);
+
+        $(function() {
+            $("#chkTodos").on("click", function() {
+                if ($(this).is(':checked')) {
+                    $("#tblOrdenesVenta tr td:nth-child(1) input[type=checkbox]").prop("checked", true);
+                } else {
+                    $("#tblOrdenesVenta tr td:nth-child(1) input[type=checkbox]").prop("checked", false);
+                }
             });
-            
+            $("#btnAsignarModal").on("click", function() {
+                CargarModalAsignacion();
+            });
         });
+
+        function CargarModalAsignacion() {
+            var ordenesVenta = new Array();
+
+            $('#tblOrdenesVenta').find("tbody tr").each(function () {
+                var seleccionado = $(this).find("td.tdSeleccionar input").is(':checked');
+                if (seleccionado == true) {
+                    var idOrdenVenta = parseInt($.trim($(this).find("td.tdIdOrdenVenta").text()));
+                    ordenesVenta.push(idOrdenVenta);
+                }
+            });
+
+            if (ordenesVenta.length > 0) {
+
+                $("#modalAsignar").modal("show");
+            } else {
+                app.showMessageDialog("No selecciono ninguna orden de venta.");
+            }
+        }
 
     </script>
 }

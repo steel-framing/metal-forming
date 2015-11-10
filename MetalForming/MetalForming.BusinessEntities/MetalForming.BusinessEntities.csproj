@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsistentePlaneamiento.cs" />
     <Compile Include="Core\BaseEntity.cs" />
     <Compile Include="Maquina.cs" />
     <Compile Include="Material.cs" />

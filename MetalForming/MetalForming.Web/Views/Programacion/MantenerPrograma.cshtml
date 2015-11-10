@@ -148,6 +148,7 @@
                                     <th>Orden Venta</th>
                                     <th>Cliente</th>
                                     <th>F. Entrega</th>
+                                    <th>Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -158,27 +159,34 @@
                                         <tr>
                                             <td class="tdIdOrdenVenta hide">@item.Id</td>
                                             <td class="tdSeleccionar">
-                                                <label for="chkHaProducir_@item.Id">
-                                                    @if (item.IdPrograma == Model.Id)
+                                                @if (item.IdPrograma == Model.Id)
+                                                {
+                                                    if (item.Estado == Constantes.EstadoOrdenVenta.PendienteAsignar ||
+                                                        item.Estado == Constantes.EstadoOrdenVenta.Asignado)
                                                     {
-                                                        <input id="chkHaProducir_@item.Id" type="checkbox" class="checkbox-inline chkOV" checked="checked" />
+                                                        <input type="checkbox" class="checkbox-inline chkOV" checked="checked" />
                                                     }
                                                     else
                                                     {
-                                                        <input id="chkHaProducir_@item.Id" type="checkbox" class="checkbox-inline chkOV" />
+                                                        <input type="checkbox" class="checkbox-inline chkOV" checked="checked" disabled="disabled" />
                                                     }
-                                                </label>
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" class="checkbox-inline chkOV" />
+                                                }
                                             </td>
                                             <td>@item.Numero</td>
                                             <td>@item.Cliente</td>
                                             <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.Estado</td>
                                         </tr>
                                     }
                                 }
                                 else
                                 {
                                     <tr>
-                                        <td colspan="5">
+                                        <td colspan="6">
                                             <div class="text-center">No existen ordenes de ventas pendientes.</div>
                                         </td>
                                     </tr>
@@ -348,25 +356,31 @@
                                     <th>Orden Venta</th>
                                     <th>Cliente</th>
                                     <th>F. Entrega</th>
+                                    <th>Estado</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @if (Model.OrdenesVenta.Count > 0)
                                 {
-                                    foreach (var item in Model.OrdenesVenta.Where(p => p.Estado == Constantes.EstadoOrdenVenta.Programado).OrderBy(p => p.FechaEntrega))
+                                    foreach (var item in Model.OrdenesVenta.Where(p => 
+                                        p.IdPrograma == Model.Id &&
+                                        (p.Estado != Constantes.EstadoOrdenVenta.Producido || 
+                                         p.Estado != Constantes.EstadoOrdenVenta.ReservadoStock))
+                                        .OrderBy(p => p.FechaEntrega))
                                     {
                                         <tr>
                                             <td class="hide">@item.Id</td>
                                             <td>@item.Numero</td>
                                             <td>@item.Cliente</td>
                                             <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.Estado</td>
                                         </tr>
                                     }
                                 }
                                 else
                                 {
                                     <tr>
-                                        <td colspan="4">
+                                        <td colspan="5">
                                             <div class="text-center">No existen ordenes de ventas pendientes de antender.</div>
                                         </td>
                                     </tr>
@@ -497,8 +511,8 @@
                 OrdenesVenta: new Array()
             };
             $('#tblOrdenesVenta').find("tbody tr").each(function () {
-                var seleccionado = $(this).find("td.tdSeleccionar input").is(':checked');
-                if (seleccionado == true) {
+                var seleccionado = $(this).find("td.tdSeleccionar input:enabled").is(':checked');
+                if (seleccionado === true) {
                     var idOrdenVenta = parseInt($.trim($(this).find("td.tdIdOrdenVenta").text()));
                     model.OrdenesVenta.push({
                         Id: idOrdenVenta

@@ -9,17 +9,17 @@
       <xsd:import schemaLocation="http://localhost:7457/ProduccionService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IProduccionService_ListarOrdenesVenta_InputMessage">
-    <wsdl:part name="parameters" element="tns:ListarOrdenesVenta" />
-  </wsdl:message>
-  <wsdl:message name="IProduccionService_ListarOrdenesVenta_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ListarOrdenesVentaResponse" />
-  </wsdl:message>
   <wsdl:message name="IProduccionService_ListarOrdenesVentaPendiente_InputMessage">
     <wsdl:part name="parameters" element="tns:ListarOrdenesVentaPendiente" />
   </wsdl:message>
   <wsdl:message name="IProduccionService_ListarOrdenesVentaPendiente_OutputMessage">
     <wsdl:part name="parameters" element="tns:ListarOrdenesVentaPendienteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesVentaParaAsignar_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesVentaParaAsignar" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesVentaParaAsignar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesVentaParaAsignarResponse" />
   </wsdl:message>
   <wsdl:message name="IProduccionService_ListarOrdenesVentaPorPrograma_InputMessage">
     <wsdl:part name="parameters" element="tns:ListarOrdenesVentaPorPrograma" />
@@ -130,13 +130,13 @@
     <wsdl:part name="parameters" element="tns:FinalizarProgramaResponse" />
   </wsdl:message>
   <wsdl:portType name="IProduccionService">
-    <wsdl:operation name="ListarOrdenesVenta">
-      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVenta" message="tns:IProduccionService_ListarOrdenesVenta_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaResponse" message="tns:IProduccionService_ListarOrdenesVenta_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="ListarOrdenesVentaPendiente">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendiente" message="tns:IProduccionService_ListarOrdenesVentaPendiente_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendienteResponse" message="tns:IProduccionService_ListarOrdenesVentaPendiente_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarOrdenesVentaParaAsignar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaParaAsignar" message="tns:IProduccionService_ListarOrdenesVentaParaAsignar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaParaAsignarResponse" message="tns:IProduccionService_ListarOrdenesVentaParaAsignar_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ListarOrdenesVentaPorPrograma">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaPorPrograma" message="tns:IProduccionService_ListarOrdenesVentaPorPrograma_InputMessage" />
@@ -213,8 +213,8 @@
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IProduccionService" type="tns:IProduccionService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="ListarOrdenesVenta">
-      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesVenta" style="document" />
+    <wsdl:operation name="ListarOrdenesVentaPendiente">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendiente" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -222,8 +222,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ListarOrdenesVentaPendiente">
-      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendiente" style="document" />
+    <wsdl:operation name="ListarOrdenesVentaParaAsignar">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaParaAsignar" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

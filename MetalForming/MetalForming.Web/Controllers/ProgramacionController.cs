@@ -512,7 +512,7 @@ namespace MetalForming.Web.Controllers
                     IList<OrdenVenta> ordenesVenta;
                     using (var service = new ProduccionServiceClient())
                     {
-                        ordenesVenta = service.ListarOrdenesVentaPorPrograma(model.ProgramaVigente.Id);
+                        ordenesVenta = service.ListarOrdenesVentaParaAsignar(model.ProgramaVigente.Id);
                     }
 
                     foreach (var item in ordenesVenta)
@@ -524,7 +524,10 @@ namespace MetalForming.Web.Controllers
                             Cliente = item.Cliente,
                             FechaEntrega = item.FechaEntrega,
                             Estado = item.Estado,
-                            IdPrograma = item.IdPrograma
+                            IdPrograma = item.IdPrograma,
+                            NombreAsistentePlaneamiento = item.AsistentePlaneamiento == null 
+                                        ? string.Empty
+                                        : item.AsistentePlaneamiento.Nombre 
                         });
                     }
                 }

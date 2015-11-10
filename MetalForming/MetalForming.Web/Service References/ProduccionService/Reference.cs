@@ -20,6 +20,9 @@ namespace MetalForming.Web.ProduccionService {
     public partial class OrdenVenta : MetalForming.Web.ProduccionService.BaseEntity {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private MetalForming.Web.ProduccionService.AsistentePlaneamiento AsistentePlaneamientoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int CantidadField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -39,6 +42,19 @@ namespace MetalForming.Web.ProduccionService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetalForming.Web.ProduccionService.Producto ProductoField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public MetalForming.Web.ProduccionService.AsistentePlaneamiento AsistentePlaneamiento {
+            get {
+                return this.AsistentePlaneamientoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AsistentePlaneamientoField, value) != true)) {
+                    this.AsistentePlaneamientoField = value;
+                    this.RaisePropertyChanged("AsistentePlaneamiento");
+                }
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int Cantidad {
@@ -136,6 +152,7 @@ namespace MetalForming.Web.ProduccionService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BaseEntity", Namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.AsistentePlaneamiento))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.Producto))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.Material))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetalForming.Web.ProduccionService.Maquina))]
@@ -182,6 +199,45 @@ namespace MetalForming.Web.ProduccionService {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AsistentePlaneamiento", Namespace="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities")]
+    [System.SerializableAttribute()]
+    public partial class AsistentePlaneamiento : MetalForming.Web.ProduccionService.BaseEntity {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NombreField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UsuarioField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Nombre {
+            get {
+                return this.NombreField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NombreField, value) != true)) {
+                    this.NombreField = value;
+                    this.RaisePropertyChanged("Nombre");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Usuario {
+            get {
+                return this.UsuarioField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UsuarioField, value) != true)) {
+                    this.UsuarioField = value;
+                    this.RaisePropertyChanged("Usuario");
+                }
             }
         }
     }
@@ -1030,17 +1086,17 @@ namespace MetalForming.Web.ProduccionService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ProduccionService.IProduccionService")]
     public interface IProduccionService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesVenta", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaResponse")]
-        System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> ListarOrdenesVenta();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesVenta", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta>> ListarOrdenesVentaAsync();
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendiente", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendienteResponse")]
         System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> ListarOrdenesVentaPendiente();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendiente", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendienteResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta>> ListarOrdenesVentaPendienteAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaParaAsignar", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaParaAsignarResponse")]
+        System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> ListarOrdenesVentaParaAsignar(int idPrograma);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaParaAsignar", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaParaAsignarResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta>> ListarOrdenesVentaParaAsignarAsync(int idPrograma);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaPorPrograma", ReplyAction="http://tempuri.org/IProduccionService/ListarOrdenesVentaPorProgramaResponse")]
         System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> ListarOrdenesVentaPorPrograma(int idPrograma);
@@ -1180,20 +1236,20 @@ namespace MetalForming.Web.ProduccionService {
                 base(binding, remoteAddress) {
         }
         
-        public System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> ListarOrdenesVenta() {
-            return base.Channel.ListarOrdenesVenta();
-        }
-        
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta>> ListarOrdenesVentaAsync() {
-            return base.Channel.ListarOrdenesVentaAsync();
-        }
-        
         public System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> ListarOrdenesVentaPendiente() {
             return base.Channel.ListarOrdenesVentaPendiente();
         }
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta>> ListarOrdenesVentaPendienteAsync() {
             return base.Channel.ListarOrdenesVentaPendienteAsync();
+        }
+        
+        public System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> ListarOrdenesVentaParaAsignar(int idPrograma) {
+            return base.Channel.ListarOrdenesVentaParaAsignar(idPrograma);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta>> ListarOrdenesVentaParaAsignarAsync(int idPrograma) {
+            return base.Channel.ListarOrdenesVentaParaAsignarAsync(idPrograma);
         }
         
         public System.Collections.Generic.List<MetalForming.Web.ProduccionService.OrdenVenta> ListarOrdenesVentaPorPrograma(int idPrograma) {

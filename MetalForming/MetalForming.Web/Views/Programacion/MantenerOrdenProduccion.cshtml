@@ -83,7 +83,8 @@ else
                                             <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
                                             <td>@item.Estado</td>
                                             <td>
-                                                @if (item.Estado == Constantes.EstadoOrdenVenta.Programado)
+                                                @if (item.Estado == Constantes.EstadoOrdenVenta.PendienteAsignar ||
+                                                    item.Estado == Constantes.EstadoOrdenVenta.Asignado)
                                                 {
                                                     <a href="javascript:;" class="btn-link" onclick="CrearOrdenProduccion('@item.Numero');">Crear OP</a>
                                                 }
@@ -290,7 +291,11 @@ else
 
         $(function () {
             $("#chkTodos").on("click", function () {
-                $("#tblOrdenesProduccion tr td:nth-child(1) input[type=checkbox]").prop("checked", true);
+                if ($(this).is(':checked')) {
+                    $("#tblOrdenesProduccion tr td:nth-child(1) input[type=checkbox]").prop("checked", true);
+                } else {
+                    $("#tblOrdenesProduccion tr td:nth-child(1) input[type=checkbox]").prop("checked", false);
+                }
             });
             $("#btnAprobarMasivo").on("click", function () {
                 AprobarMasivo();

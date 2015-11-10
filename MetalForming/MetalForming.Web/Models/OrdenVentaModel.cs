@@ -15,5 +15,7 @@ namespace MetalForming.Web.Models
         public string Estado { get; set; }
 
         public int IdPrograma { get; set; }
+
+        public string NombreAsistentePlaneamiento { get; set; }
     }
 }

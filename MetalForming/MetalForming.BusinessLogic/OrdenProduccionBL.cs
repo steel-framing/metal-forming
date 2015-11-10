@@ -89,7 +89,7 @@ namespace MetalForming.BusinessLogic
                         _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.CantidadProducto);
 
                         //Cambiar estado a Orden de Venta
-                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.Iniciado);
+                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.ReservadoStock);
                     }
                     else
                     {
@@ -116,7 +116,7 @@ namespace MetalForming.BusinessLogic
                         _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.CantidadProducto);
 
                         //Cambiar estado a Orden de Venta
-                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.Iniciado);
+                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.Programado);
                     }
 
                     transactionScope.Complete();
