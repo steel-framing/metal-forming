@@ -15,6 +15,7 @@ namespace MetalForming.Service
         private readonly OrdenProduccionBL _ordenProduccionBL = new OrdenProduccionBL();
         private readonly PlanBL _planBL = new PlanBL();
         private readonly ProgramaBL _programaBL = new ProgramaBL();
+        private readonly AsistentePlaneamientoBL _asistentePlaneamientoBL = new AsistentePlaneamientoBL();
 
         #region Orden Venta
 
@@ -137,6 +138,15 @@ namespace MetalForming.Service
         public void FinalizarPrograma(int idPrograma, string motivo)
         {
             _programaBL.Finalizar(idPrograma, motivo);
+        }
+
+        #endregion
+
+        #region Asistente Planeamiento
+
+        public IList<AsistentePlaneamiento> ListarAsistentePlaneamiento()
+        {
+            return _asistentePlaneamientoBL.Listar();
         }
 
         #endregion

@@ -90,5 +90,12 @@ namespace MetalForming.ServiceContracts
         void FinalizarPrograma(int idPrograma, string motivo);
 
         #endregion
+
+        #region Asistente Planeamiento
+
+        [OperationContract]
+        IList<AsistentePlaneamiento> ListarAsistentePlaneamiento();
+
+        #endregion
     }
 }
