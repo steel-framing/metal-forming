@@ -10,16 +10,19 @@ namespace MetalForming.ServiceContracts
         #region Orden Venta
 
         [OperationContract]
-        IList<OrdenVenta> ListarOrdenesVenta();
+        IList<OrdenVenta> ListarOrdenesVentaPendiente();
 
         [OperationContract]
-        IList<OrdenVenta> ListarOrdenesVentaPendiente();
+        IList<OrdenVenta> ListarOrdenesVentaParaAsignar(int idPrograma);
 
         [OperationContract]
         IList<OrdenVenta> ListarOrdenesVentaPorPrograma(int idPrograma);
 
         [OperationContract]
         OrdenVenta ObtenerOrdenVentaPorNumero(string numero);
+
+        [OperationContract]
+        void GuardarAsignacionesOrdeneVenta(IList<int> ordenesVenta, IList<Usuario> asistentes);
 
         #endregion
 
@@ -46,10 +49,10 @@ namespace MetalForming.ServiceContracts
         int RegistrarOrdenProduccion(OrdenProduccion ordenProduccion);
 
         [OperationContract]
-        IList<OrdenProduccion> ListarOrdenesProduccion();
+        IList<OrdenProduccion> ListarOrdenesProduccionPorPrograma(int idPrograma);
 
         [OperationContract]
-        IList<OrdenProduccion> ListarOrdenesProduccionPorPrograma(int idPrograma);
+        IList<OrdenProduccion> ListarOrdenesProduccionParaAsignar(int idPrograma);
 
         [OperationContract]
         OrdenProduccion ObetenerOrdenProduccionPorNumero(string numero);
@@ -65,6 +68,9 @@ namespace MetalForming.ServiceContracts
 
         [OperationContract]
         void RechazarOrdenProduccion(int idOrdenProduccion, string motivoRechazo);
+
+        [OperationContract]
+        void GuardarAsignacionesOrdenProduccion(IList<int> ordenesProduccion, IList<Usuario> operadores);
 
         #endregion
 
@@ -88,6 +94,16 @@ namespace MetalForming.ServiceContracts
 
         [OperationContract]
         void FinalizarPrograma(int idPrograma, string motivo);
+
+        #endregion
+
+        #region Usuario
+
+        [OperationContract]
+        IList<Usuario> ListarAsistentePlaneamiento();
+
+        [OperationContract]
+        IList<Usuario> ListarOperadores();
 
         #endregion
     }

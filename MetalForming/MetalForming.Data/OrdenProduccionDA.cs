@@ -3,14 +3,15 @@ using MetalForming.Data.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace MetalForming.Data
 {
     public class OrdenProduccionDA : BaseData
     {
-        private const string ProcedimientoAlmacenadoListar = "dbo.ListarOrdenProduccion";
         private const string ProcedimientoAlmacenadoListarPorPrograma = "dbo.ListarOrdenProduccionPorPrograma";
+        private const string ProcedimientoAlmacenadoListarParaAsginar = "dbo.ListarOrdenProduccionParaAsignar";
+        private const string ProcedimientoAlmacenadoListarParaEjecutar = "dbo.ListarOrdenProduccionParaEjecutar";
+        private const string ProcedimientoAlmacenadoObtenerPorID = "dbo.ObtenerOrdenProduccionPorID";
         private const string ProcedimientoAlmacenadoObtenerPorNumero = "dbo.ObtenerOrdenProduccionPorNumero";
         private const string ProcedimientoAlmacenadoListarMaterial = "dbo.ListarOrdenProduccionMaterial";
         private const string ProcedimientoAlmacenadoListarSecuencia = "dbo.ListarOrdenProduccionSecuencia";
@@ -19,45 +20,7 @@ namespace MetalForming.Data
         private const string ProcedimientoAlmacenadoInsertarOrdenProduccionSecuencia = "dbo.InsertarOrdenProduccionSecuencia";
         private const string ProcedimientoAlmacenadoActualizarEstado = "dbo.ActualizarEstadoOrdenProduccion";
         private const string ProcedimientoAlmacenadoActualizarPorRechazo = "dbo.ActualizarOrdenProduccionPorRechazo";
-
-        public IList<OrdenProduccion> Listar()
-        {
-            var lista = new List<OrdenProduccion>();
-            try
-            {
-                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoListar);
-
-                using (var lector = Context.ExecuteReader(comando))
-                {
-                    while (lector.Read())
-                    {
-                        var entidad = new OrdenProduccion
-                        {
-                            Id = GetDataValue<int>(lector, "Id"),
-                            Numero = GetDataValue<string>(lector, "Numero"),
-                            Estado = GetDataValue<string>(lector, "Estado"),
-                            OrdenVenta = new OrdenVenta
-                            {
-                                Id = GetDataValue<int>(lector, "IdOrdenVenta"),
-                                Numero = GetDataValue<string>(lector, "NumeroOrdenVenta"),
-                                FechaEntrega = GetDataValue<DateTime>(lector, "FechaEntrega"),
-                                Producto = new Producto
-                                {
-                                    Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
-                                }
-                            }
-                        };
-
-                        lista.Add(entidad);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListar);
-            }
-            return lista;
-        }
+        private const string ProcedimientoAlmacenadoActualizarAsignacion = "dbo.ActualizarOrdenProduccionPorAsignacion";
 
         public IList<OrdenProduccion> ListarPorPrograma(int idPrograma)
         {
@@ -98,6 +61,145 @@ namespace MetalForming.Data
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarPorPrograma);
             }
             return lista;
+        }
+
+        public IList<OrdenProduccion> ListarParaAsignar(int idPrograma, string estado1, string estado2)
+        {
+            var lista = new List<OrdenProduccion>();
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoListarParaAsginar);
+
+                Context.Database.AddInParameter(comando, "@IdPrograma", DbType.Int32, idPrograma);
+                Context.Database.AddInParameter(comando, "@Estado1", DbType.String, estado1);
+                Context.Database.AddInParameter(comando, "@Estado2", DbType.String, estado2);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    while (lector.Read())
+                    {
+                        var entidad = new OrdenProduccion
+                        {
+                            Id = GetDataValue<int>(lector, "Id"),
+                            Numero = GetDataValue<string>(lector, "Numero"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
+                            OrdenVenta = new OrdenVenta
+                            {
+                                Id = GetDataValue<int>(lector, "IdOrdenVenta"),
+                                Numero = GetDataValue<string>(lector, "NumeroOrdenVenta"),
+                                FechaEntrega = GetDataValue<DateTime>(lector, "FechaEntrega"),
+                                Producto = new Producto
+                                {
+                                    Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
+                                }
+                            },
+                            Operador = new Usuario
+                            {
+                                Id = GetDataValue<int>(lector, "IdOperador"),
+                                Username = GetDataValue<string>(lector, "UsernameOperador"),
+                                NombreCompleto = GetDataValue<string>(lector, "NombreOperador"),
+                            }
+                        };
+
+                        lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarParaAsginar);
+            }
+            return lista;
+        }
+
+        public IList<OrdenProduccion> ListarParaEjecutar(string estado1)
+        {
+            var lista = new List<OrdenProduccion>();
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoListarParaEjecutar);
+
+                Context.Database.AddInParameter(comando, "@Estado1", DbType.String, estado1);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    while (lector.Read())
+                    {
+                        var entidad = new OrdenProduccion
+                        {
+                            Id = GetDataValue<int>(lector, "Id"),
+                            Numero = GetDataValue<string>(lector, "Numero"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
+                            OrdenVenta = new OrdenVenta
+                            {
+                                Id = GetDataValue<int>(lector, "IdOrdenVenta"),
+                                Numero = GetDataValue<string>(lector, "NumeroOrdenVenta"),
+                                FechaEntrega = GetDataValue<DateTime>(lector, "FechaEntrega"),
+                                Producto = new Producto
+                                {
+                                    Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
+                                }
+                            },
+                            Operador = new Usuario
+                            {
+                                Id = GetDataValue<int>(lector, "IdOperador"),
+                                Username = GetDataValue<string>(lector, "UsernameOperador"),
+                                NombreCompleto = GetDataValue<string>(lector, "NombreOperador"),
+                            }
+                        };
+
+                        lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarParaEjecutar);
+            }
+            return lista;
+        }
+
+        public OrdenProduccion ObetenerPorID(int id)
+        {
+            OrdenProduccion entidad = null;
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoObtenerPorID);
+
+                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, id);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    if (lector.Read())
+                    {
+                        entidad = new OrdenProduccion
+                        {
+                            Id = GetDataValue<int>(lector, "Id"),
+                            Numero = GetDataValue<string>(lector, "Numero"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
+                            CantidadProducto = GetDataValue<int>(lector, "CantidadProducto"),
+                            OrdenVenta = new OrdenVenta
+                            {
+                                Id = GetDataValue<int>(lector, "IdOrdenVenta"),
+                                Numero = GetDataValue<string>(lector, "NumeroOrdenVenta"),
+                                Cliente = GetDataValue<string>(lector, "Cliente"),
+                                Cantidad = GetDataValue<int>(lector, "CantidadOrdenVenta"),
+                                FechaEntrega = GetDataValue<DateTime>(lector, "FechaEntrega"),
+                                Producto = new Producto
+                                {
+                                    Id = GetDataValue<int>(lector, "IdProducto"),
+                                    Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
+                                }
+                            }
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoObtenerPorID);
+            }
+            return entidad;
         }
 
         public OrdenProduccion ObetenerPorNumero(string numero)
@@ -310,6 +412,24 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarPorRechazo);
+            }
+        }
+
+        public void AsignarAsistentePlaneamiento(OrdenProduccion ordenProduccion)
+        {
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizarAsignacion);
+
+                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, ordenProduccion.Id);
+                Context.Database.AddInParameter(comando, "@IdOperador", DbType.Int32, ordenProduccion.Operador.Id);
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, ordenProduccion.Estado);
+
+                Context.ExecuteNonQuery(comando);
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarAsignacion);
             }
         }
     }

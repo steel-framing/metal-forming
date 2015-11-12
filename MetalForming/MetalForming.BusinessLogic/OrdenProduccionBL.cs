@@ -15,19 +15,7 @@ namespace MetalForming.BusinessLogic
         private readonly OrdenProduccionDA _ordenProduccionDA = new OrdenProduccionDA();
         private readonly OrdenVentaDA _ordenVentaDA = new OrdenVentaDA();
         private readonly ProductoDA _productoDA = new ProductoDA();
-
-        public IList<OrdenProduccion> Listar()
-        {
-            try
-            {
-                return _ordenProduccionDA.Listar();
-            }
-            catch (Exception ex)
-            {
-                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
-            }
-        }
-
+        
         public IList<OrdenProduccion> ListarPorPrograma(int idPrograma)
         {
             try
@@ -40,15 +28,23 @@ namespace MetalForming.BusinessLogic
             }
         }
 
+        public IList<OrdenProduccion> ListarParaAsignar(int idPrograma)
+        {
+            try
+            {
+                return _ordenProduccionDA.ListarParaAsignar(idPrograma, Constantes.EstadoOrdenPoduccion.Programado, Constantes.EstadoOrdenPoduccion.ReProgramado);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
         public IList<OrdenProduccion> ListarParaEjecucion()
         {
             try
             {
-                return
-                    _ordenProduccionDA.Listar()
-                        .Where(p => p.Estado == Constantes.EstadoOrdenPoduccion.Programado || 
-                                    p.Estado == Constantes.EstadoOrdenPoduccion.ReProgramado)
-                        .ToList();
+                return _ordenProduccionDA.ListarParaEjecutar(Constantes.EstadoOrdenPoduccion.Asignado);
             }
             catch (Exception ex)
             {
@@ -89,7 +85,7 @@ namespace MetalForming.BusinessLogic
                         _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.CantidadProducto);
 
                         //Cambiar estado a Orden de Venta
-                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.Iniciado);
+                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.ReservadoStock);
                     }
                     else
                     {
@@ -116,7 +112,7 @@ namespace MetalForming.BusinessLogic
                         _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.CantidadProducto);
 
                         //Cambiar estado a Orden de Venta
-                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.Iniciado);
+                        _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.Programado);
                     }
 
                     transactionScope.Complete();
@@ -168,6 +164,40 @@ namespace MetalForming.BusinessLogic
             try
             {
                 _ordenProduccionDA.Rechazar(id, Constantes.EstadoOrdenPoduccion.Rechazado, motivo);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
+        public void GuardarAsignaciones(IList<int> ordenesProduccion, IList<Usuario> operadores)
+        {
+            try
+            {
+                var transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted };
+
+                using (var transactionScope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
+                {
+                    foreach (var idOrdenProduccion in ordenesProduccion)
+                    {
+                        var ordenProduccion = _ordenProduccionDA.ObetenerPorID(idOrdenProduccion);
+
+                        var operadorConMenorCarga = operadores.OrderBy(p => p.CantidadOV).FirstOrDefault();
+
+                        if (operadorConMenorCarga != null)
+                        {
+                            operadorConMenorCarga.CantidadOP++;
+
+                            ordenProduccion.Estado = Constantes.EstadoOrdenPoduccion.Asignado;
+                            ordenProduccion.Operador = operadorConMenorCarga;
+
+                            _ordenProduccionDA.AsignarAsistentePlaneamiento(ordenProduccion);
+                        }
+                    }
+
+                    transactionScope.Complete();
+                }
             }
             catch (Exception ex)
             {

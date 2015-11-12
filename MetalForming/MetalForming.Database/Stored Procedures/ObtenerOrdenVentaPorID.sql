@@ -1,4 +1,7 @@
-﻿CREATE PROCEDURE [dbo].[ListarOrdenVenta]
+﻿CREATE PROCEDURE [dbo].[ObtenerOrdenVentaPorID]
+(
+	@Id int
+)
 AS
 BEGIN
 
@@ -13,8 +16,11 @@ OV.Estado,
 OV.Cantidad,
 OV.IdPrograma,
 OV.IdProducto,
-P.Descripcion AS DescripcionProducto
+P.Descripcion AS DescripcionProducto,
+P.Stock AS StockProducto,
+P.StockMinimo AS StockMinimoProducto
 FROM dbo.OrdenVenta OV
 INNER JOIN dbo.Producto P ON OV.IdProducto = P.Id
+WHERE OV.Id = @Id
 
 END

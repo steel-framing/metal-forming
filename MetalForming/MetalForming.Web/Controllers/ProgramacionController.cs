@@ -490,7 +490,7 @@ namespace MetalForming.Web.Controllers
         [HttpGet]
         public ActionResult AsignarOrdenVenta()
         {
-            var model = new ProgramacionModel();
+            var model = new AsignarOrdenVentaModel();
             try
             {
                 Programa programaVigente;
@@ -512,7 +512,7 @@ namespace MetalForming.Web.Controllers
                     IList<OrdenVenta> ordenesVenta;
                     using (var service = new ProduccionServiceClient())
                     {
-                        ordenesVenta = service.ListarOrdenesVentaPorPrograma(model.ProgramaVigente.Id);
+                        ordenesVenta = service.ListarOrdenesVentaParaAsignar(model.ProgramaVigente.Id);
                     }
 
                     foreach (var item in ordenesVenta)
@@ -524,9 +524,29 @@ namespace MetalForming.Web.Controllers
                             Cliente = item.Cliente,
                             FechaEntrega = item.FechaEntrega,
                             Estado = item.Estado,
-                            IdPrograma = item.IdPrograma
+                            IdPrograma = item.IdPrograma,
+                            NombreAsistentePlaneamiento = item.AsistentePlaneamiento == null 
+                                        ? string.Empty
+                                        : item.AsistentePlaneamiento.NombreCompleto 
                         });
                     }
+                }
+
+                IList<Usuario> asistentesPlaneamiento;
+                using (var service = new ProduccionServiceClient())
+                {
+                    asistentesPlaneamiento = service.ListarAsistentePlaneamiento();
+                }
+
+                foreach (var asistentePlaneamiento in asistentesPlaneamiento)
+                {
+                    model.AsistentePlaneamiento.Add(new UsuarioModel
+                    {
+                        Id = asistentePlaneamiento.Id,
+                        NombreCompleto = asistentePlaneamiento.NombreCompleto,
+                        Username = asistentePlaneamiento.Username,
+                        CantidadOV = asistentePlaneamiento.CantidadOV
+                    });
                 }
             }
             catch (Exception ex)
@@ -536,11 +556,41 @@ namespace MetalForming.Web.Controllers
             return View(model);
         }
 
-        #endregion
+        [HttpPost]
+        public JsonResult GuardarAsignaciones(AsignarOrdenVentaModel model)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                using (var service = new ProduccionServiceClient())
+                {
+                    service.GuardarAsignacionesOrdeneVenta(
+                        model.OrdenesVenta.Select(p=>p.Id).ToList(), 
+                        model.AsistentePlaneamiento.Select(p=>new Usuario
+                        {
+                            Id = p.Id,
+                            CantidadOV = p.CantidadOV
+
+                        }).ToList());
+                }
+
+                response.Success = true;
+                response.Message = "Ok";
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+
+                LogError(ex);
+            }
+            return Json(response);
+        }
 
         #endregion
 
-        #region Metodos
+        #endregion
+
+        #region Metodos privados
 
         private OrdenProduccionModel OrdenProduccionPorNumero(string numero)
         {

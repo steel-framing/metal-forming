@@ -17,8 +17,13 @@
         public class EstadoOrdenVenta
         {
             public const string Pendiente = "Pendiente";
+            public const string PendienteAsignar = "Pendiente Asignar";
+            public const string Asignado = "Asignado";
             public const string Programado = "Programado";
-            public const string Iniciado = "Iniciado";
+            public const string ReservadoStock = "ReservadoStock";
+            public const string Conformado = "Conformado";
+            public const string Detenido = "Detenido";
+            public const string Producido = "Producido";
         }
 
         public class EstadoOrdenPoduccion

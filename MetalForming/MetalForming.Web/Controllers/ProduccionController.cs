@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using MetalForming.Web.Core;
 using MetalForming.Web.Models;
@@ -14,7 +15,7 @@ namespace MetalForming.Web.Controllers
         #region Ejecutar Orden Producción
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult EjecutarOrdenProduccion()
         {
             var model = new List<OrdenProduccionModel>();
             try
@@ -33,7 +34,8 @@ namespace MetalForming.Web.Controllers
                         Numero = item.Numero,
                         NumeroOrdenVenta = item.OrdenVenta.Numero,
                         FechaEntrega = item.OrdenVenta.FechaEntrega,
-                        Estado = item.Estado
+                        Estado = item.Estado,
+                        NombreOperador = item.Operador == null ? string.Empty : item.Operador.NombreCompleto
                     });
                 }
             }
@@ -45,7 +47,7 @@ namespace MetalForming.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Ejecucion(string numero)
+        public ActionResult EjecucionOrdenProduccion(string numero)
         {
             var model = new OrdenProduccionModel();
             try
@@ -102,23 +104,122 @@ namespace MetalForming.Web.Controllers
             return View(model);
         }
 
-        public JsonResult Iniciar(string numero)
+        [HttpPost]
+        public JsonResult IniciarOrdenProduccion(string numero)
         {
             //Cambiar estado -> En Proceso
             return Json("Ok");
         }
 
-        public ActionResult Finalizar(string numero, string tiempo)
+        [HttpGet]
+        public ActionResult FinalizarOrdenProduccion(string numero, string tiempo)
         {
             //Cambiar estado -> Producido
-            return RedirectToAction("Index");
+            return RedirectToAction("EjecutarOrdenProduccion");
         }
 
         #endregion
 
         #region Asignar Orden de Producción
 
+        [HttpGet]
+        public ActionResult AsignarOrdenProduccion()
+        {
+            var model = new AsignarOrdenProduccionModel();
+            try
+            {
+                Programa programaVigente;
+                using (var service = new ProduccionServiceClient())
+                {
+                    programaVigente = service.ObtenerProgramaVigente();
+                }
 
+                if (programaVigente != null)
+                {
+                    model.ProgramaVigente = new ProgramaModel
+                    {
+                        Id = programaVigente.Id,
+                        Numero = programaVigente.Numero,
+                        FechaInicio = programaVigente.FechaInicio,
+                        FechaFin = programaVigente.FechaFin
+                    };
+
+                    IList<OrdenProduccion> ordenesProduccion;
+                    using (var service = new ProduccionServiceClient())
+                    {
+                        ordenesProduccion = service.ListarOrdenesProduccionParaAsignar(model.ProgramaVigente.Id);
+                    }
+
+                    foreach (var item in ordenesProduccion)
+                    {
+                        model.OrdenesProduccion.Add(new OrdenProduccionModel
+                        {
+                            Id = item.Id,
+                            Numero = item.Numero,
+                            NumeroOrdenVenta = item.OrdenVenta.Numero,
+                            FechaEntrega = item.OrdenVenta.FechaEntrega,
+                            Estado = item.Estado,
+                            DescripcionProducto = item.OrdenVenta.Producto.Descripcion,
+                            NombreOperador = item.Operador == null
+                                        ? string.Empty
+                                        : item.Operador.NombreCompleto
+                        });
+                    }
+                }
+
+                IList<Usuario> operadores;
+                using (var service = new ProduccionServiceClient())
+                {
+                    operadores = service.ListarOperadores();
+                }
+
+                foreach (var operador in operadores)
+                {
+                    model.Operadores.Add(new UsuarioModel
+                    {
+                        Id = operador.Id,
+                        NombreCompleto = operador.NombreCompleto,
+                        Username = operador.Username,
+                        CantidadOP = operador.CantidadOP
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult GuardarAsignaciones(AsignarOrdenProduccionModel model)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                using (var service = new ProduccionServiceClient())
+                {
+                    service.GuardarAsignacionesOrdenProduccion(
+                        model.OrdenesProduccion.Select(p => p.Id).ToList(),
+                        model.Operadores.Select(p => new Usuario
+                        {
+                            Id = p.Id,
+                            CantidadOP = p.CantidadOP
+
+                        }).ToList());
+                }
+
+                response.Success = true;
+                response.Message = "Ok";
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+
+                LogError(ex);
+            }
+            return Json(response);
+        }
 
         #endregion
 
