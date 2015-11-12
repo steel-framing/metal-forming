@@ -6,7 +6,9 @@
     [CantidadProducto] INT           NOT NULL,
     [FechaCreacion]    DATETIME      NOT NULL,
     [MotivoRechazo]    VARCHAR (500) NULL,
+    [IdOperador]       INT           NULL,
     CONSTRAINT [PK_OrdenProduccion] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_OrdenProduccion_OrdenVenta] FOREIGN KEY ([IdOrdenVenta]) REFERENCES [dbo].[OrdenVenta] ([Id])
+    CONSTRAINT [FK_OrdenProduccion_OrdenVenta] FOREIGN KEY ([IdOrdenVenta]) REFERENCES [dbo].[OrdenVenta] ([Id]),
+    CONSTRAINT [FK_OrdenProduccion_Usuario] FOREIGN KEY ([IdOperador]) REFERENCES [dbo].[Usuario] ([Id])
 );
 

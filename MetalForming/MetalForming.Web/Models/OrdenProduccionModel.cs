@@ -40,5 +40,9 @@ namespace MetalForming.Web.Models
         public bool TomarStock { get; set; }
 
         public string Estado { get; set; }
+
+        public int IdOperador { get; set; }
+
+        public string NombreOperador { get; set; }
     }
 }

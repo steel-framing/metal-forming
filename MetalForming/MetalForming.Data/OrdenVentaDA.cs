@@ -12,10 +12,12 @@ namespace MetalForming.Data
         private const string ProcedimientoAlmacenadoListarPendientesPrograma = "dbo.ListarOrdenVentaPendientePrograma";
         private const string ProcedimientoAlmacenadoListarParaAsignar = "dbo.ListarOrdenVentaParaAsignar";
         private const string ProcedimientoAlmacenadoListarPorPrograma = "dbo.ListarOrdenVentaPorPrograma";
+        private const string ProcedimientoAlmacenadoObtenerPorID = "dbo.ObtenerOrdenVentaPorID";
         private const string ProcedimientoAlmacenadoObtenerPorNumero = "dbo.ObtenerOrdenVentaPorNumero";
         private const string ProcedimientoAlmacenadoActualizarEstado = "dbo.ActualizarEstadoOrdenVenta";
         private const string ProcedimientoAlmacenadoActualizarPrograma = "dbo.ActualizarProgramaOrdenVenta";
         private const string ProcedimientoAlmacenadoActualizarProgramasHaciaNull = "dbo.ActualizarProgramasHaciaNullOrdenVenta";
+        private const string ProcedimientoAlmacenadoActualizarAsignacion = "dbo.ActualizarOrdenVentaPorAsignacion";
 
         public IList<OrdenVenta> ListarPendientePrograma()
         {
@@ -124,11 +126,11 @@ namespace MetalForming.Data
                                 Descripcion = GetDataValue<string>(lector, "DescripcionProducto")
                             },
                             IdPrograma = GetDataValue<int>(lector, "IdPrograma"),
-                            AsistentePlaneamiento = new AsistentePlaneamiento
+                            AsistentePlaneamiento = new Usuario
                             {
                                 Id = GetDataValue<int>(lector, "IdAsistentePlaneamiento"),
-                                Usuario = GetDataValue<string>(lector, "UsuarioAsistentePlaneamiento"),
-                                Nombre = GetDataValue<string>(lector, "NombreAsistentePlaneamiento"),
+                                Username = GetDataValue<string>(lector, "UsernameAsistentePlaneamiento"),
+                                NombreCompleto = GetDataValue<string>(lector, "NombreAsistentePlaneamiento"),
                             }
                         };
 
@@ -141,6 +143,46 @@ namespace MetalForming.Data
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoListarParaAsignar);
             }
             return lista;
+        }
+
+        public OrdenVenta ObtenerPorID(int id)
+        {
+            OrdenVenta entidad = null;
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoObtenerPorID);
+
+                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, id);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    while (lector.Read())
+                    {
+                        entidad = new OrdenVenta
+                        {
+                            Id = GetDataValue<int>(lector, "Id"),
+                            Numero = GetDataValue<string>(lector, "Numero"),
+                            Cliente = GetDataValue<string>(lector, "Cliente"),
+                            FechaEntrega = GetDataValue<DateTime>(lector, "FechaEntrega"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
+                            Cantidad = GetDataValue<int>(lector, "Cantidad"),
+                            Producto = new Producto
+                            {
+                                Id = GetDataValue<int>(lector, "IdProducto"),
+                                Descripcion = GetDataValue<string>(lector, "DescripcionProducto"),
+                                Stock = GetDataValue<int>(lector, "StockProducto"),
+                                StockMinimo = GetDataValue<int>(lector, "StockMinimoProducto")
+                            },
+                            IdPrograma = GetDataValue<int>(lector, "IdPrograma")
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoObtenerPorID);
+            }
+            return entidad;
         }
 
         public OrdenVenta ObtenerPorNumero(string numero)
@@ -232,6 +274,24 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarProgramasHaciaNull);
+            }
+        }
+
+        public void AsignarAsistentePlaneamiento(OrdenVenta ordenVenta)
+        {
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizarAsignacion);
+
+                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, ordenVenta.Id);
+                Context.Database.AddInParameter(comando, "@IdAsistentePlaneamiento", DbType.Int32, ordenVenta.AsistentePlaneamiento.Id);
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, ordenVenta.Estado);
+
+                Context.ExecuteNonQuery(comando);
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarAsignacion);
             }
         }
     }

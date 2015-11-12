@@ -1,8 +1,8 @@
-﻿@model AsignarOrdenVentaModel
+﻿@model AsignarOrdenProduccionModel
 
 @{
-    ViewBag.MenuActual = ConstantesWeb.Menu.Programacion;
-    ViewBag.MenuItemActual = ConstantesWeb.MenuItem.AsignarOrdenVenta;
+    ViewBag.MenuActual = ConstantesWeb.Menu.Produccion;
+    ViewBag.MenuItemActual = ConstantesWeb.MenuItem.AsignarOrdenProduccion;
 }
 
 @section styles{
@@ -21,7 +21,7 @@
 {
     <header class="header-crumb">
         <div class="container">
-            <h2>Asignar ordenes de venta</h2>
+            <h2>Asignar ordenes de producción</h2>
         </div>
     </header>
 
@@ -41,7 +41,7 @@ else
 {
     <header class="header-crumb">
         <div class="container">
-            <h2>Asignar ordenes de venta</h2>
+            <h2>Asignar ordenes de producción</h2>
         </div>
     </header>
 
@@ -76,31 +76,33 @@ else
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="table-responsive ">
-                            <table id="tblOrdenesVenta" class="table table-striped table-header table-rounded">
+                            <table id="tblOrdenesProduccion" class="table table-striped table-header table-rounded">
                                 <thead class="upper">
                                     <tr>
                                         <th><input id="chkTodos" type="checkbox" class="checkbox-inline" /></th>
                                         <th class="hide"></th>
-                                        <th>Orden de Venta</th>
-                                        <th>Cliente</th>
+                                        <th>Número OP</th>
+                                        <th>Número OV</th>
                                         <th>Fecha de Entrega</th>
+                                        <th>Producto</th>
                                         <th>Estado</th>
-                                        <th>Responsable</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.OrdenesVenta)
+                                    @foreach (var item in Model.OrdenesProduccion)
                                     {
                                         <tr>
                                             <td class="tdSeleccionar">
                                                 <input type="checkbox" class="checkbox-inline" />
                                             </td>
-                                            <td class="tdIdOrdenVenta hide">@item.Id</td>
-                                            <td>@item.Numero</td>
-                                            <td>@item.Cliente</td>
+                                            <td class="tdIdOrdenProduccion hide">@item.Id</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn-link" onclick="VerOrdenProduccion('@item.Numero')">@item.Numero</a>
+                                            </td>
+                                            <td>@item.NumeroOrdenVenta</td>
                                             <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.DescripcionProducto</td>
                                             <td>@item.Estado</td>
-                                            <td>@item.NombreAsistentePlaneamiento</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -128,16 +130,16 @@ else
                     <div class="col-md-12">
                         <h4 class="text-primary">Ordenes de Venta</h4>
                         <div class="table-responsive" style="max-height: 150px;">
-                            <table id="tblOrdenVentaModal" class="table table-striped table-header table-rounded table-condensed">
+                            <table id="tblOrdenesProduccionModal" class="table table-striped table-header table-rounded table-condensed">
                                 <thead class="upper">
                                     <tr>
                                         <th>Sel.</th>
                                         <th class="hide"></th>
-                                        <th>Número</th>
-                                        <th>Cliente</th>
-                                        <th>Fecha entrega</th>
+                                        <th>Número OP</th>
+                                        <th>Número OV</th>
+                                        <th>Fecha de Entrega</th>
+                                        <th>Producto</th>
                                         <th>Estado</th>
-                                        <th>Responsable</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -146,27 +148,27 @@ else
                         <br />
                         <h4 class="text-primary">Asistentes de planeamiento</h4>
                         <div class="table-responsive" style="max-height: 150px;">
-                            <table id="tblAsistentePlaneamientoModal" class="table table-striped table-header table-rounded table-condensed">
+                            <table id="tblOperadoresModal" class="table table-striped table-header table-rounded table-condensed">
                                 <thead class="upper">
                                     <tr>
                                         <th>Sel.</th>
                                         <th class="hide">Id</th>
                                         <th>Usuario</th>
                                         <th>Nombre</th>
-                                        <th>Cantidad OV</th>
+                                        <th>Cantidad OP</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.AsistentePlaneamiento)
+                                    @foreach (var item in Model.Operadores)
                                     {
                                         <tr>
                                             <td class="tdSeleccionar">
                                                 <input type="checkbox" class="checkbox-inline" />
                                             </td>
-                                            <td class="tdIdAsistente hide">@item.Id</td>
+                                            <td class="tdIdOperador hide">@item.Id</td>
                                             <td>@item.Username</td>
                                             <td>@item.NombreCompleto</td>
-                                            <td class="tdCantidadOV">@item.CantidadOV</td>
+                                            <td class="tdCantidadOP">@item.CantidadOP</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -187,99 +189,100 @@ else
     <script type="text/javascript">
 
         var urlGuardarAsignaciones = '@Url.Action("GuardarAsignaciones")';
+        var urlVerOrdenProduccion = '@Url.Action("VerOrdenProduccion", "Programacion")';
 
-        $(function() {
-            $("#chkTodos").on("click", function() {
+        $(function () {
+            $("#chkTodos").on("click", function () {
                 if ($(this).is(':checked')) {
-                    $("#tblOrdenesVenta tr td:nth-child(1) input[type=checkbox]").prop("checked", true);
+                    $("#tblOrdenesProduccion tr td:nth-child(1) input[type=checkbox]").prop("checked", true);
                 } else {
-                    $("#tblOrdenesVenta tr td:nth-child(1) input[type=checkbox]").prop("checked", false);
+                    $("#tblOrdenesProduccion tr td:nth-child(1) input[type=checkbox]").prop("checked", false);
                 }
             });
-            $("#btnAsignarModal").on("click", function() {
+            $("#btnAsignarModal").on("click", function () {
                 CargarModalAsignacion();
             });
-            $("#btnAsignar").on("click", function() {
+            $("#btnAsignar").on("click", function () {
                 GuardarAsignaciones();
             });
         });
 
         function CargarModalAsignacion() {
-            var ordenesVenta = new Array();
+            var ordenesProduccion = new Array();
 
-            $('#tblOrdenesVenta').find("tbody tr").each(function() {
+            $('#tblOrdenesProduccion').find("tbody tr").each(function () {
                 var seleccionado = $(this).find("td.tdSeleccionar input").is(':checked');
                 if (seleccionado == true) {
-                    var idOrdenVenta = parseInt($.trim($(this).find("td.tdIdOrdenVenta").text()));
-                    ordenesVenta.push(idOrdenVenta);
+                    var idOrdenProduccion = parseInt($.trim($(this).find("td.tdIdOrdenProduccion").text()));
+                    ordenesProduccion.push(idOrdenProduccion);
                 }
             });
 
-            if (ordenesVenta.length > 0) {
-                $("#tblOrdenVentaModal tbody").html("");
-                $('#tblOrdenesVenta').find("tbody tr").each(function() {
-                    $("#tblOrdenVentaModal tbody").append($(this).clone());
+            if (ordenesProduccion.length > 0) {
+                $("#tblOrdenesProduccionModal tbody").html("");
+                $('#tblOrdenesProduccion').find("tbody tr").each(function () {
+                    $("#tblOrdenesProduccionModal tbody").append($(this).clone());
                 });
                 $("#modalAsignar").modal("show");
             } else {
-                app.showMessageDialog("No selecciono ninguna orden de venta.");
+                app.showMessageDialog("No selecciono ninguna orden de producción.");
             }
         }
 
         function GuardarAsignaciones() {
             var model = {
-                OrdenesVenta: new Array(),
-                AsistentePlaneamiento: new Array()
+                OrdenesProduccion: new Array(),
+                Operadores: new Array()
             };
 
-            $('#tblOrdenVentaModal').find("tbody tr").each(function () {
+            $('#tblOrdenesProduccionModal').find("tbody tr").each(function () {
                 var seleccionado = $(this).find("td.tdSeleccionar input").is(':checked');
                 if (seleccionado == true) {
-                    var idOrdenVenta = parseInt($.trim($(this).find("td.tdIdOrdenVenta").text()));
-                    model.OrdenesVenta.push({
-                        Id: idOrdenVenta
+                    var idOrdenProduccion = parseInt($.trim($(this).find("td.tdIdOrdenProduccion").text()));
+                    model.OrdenesProduccion.push({
+                        Id: idOrdenProduccion
                     });
                 }
             });
 
-            if (model.OrdenesVenta.length == 0) {
-                app.showMessageDialog("No selecciono ninguna orden de venta.");
+            if (model.OrdenesProduccion.length == 0) {
+                app.showMessageDialog("No selecciono ninguna orden de producción.");
                 return;
             }
 
-            $('#tblAsistentePlaneamientoModal').find("tbody tr").each(function() {
+            $('#tblOperadoresModal').find("tbody tr").each(function () {
                 var seleccionado = $(this).find("td.tdSeleccionar input").is(':checked');
                 if (seleccionado == true) {
-                    var idAsistente = parseInt($.trim($(this).find("td.tdIdAsistente").text()));
-                    var cantidadOV = parseInt($.trim($(this).find("td.tdCantidadOV").text()));
+                    var idOperador = parseInt($.trim($(this).find("td.tdIdOperador").text()));
+                    var cantidadOP = parseInt($.trim($(this).find("td.tdCantidadOP").text()));
 
-                    model.AsistentePlaneamiento.push({
-                        Id: idAsistente,
-                        CantidadOV: cantidadOV
+                    model.Operadores.push({
+                        Id: idOperador,
+                        CantidadOP: cantidadOP
                     });
                 }
             });
 
-            if (model.AsistentePlaneamiento.length == 0) {
-                app.showMessageDialog("No selecciono ningun Asistente de planeamiento.");
+            if (model.Operadores.length == 0) {
+                app.showMessageDialog("No selecciono ningun Operador.");
                 return;
             }
 
-            app.showConfirmDialog("Está seguro de realizar las asignaciones?", function() {
+            app.showConfirmDialog("Está seguro de realizar las asignaciones?", function () {
                 $.ajax({
                     type: 'POST',
                     url: urlGuardarAsignaciones,
                     data: JSON.stringify(model),
                     dataType: 'json',
                     contentType: 'application/json; charset=utf-8',
-                    success: function(response) {
+                    success: function (response) {
                         if (response.Success === true) {
-                            app.showMessageDialog("Las asignaciones fueron registradas satisfactoriamente.", Refrescar);
+                            app.showMessageDialog("Las asignaciones fueron registradas correctamente.", Refrescar);
                         } else {
                             app.showMessageDialog(response.Message);
                         }
                     },
-                    error: function(x, xh, xhr) {
+                    error: function (x, xh, xhr) {
                         console.error(xh);
                     }
                 });
@@ -288,6 +291,10 @@ else
 
         function Refrescar() {
             window.location.reload();
+        }
+
+        function VerOrdenProduccion(numero) {
+            window.location.href = urlVerOrdenProduccion + '?numero=' + numero;
         }
 
     </script>

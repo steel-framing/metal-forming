@@ -1,5 +1,4 @@
-﻿using MetalForming.Web.ProduccionService;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MetalForming.Web.Models
 {
@@ -8,12 +7,13 @@ namespace MetalForming.Web.Models
         public AsignarOrdenVentaModel()
         {
             OrdenesVenta = new List<OrdenVentaModel>();
+            AsistentePlaneamiento = new List<UsuarioModel>();
         }
 
         public ProgramaModel ProgramaVigente { get; set; }
 
         public IList<OrdenVentaModel> OrdenesVenta { get; set; }
 
-        public IList<AsistentePlaneamiento> AsistentePlaneamiento { get; set; }
+        public IList<UsuarioModel> AsistentePlaneamiento { get; set; }
     }
 }

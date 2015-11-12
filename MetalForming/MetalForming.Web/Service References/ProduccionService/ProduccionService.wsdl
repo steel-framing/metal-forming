@@ -33,6 +33,12 @@
   <wsdl:message name="IProduccionService_ObtenerOrdenVentaPorNumero_OutputMessage">
     <wsdl:part name="parameters" element="tns:ObtenerOrdenVentaPorNumeroResponse" />
   </wsdl:message>
+  <wsdl:message name="IProduccionService_GuardarAsignacionesOrdeneVenta_InputMessage">
+    <wsdl:part name="parameters" element="tns:GuardarAsignacionesOrdeneVenta" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_GuardarAsignacionesOrdeneVenta_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GuardarAsignacionesOrdeneVentaResponse" />
+  </wsdl:message>
   <wsdl:message name="IProduccionService_ListarMaterialesPorProducto_InputMessage">
     <wsdl:part name="parameters" element="tns:ListarMaterialesPorProducto" />
   </wsdl:message>
@@ -57,17 +63,17 @@
   <wsdl:message name="IProduccionService_RegistrarOrdenProduccion_OutputMessage">
     <wsdl:part name="parameters" element="tns:RegistrarOrdenProduccionResponse" />
   </wsdl:message>
-  <wsdl:message name="IProduccionService_ListarOrdenesProduccion_InputMessage">
-    <wsdl:part name="parameters" element="tns:ListarOrdenesProduccion" />
-  </wsdl:message>
-  <wsdl:message name="IProduccionService_ListarOrdenesProduccion_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionResponse" />
-  </wsdl:message>
   <wsdl:message name="IProduccionService_ListarOrdenesProduccionPorPrograma_InputMessage">
     <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionPorPrograma" />
   </wsdl:message>
   <wsdl:message name="IProduccionService_ListarOrdenesProduccionPorPrograma_OutputMessage">
     <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionPorProgramaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesProduccionParaAsignar_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionParaAsignar" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOrdenesProduccionParaAsignar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOrdenesProduccionParaAsignarResponse" />
   </wsdl:message>
   <wsdl:message name="IProduccionService_ObetenerOrdenProduccionPorNumero_InputMessage">
     <wsdl:part name="parameters" element="tns:ObetenerOrdenProduccionPorNumero" />
@@ -99,6 +105,12 @@
   <wsdl:message name="IProduccionService_RechazarOrdenProduccion_OutputMessage">
     <wsdl:part name="parameters" element="tns:RechazarOrdenProduccionResponse" />
   </wsdl:message>
+  <wsdl:message name="IProduccionService_GuardarAsignacionesOrdenProduccion_InputMessage">
+    <wsdl:part name="parameters" element="tns:GuardarAsignacionesOrdenProduccion" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_GuardarAsignacionesOrdenProduccion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GuardarAsignacionesOrdenProduccionResponse" />
+  </wsdl:message>
   <wsdl:message name="IProduccionService_ObtenerPlanVigente_InputMessage">
     <wsdl:part name="parameters" element="tns:ObtenerPlanVigente" />
   </wsdl:message>
@@ -129,6 +141,18 @@
   <wsdl:message name="IProduccionService_FinalizarPrograma_OutputMessage">
     <wsdl:part name="parameters" element="tns:FinalizarProgramaResponse" />
   </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarAsistentePlaneamiento_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarAsistentePlaneamiento" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarAsistentePlaneamiento_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarAsistentePlaneamientoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOperadores_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOperadores" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ListarOperadores_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarOperadoresResponse" />
+  </wsdl:message>
   <wsdl:portType name="IProduccionService">
     <wsdl:operation name="ListarOrdenesVentaPendiente">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesVentaPendiente" message="tns:IProduccionService_ListarOrdenesVentaPendiente_InputMessage" />
@@ -146,6 +170,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObtenerOrdenVentaPorNumero" message="tns:IProduccionService_ObtenerOrdenVentaPorNumero_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ObtenerOrdenVentaPorNumeroResponse" message="tns:IProduccionService_ObtenerOrdenVentaPorNumero_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GuardarAsignacionesOrdeneVenta">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/GuardarAsignacionesOrdeneVenta" message="tns:IProduccionService_GuardarAsignacionesOrdeneVenta_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/GuardarAsignacionesOrdeneVentaResponse" message="tns:IProduccionService_GuardarAsignacionesOrdeneVenta_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ListarMaterialesPorProducto">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarMaterialesPorProducto" message="tns:IProduccionService_ListarMaterialesPorProducto_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarMaterialesPorProductoResponse" message="tns:IProduccionService_ListarMaterialesPorProducto_OutputMessage" />
@@ -162,13 +190,13 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/RegistrarOrdenProduccion" message="tns:IProduccionService_RegistrarOrdenProduccion_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/RegistrarOrdenProduccionResponse" message="tns:IProduccionService_RegistrarOrdenProduccion_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="ListarOrdenesProduccion">
-      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccion" message="tns:IProduccionService_ListarOrdenesProduccion_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionResponse" message="tns:IProduccionService_ListarOrdenesProduccion_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="ListarOrdenesProduccionPorPrograma">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorPrograma" message="tns:IProduccionService_ListarOrdenesProduccionPorPrograma_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorProgramaResponse" message="tns:IProduccionService_ListarOrdenesProduccionPorPrograma_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarOrdenesProduccionParaAsignar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaAsignar" message="tns:IProduccionService_ListarOrdenesProduccionParaAsignar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaAsignarResponse" message="tns:IProduccionService_ListarOrdenesProduccionParaAsignar_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ObetenerOrdenProduccionPorNumero">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObetenerOrdenProduccionPorNumero" message="tns:IProduccionService_ObetenerOrdenProduccionPorNumero_InputMessage" />
@@ -190,6 +218,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/RechazarOrdenProduccion" message="tns:IProduccionService_RechazarOrdenProduccion_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/RechazarOrdenProduccionResponse" message="tns:IProduccionService_RechazarOrdenProduccion_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GuardarAsignacionesOrdenProduccion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/GuardarAsignacionesOrdenProduccion" message="tns:IProduccionService_GuardarAsignacionesOrdenProduccion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/GuardarAsignacionesOrdenProduccionResponse" message="tns:IProduccionService_GuardarAsignacionesOrdenProduccion_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ObtenerPlanVigente">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente" message="tns:IProduccionService_ObtenerPlanVigente_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ObtenerPlanVigenteResponse" message="tns:IProduccionService_ObtenerPlanVigente_OutputMessage" />
@@ -209,6 +241,14 @@
     <wsdl:operation name="FinalizarPrograma">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/FinalizarPrograma" message="tns:IProduccionService_FinalizarPrograma_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/FinalizarProgramaResponse" message="tns:IProduccionService_FinalizarPrograma_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarAsistentePlaneamiento">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarAsistentePlaneamiento" message="tns:IProduccionService_ListarAsistentePlaneamiento_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarAsistentePlaneamientoResponse" message="tns:IProduccionService_ListarAsistentePlaneamiento_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarOperadores">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ListarOperadores" message="tns:IProduccionService_ListarOperadores_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ListarOperadoresResponse" message="tns:IProduccionService_ListarOperadores_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IProduccionService" type="tns:IProduccionService">
@@ -242,6 +282,15 @@
     </wsdl:operation>
     <wsdl:operation name="ObtenerOrdenVentaPorNumero">
       <soap:operation soapAction="http://tempuri.org/IProduccionService/ObtenerOrdenVentaPorNumero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarAsignacionesOrdeneVenta">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/GuardarAsignacionesOrdeneVenta" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -285,8 +334,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ListarOrdenesProduccion">
-      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccion" style="document" />
+    <wsdl:operation name="ListarOrdenesProduccionPorPrograma">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorPrograma" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -294,8 +343,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ListarOrdenesProduccionPorPrograma">
-      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionPorPrograma" style="document" />
+    <wsdl:operation name="ListarOrdenesProduccionParaAsignar">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOrdenesProduccionParaAsignar" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -348,6 +397,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GuardarAsignacionesOrdenProduccion">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/GuardarAsignacionesOrdenProduccion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="ObtenerPlanVigente">
       <soap:operation soapAction="http://tempuri.org/IProduccionService/ObtenerPlanVigente" style="document" />
       <wsdl:input>
@@ -386,6 +444,24 @@
     </wsdl:operation>
     <wsdl:operation name="FinalizarPrograma">
       <soap:operation soapAction="http://tempuri.org/IProduccionService/FinalizarPrograma" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarAsistentePlaneamiento">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarAsistentePlaneamiento" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarOperadores">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ListarOperadores" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

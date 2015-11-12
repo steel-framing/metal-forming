@@ -29,6 +29,6 @@ namespace MetalForming.BusinessEntities
         public int IdPrograma { get; set; }
 
         [DataMember]
-        public AsistentePlaneamiento AsistentePlaneamiento { get; set; }
+        public Usuario AsistentePlaneamiento { get; set; }
     }
 }

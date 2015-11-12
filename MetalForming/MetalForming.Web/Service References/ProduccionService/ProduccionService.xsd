@@ -11,7 +11,7 @@
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q1:BaseEntity">
         <xs:sequence>
-          <xs:element minOccurs="0" name="AsistentePlaneamiento" nillable="true" type="tns:AsistentePlaneamiento" />
+          <xs:element minOccurs="0" name="AsistentePlaneamiento" nillable="true" type="tns:Usuario" />
           <xs:element minOccurs="0" name="Cantidad" type="xs:int" />
           <xs:element minOccurs="0" name="Cliente" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
@@ -24,17 +24,22 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="OrdenVenta" nillable="true" type="tns:OrdenVenta" />
-  <xs:complexType name="AsistentePlaneamiento">
+  <xs:complexType name="Usuario">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q2:BaseEntity">
         <xs:sequence>
-          <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Usuario" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CantidadOP" type="xs:int" />
+          <xs:element minOccurs="0" name="CantidadOV" type="xs:int" />
+          <xs:element minOccurs="0" name="Estado" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IdRol" type="xs:int" />
+          <xs:element minOccurs="0" name="NombreCompleto" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="AsistentePlaneamiento" nillable="true" type="tns:AsistentePlaneamiento" />
+  <xs:element name="Usuario" nillable="true" type="tns:Usuario" />
   <xs:complexType name="Producto">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q3:BaseEntity">
@@ -47,6 +52,12 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Producto" nillable="true" type="tns:Producto" />
+  <xs:complexType name="ArrayOfUsuario">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Usuario" nillable="true" type="tns:Usuario" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUsuario" nillable="true" type="tns:ArrayOfUsuario" />
   <xs:complexType name="ArrayOfMaterial">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Material" nillable="true" type="tns:Material" />
@@ -102,6 +113,7 @@
           <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Materiales" nillable="true" type="tns:ArrayOfOrdenProduccionMaterial" />
           <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Operador" nillable="true" type="tns:Usuario" />
           <xs:element minOccurs="0" name="OrdenVenta" nillable="true" type="tns:OrdenVenta" />
           <xs:element minOccurs="0" name="Secuencia" nillable="true" type="tns:ArrayOfOrdenProduccionSecuencia" />
           <xs:element minOccurs="0" name="TomarStock" type="xs:boolean" />

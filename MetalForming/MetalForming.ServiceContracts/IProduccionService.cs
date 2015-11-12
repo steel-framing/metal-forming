@@ -21,6 +21,9 @@ namespace MetalForming.ServiceContracts
         [OperationContract]
         OrdenVenta ObtenerOrdenVentaPorNumero(string numero);
 
+        [OperationContract]
+        void GuardarAsignacionesOrdeneVenta(IList<int> ordenesVenta, IList<Usuario> asistentes);
+
         #endregion
 
         #region Material
@@ -46,10 +49,10 @@ namespace MetalForming.ServiceContracts
         int RegistrarOrdenProduccion(OrdenProduccion ordenProduccion);
 
         [OperationContract]
-        IList<OrdenProduccion> ListarOrdenesProduccion();
+        IList<OrdenProduccion> ListarOrdenesProduccionPorPrograma(int idPrograma);
 
         [OperationContract]
-        IList<OrdenProduccion> ListarOrdenesProduccionPorPrograma(int idPrograma);
+        IList<OrdenProduccion> ListarOrdenesProduccionParaAsignar(int idPrograma);
 
         [OperationContract]
         OrdenProduccion ObetenerOrdenProduccionPorNumero(string numero);
@@ -65,6 +68,9 @@ namespace MetalForming.ServiceContracts
 
         [OperationContract]
         void RechazarOrdenProduccion(int idOrdenProduccion, string motivoRechazo);
+
+        [OperationContract]
+        void GuardarAsignacionesOrdenProduccion(IList<int> ordenesProduccion, IList<Usuario> operadores);
 
         #endregion
 
@@ -91,10 +97,13 @@ namespace MetalForming.ServiceContracts
 
         #endregion
 
-        #region Asistente Planeamiento
+        #region Usuario
 
         [OperationContract]
-        IList<AsistentePlaneamiento> ListarAsistentePlaneamiento();
+        IList<Usuario> ListarAsistentePlaneamiento();
+
+        [OperationContract]
+        IList<Usuario> ListarOperadores();
 
         #endregion
     }

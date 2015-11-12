@@ -29,11 +29,22 @@
                                     <th>Num. OV</th>
                                     <th>F.Producción</th>
                                     <th>Estado</th>
+                                    <th>Operador</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
+                            @if (Model.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="text-center">No existen orden de producción asignadas para ejecutar.</div>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model)
                                 {
                                     <tr>
                                         <td class="hide">@item.Id</td>
@@ -41,11 +52,13 @@
                                         <td>@item.NumeroOrdenVenta</td>
                                         <td>@item.FechaEntrega.ToString("dd/MM/yyyy")</td>
                                         <td>@item.Estado</td>
+                                        <td>@item.NombreOperador</td>
                                         <td>
-                                            <a href="javascript:;" class="btn-link" onclick="IniciarOrdenProduccion('@item.Numero')">Iniciar</a>
+                                            <a href="javascript:;" class="btn-link" onclick="iniciarordenproduccion('@item.Numero')">Iniciar</a>
                                         </td>
                                     </tr>
                                 }
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -61,7 +74,7 @@
 @section scripts{
     <script type="text/javascript">
 
-        var urlEjecucion = '@Url.Action("Ejecucion")';
+        var urlEjecucion = '@Url.Action("EjecucionOrdenProduccion")';
 
         $(function () {
 

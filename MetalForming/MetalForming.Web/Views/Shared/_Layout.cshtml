@@ -56,8 +56,8 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.EjecutarOrdenProduccion ? "active" : "")"><a href="@Url.Action("Index", "Produccion")">@ConstantesWeb.MenuItem.EjecutarOrdenProduccion</a></li>
-                            <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.AsignarOrdenProduccion ? "active" : "")"><a href="javascript:void(0);">@ConstantesWeb.MenuItem.AsignarOrdenProduccion</a></li>
+                            <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.AsignarOrdenProduccion ? "active" : "")"><a href="@Url.Action("AsignarOrdenProduccion", "Produccion")">@ConstantesWeb.MenuItem.AsignarOrdenProduccion</a></li>
+                            <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.EjecutarOrdenProduccion ? "active" : "")"><a href="@Url.Action("EjecutarOrdenProduccion", "Produccion")">@ConstantesWeb.MenuItem.EjecutarOrdenProduccion</a></li>
                         </ul>
                     </li>
                     <li class="@(ViewBag.MenuActual == ConstantesWeb.Menu.Seguimiento ? "active" : "")"><a href="javascript:void(0);">@ConstantesWeb.Menu.Seguimiento</a></li>

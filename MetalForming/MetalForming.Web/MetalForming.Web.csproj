@@ -131,6 +131,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AsignarOrdenProduccionModel.cs" />
+    <Compile Include="Models\AsignarOrdenVentaModel.cs" />
+    <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Models\Mapping\AutoMapperConfiguration.cs" />
     <Compile Include="Models\Mapping\EntityToModelMappingProfile.cs" />
     <Compile Include="Models\Mapping\ModelToEntityMappingProfile.cs" />
@@ -187,6 +190,9 @@
     <Content Include="Service References\ProduccionService\MetalForming.Web.ProduccionService.Programa.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Service References\ProduccionService\MetalForming.Web.ProduccionService.Usuario.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Service References\ProduccionService\ProduccionService.disco" />
     <None Include="Service References\ProduccionService\configuration91.svcinfo" />
     <None Include="Service References\ProduccionService\configuration.svcinfo" />
@@ -210,10 +216,11 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Inicio\Index.cshtml" />
     <Content Include="Views\Programacion\OrdenProduccion.cshtml" />
-    <Content Include="Views\Produccion\Index.cshtml" />
-    <Content Include="Views\Produccion\Ejecucion.cshtml" />
+    <Content Include="Views\Produccion\EjecutarOrdenProduccion.cshtml" />
+    <Content Include="Views\Produccion\EjecucionOrdenProduccion.cshtml" />
     <Content Include="Views\Programacion\MantenerPrograma.cshtml" />
     <Content Include="Views\Programacion\AsignarOrdenVenta.cshtml" />
+    <Content Include="Views\Produccion\AsignarOrdenProduccion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

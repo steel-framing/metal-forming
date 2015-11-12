@@ -15,7 +15,7 @@ namespace MetalForming.Service
         private readonly OrdenProduccionBL _ordenProduccionBL = new OrdenProduccionBL();
         private readonly PlanBL _planBL = new PlanBL();
         private readonly ProgramaBL _programaBL = new ProgramaBL();
-        private readonly AsistentePlaneamientoBL _asistentePlaneamientoBL = new AsistentePlaneamientoBL();
+        private readonly UsuarioBL _usuarioBL = new UsuarioBL();
 
         #region Orden Venta
 
@@ -37,6 +37,11 @@ namespace MetalForming.Service
         public OrdenVenta ObtenerOrdenVentaPorNumero(string numero)
         {
             return _ordenVentaBL.ObtenerPorNumero(numero);
+        }
+
+        public void GuardarAsignacionesOrdeneVenta(IList<int> ordenesVenta, IList<Usuario> asistentes)
+        {
+            _ordenVentaBL.GuardarAsignaciones(ordenesVenta, asistentes);
         }
 
         #endregion
@@ -71,15 +76,14 @@ namespace MetalForming.Service
             return _ordenProduccionBL.Registrar(ordenProduccion);
         }
 
-        //depurar
-        public IList<OrdenProduccion> ListarOrdenesProduccion()
-        {
-            return _ordenProduccionBL.Listar();
-        }
-
         public IList<OrdenProduccion> ListarOrdenesProduccionPorPrograma(int idPrograma)
         {
             return _ordenProduccionBL.ListarPorPrograma(idPrograma);
+        }
+
+        public IList<OrdenProduccion> ListarOrdenesProduccionParaAsignar(int idPrograma)
+        {
+            return _ordenProduccionBL.ListarParaAsignar(idPrograma);
         }
 
         public OrdenProduccion ObetenerOrdenProduccionPorNumero(string numero)
@@ -105,6 +109,11 @@ namespace MetalForming.Service
         public void RechazarOrdenProduccion(int idOrdenProduccion, string motivoRechazo)
         {
             _ordenProduccionBL.Rechazar(idOrdenProduccion, motivoRechazo);
+        }
+
+        public void GuardarAsignacionesOrdenProduccion(IList<int> ordenesProduccion, IList<Usuario> operadores)
+        {
+            _ordenProduccionBL.GuardarAsignaciones(ordenesProduccion, operadores);
         }
 
         #endregion
@@ -142,11 +151,16 @@ namespace MetalForming.Service
 
         #endregion
 
-        #region Asistente Planeamiento
+        #region Usuario
 
-        public IList<AsistentePlaneamiento> ListarAsistentePlaneamiento()
+        public IList<Usuario> ListarAsistentePlaneamiento()
         {
-            return _asistentePlaneamientoBL.Listar();
+            return _usuarioBL.ListarAsistentesPlaneamiento();
+        }
+
+        public IList<Usuario> ListarOperadores()
+        {
+            return _usuarioBL.ListarOperadores();
         }
 
         #endregion
