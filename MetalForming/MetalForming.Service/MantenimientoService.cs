@@ -11,9 +11,24 @@ namespace MetalForming.Service
     {
         private readonly MaterialBL _materialBL = new MaterialBL();
 
-        public IList<Material> ListarMateriales()
+        public IList<Material> ListarMateriales(string codigo, string descripcion, int tipo, int min, int max, int estado)
         {
-            throw new System.NotImplementedException();
+            return _materialBL.ListarMateriales(codigo, descripcion, tipo, min, max, estado);
+        }
+
+        public string GuardarMaterial(Material material)
+        {
+            return _materialBL.GuardarMaterial(material);
+        }
+
+        public string ActualizarMaterial(Material material)
+        {
+            return _materialBL.ActualizarMaterial(material);
+        }
+
+        public string EliminarMaterial(int id)
+        {
+            return _materialBL.EliminarMaterial(id);
         }
     }
 }

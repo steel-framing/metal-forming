@@ -9,13 +9,13 @@ namespace MetalForming.BusinessEntities
         [DataMember]
         public string Codigo { get; set; }
         [DataMember]
-        public string Presion { get; set; }
+        public int Presion { get; set; }
         [DataMember]
-        public string Ancho { get; set; }
+        public int Ancho { get; set; }
         [DataMember]
-        public string Largo { get; set; }
+        public int Largo { get; set; }
         [DataMember]
-        public string Espesor { get; set; }
+        public int Espesor { get; set; }
         [DataMember]
         public int Estado { get; set; }
         [DataMember]
@@ -32,5 +32,8 @@ namespace MetalForming.BusinessEntities
 
         [DataMember]
         public int Cantidad { get; set; }
+
+        [DataMember]
+        public string Informacion { get; set; }
     }
 }

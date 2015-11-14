@@ -14,16 +14,73 @@
   <wsdl:message name="IMantenimientoService_ListarMateriales_OutputMessage">
     <wsdl:part name="parameters" element="tns:ListarMaterialesResponse" />
   </wsdl:message>
+  <wsdl:message name="IMantenimientoService_GuardarMaterial_InputMessage">
+    <wsdl:part name="parameters" element="tns:GuardarMaterial" />
+  </wsdl:message>
+  <wsdl:message name="IMantenimientoService_GuardarMaterial_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GuardarMaterialResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMantenimientoService_ActualizarMaterial_InputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarMaterial" />
+  </wsdl:message>
+  <wsdl:message name="IMantenimientoService_ActualizarMaterial_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarMaterialResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMantenimientoService_EliminarMaterial_InputMessage">
+    <wsdl:part name="parameters" element="tns:EliminarMaterial" />
+  </wsdl:message>
+  <wsdl:message name="IMantenimientoService_EliminarMaterial_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EliminarMaterialResponse" />
+  </wsdl:message>
   <wsdl:portType name="IMantenimientoService">
     <wsdl:operation name="ListarMateriales">
       <wsdl:input wsaw:Action="http://tempuri.org/IMantenimientoService/ListarMateriales" message="tns:IMantenimientoService_ListarMateriales_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMantenimientoService/ListarMaterialesResponse" message="tns:IMantenimientoService_ListarMateriales_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GuardarMaterial">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMantenimientoService/GuardarMaterial" message="tns:IMantenimientoService_GuardarMaterial_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMantenimientoService/GuardarMaterialResponse" message="tns:IMantenimientoService_GuardarMaterial_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarMaterial">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMantenimientoService/ActualizarMaterial" message="tns:IMantenimientoService_ActualizarMaterial_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMantenimientoService/ActualizarMaterialResponse" message="tns:IMantenimientoService_ActualizarMaterial_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EliminarMaterial">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMantenimientoService/EliminarMaterial" message="tns:IMantenimientoService_EliminarMaterial_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMantenimientoService/EliminarMaterialResponse" message="tns:IMantenimientoService_EliminarMaterial_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IMantenimientoService" type="tns:IMantenimientoService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="ListarMateriales">
       <soap:operation soapAction="http://tempuri.org/IMantenimientoService/ListarMateriales" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarMaterial">
+      <soap:operation soapAction="http://tempuri.org/IMantenimientoService/GuardarMaterial" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarMaterial">
+      <soap:operation soapAction="http://tempuri.org/IMantenimientoService/ActualizarMaterial" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EliminarMaterial">
+      <soap:operation soapAction="http://tempuri.org/IMantenimientoService/EliminarMaterial" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

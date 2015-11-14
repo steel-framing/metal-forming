@@ -1,0 +1,14 @@
+﻿using System.Collections.Generic;
+using System.ServiceModel;
+using MetalForming.BusinessEntities;
+
+namespace MetalForming.ServiceContracts
+{
+    [ServiceContract]
+    public interface IMantenimientoService
+    {
+        [OperationContract]
+        IList<Material> ListarMateriales(string codigo, string descripcion, string tipo, string min, string max, string estado);
+
+    }
+}

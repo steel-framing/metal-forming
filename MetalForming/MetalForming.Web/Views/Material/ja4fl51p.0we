@@ -36,7 +36,7 @@
             <div class="row">
                 <div class="col-xs-8">
                     <div class="table-responsive ">
-                        <table id="tblMateriales" class="table table-header table-rounded">
+                        <table id="tblMateriales" class="table table-striped table-header table-rounded">
                             <thead class="upper">
                                 <tr>
                                     <th class="hide"></th>
@@ -98,7 +98,7 @@
                 <div class="col-xs-4">
                     <div class="well well-form">
                         <div class="form-horizontal">
-                            <input id="hidId" type="hidden" class="form-control" value="0" />
+                            <input id="hidId" type="hidden" class="form-control" />
                             <div class="form-group form-group-sm">
                                 <div class="col-xs-5">
                                     Código:
@@ -120,7 +120,7 @@
                                     Presión:
                                 </div>
                                 <div class="col-xs-7">
-                                    <input id="txtPresion" class="form-control numero" />
+                                    <input id="txtPresion" class="form-control"  />
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -128,7 +128,7 @@
                                     Ancho:
                                 </div>
                                 <div class="col-xs-7">
-                                    <input id="txtAncho" class="form-control numero" />
+                                    <input id="txtAncho" class="form-control"  />
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -136,7 +136,7 @@
                                     Largo:
                                 </div>
                                 <div class="col-xs-7">
-                                    <input id="txtLargo" class="form-control numero" />
+                                    <input id="txtLargo" class="form-control"  />
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -144,7 +144,7 @@
                                     Espesor:
                                 </div>
                                 <div class="col-xs-7">
-                                    <input id="txtEspesor" class="form-control numero" />
+                                    <input id="txtEspesor" class="form-control"  />
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -152,7 +152,7 @@
                                     Stock Min:
                                 </div>
                                 <div class="col-xs-7">
-                                    <input id="txtStockMinimo" class="form-control numero"  />
+                                    <input id="txtStockMinimo" class="form-control"  />
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -161,14 +161,14 @@
                                 </div>
                                 <div class="col-xs-7">
                                     <select id="cboEstado" class="form-control">
-                                        <option value="1">Activo</option>
-                                        <option value="0">Inactivo</option>
+                                        <option value="Activo">Activo</option>
+                                        <option value="Inactivo">Inactivo</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">
                                 <div class="col-xs-12 text-center">
-                                    <a href="javascript:;" class="btn btn-primary-line" id="btnModificar"> Actualizar</a>
+                                    <a href="javascript:;" class="btn btn-primary-line" id="btnActualizar"> Actualizar</a>
                                     <a href="javascript:;" class="btn btn-primary-line" id="btnEliminar"> Eliminar</a>
                                     <a href="javascript:;" class="btn btn-primary-line" id="btnCrear"> Crear</a>
                                     <a href="javascript:;" class="btn btn-primary-line" id="btnSalir"> Cancelar</a>
@@ -192,33 +192,10 @@
 
         var urlGuardarMaterial = '@Url.Action("GuardarMaterial")';
         var urlBuscarMaterial = '@Url.Action("BuscarMaterial")';
-        var urlEliminarMaterial = '@Url.Action("EliminarMaterial")';
 
         $(function () {
 
             BuscarMateriales();
-
-            $('.numero').keydown(function(event) {
-                if(event.shiftKey)
-                {
-                    event.preventDefault();
-                }
- 
-                if (event.keyCode == 46 || event.keyCode == 8)    {
-                }
-                else {
-                    if (event.keyCode < 95) {
-                        if (event.keyCode < 48 || event.keyCode > 57) {
-                            event.preventDefault();
-                        }
-                    } 
-                    else {
-                        if (event.keyCode < 96 || event.keyCode > 105) {
-                            event.preventDefault();
-                        }
-                    }
-                }
-            });
 
             $("#cboBuscarEstado").on("change", function () {
                 BuscarMateriales();
@@ -235,7 +212,7 @@
             });
 
             $("#btnCrear").on("click", function () {
-                if (Validaciones()===true) {
+                if (Validaciones()) {
                     Guardar();
                 }
             });
@@ -244,13 +221,13 @@
             $("#btnEliminar").hide();
 
             $("#btnModificar").on("click", function () {
-                if (Validaciones() === true) {
+                if (Validaciones()) {
                     Guardar();
                 }
             });
 
             $("#btnEliminar").on("click", function () {
-                Eliminar();
+                
             });
 
             $("#btnSalir").on("click", function () {
@@ -281,7 +258,7 @@
                         $.each(response.Data, function (index, item) {
                             var tr = "<tr>";
                             tr += "<td class=\"tdId hide\">" + item.Id + "</td>";
-                            tr += "<td class='tdCodigo'><a href='javascrit:;' onclick='ModificarMaterial($(this).parent().parent())' class='text-primary'>" + item.Codigo + "</a></td>";
+                            tr += "<td class='tdCodigo'><a href='javascrit:;' onclick='ModificarMaterial(this.parent())' class='text-primary'>" + item.Codigo + "</a></td>";
                             tr += "<td class='tdDescripcion'>" + item.Descripcion + "</td>";
                             tr += "<td>" + item.Informacion + "</td>";
                             tr += "<td>" + item.Estado + "</td>";
@@ -306,27 +283,8 @@
         }
 
         function Validaciones() {
-            var txtCodigo = $("#txtCodigo").val();
-            var codSel = $("#hidId").val();
-            
-            var noRepetido = 1;
-            if (txtCodigo != "") {
-                $('#tblMateriales').find("tbody tr").each(function () {
-                    var seleccionado = $(this).find("td.tdCodigo").text();
-                    if (codSel != txtCodigo) {
-                        if ($.trim(seleccionado) == txtCodigo) {
-                            noRepetido = noRepetido*0;
-                        }
-                    }
-                });
-                if (noRepetido == 0) {
-                    app.showMessageDialog("Código de Material ya existe");
-                    return false;
-                }
-            }
-            else
-            {
-                app.showMessageDialog("Debe seleccionar/ingresar el codigo.");
+            if ($("#txtCodigo").val() == "") {
+                app.showMessageDialog("Debe seleccionar ingresar el codigo.");
                 return false;
             }
             return true;
@@ -335,79 +293,43 @@
         function ModificarMaterial(row) {
             $("#btnModificar").show();
             $("#btnEliminar").show();
-            $("#btnCrear").hide();
-            $("#tblMateriales tbody tr").css("background-color", "#fff");
-            $(row).css("background-color", "#ff0");
+            $("#row").css("background-color:#ff0");
 
             $("#hidId").val($(row).find("td.tdId").text());
             $("#txtCodigo").val($(row).find("td.tdCodigo").text());
-            $("#txtDescripcion").val($(row).find("td.tdDescripcion").text());
-            $("#txtPresion").val($(row).find("td.tdPresion").text());
-            $("#txtAncho").val($(row).find("td.tdAncho").text());
-            $("#txtLargo").val($(row).find("td.tdLargo").text());
-            $("#txtEspesor").val($(row).find("td.tdEspesor").text());
-            $("#txtStockMinimo").val($(row).find("td.tdStockMinimo").text());
 
-            $("#cboEstado").val($(row).find("td.tdEstado").text());
         }
 
         function Guardar() {
-            
-                var model = {
-                    Id: parseInt($("#hidId").val()),
-                    Codigo: $("#txtCodigo").val(),
-                    Descripcion: $("#txtDescripcion").val(),
-                    Presion: $("#txtPresion").val(),
-                    Ancho: $("#txtAncho").val(),
-                    Largo: $("#txtLargo").val(),
-                    Espesor: $("#txtEspesor").val(),
-                    StockMinimo: $("#txtStockMinimo").val(),
-                    Estado: $("#cboEstado").val()
-                };
+            var model = {
+                Id: parseInt($("#hidId").val()),
+                Codigo: $("#txtCodigo").val(),
+                Descripcion: $("#txtDescripcion").val(),
+                Presion: $("#txtPresion").val(),
+                Ancho: $("#txtAncho").val(),
+                Largo: $("#txtLargo").val(),
+                Espesor: $("#txtEspesor").val(),
+                StockMinimo: $("#txtStockMinimo").val(),
+                Estado: $("#cboEstado").val()
+            };
 
-                var mensajeConfirmacion = "";
-                if (model.Id == 0) {
-                    mensajeConfirmacion = "Seguro de crear el material.";
-                } else {
-                    mensajeConfirmacion = "Seguro de modificar el material vigente.";
-                }
+            var mensajeConfirmacion = "";
+            if (model.Id === 0) {
+                mensajeConfirmacion = "Seguro de crear el material.";
+            } else {
+                mensajeConfirmacion = "Seguro de modificar el material vigente.";
+            }
 
-            
-                    app.showConfirmDialog(mensajeConfirmacion, function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: urlGuardarMaterial,
-                            data: JSON.stringify(model),
-                            dataType: 'json',
-                            contentType: 'application/json; charset=utf-8',
-                            success: function (response) {
-                                if (response.Success === true) {
-                                    var mensajeGrabadoCorrecto = "Se grabo el material con exito.";
-                                    app.showMessageDialog(mensajeGrabadoCorrecto, Refrescar);
-                                } else {
-                                    app.showMessageDialog(response.Message);
-                                }
-                            },
-                            error: function (x, xh, xhr) {
-                                console.error(xh);
-                            }
-                        });
-                    });
-            
-        }
-
-        function Eliminar() {
-            var id = parseInt($("#hidId").val());
-            app.showConfirmDialog("Esta seguro de elminar", function () {
+            app.showConfirmDialog(mensajeConfirmacion, function () {
                 $.ajax({
                     type: 'POST',
-                    url: urlEliminarMaterial,
-                    data: JSON.stringify({ id: id }),
+                    url: urlGuardarMaterial,
+                    data: JSON.stringify(model),
                     dataType: 'json',
                     contentType: 'application/json; charset=utf-8',
                     success: function (response) {
                         if (response.Success === true) {
-                            var mensajeGrabadoCorrecto = "Se elimino el material con exito.";
+                            var mensajeGrabadoCorrecto = "Se grabo el material con exito.";
                             app.showMessageDialog(mensajeGrabadoCorrecto, Refrescar);
                         } else {
                             app.showMessageDialog(response.Message);

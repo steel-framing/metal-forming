@@ -69,7 +69,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.MantenerMaquina ? "active" : "")"><a href="javascript:void(0);">@ConstantesWeb.MenuItem.MantenerMaquina</a></li>
-                            <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.MantenerMaterial ? "active" : "")"><a href="javascript:void(0);">@ConstantesWeb.MenuItem.MantenerMaterial</a></li>
+                            <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.MantenerMaterial ? "active" : "")"><a href="@Url.Action("Index", "Material") ">@ConstantesWeb.MenuItem.MantenerMaterial</a></li>
                             <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.MantenerProducto ? "active" : "")"><a href="javascript:void(0);">@ConstantesWeb.MenuItem.MantenerProducto</a></li>
                             <li class="@(ViewBag.MenuItemActual == ConstantesWeb.MenuItem.MantenerPLC ? "active" : "")"><a href="javascript:void(0);">@ConstantesWeb.MenuItem.MantenerPLC</a></li>
                         </ul>

@@ -1,0 +1,176 @@
+2015-11-13 16:03:40,324 [7] ERROR o&c [(null)] - Controlador:Material  Action:BuscarMaterial  Mensaje:The parameters dictionary contains a null entry for parameter 'min' of non-nullable type 'System.Int32' for method 'System.Web.Mvc.JsonResult BuscarMaterial(System.String, System.String, Int32, Int32, Int32, Int32)' in 'MetalForming.Web.Controllers.MaterialController'. An optional parameter must be a reference type, a nullable type, or be declared as an optional parameter.
+Nombre del parámetro: parameters
+2015-11-13 16:03:42,996 [6] ERROR o&c [(null)] - Controlador:Material  Action:BuscarMaterial  Mensaje:The parameters dictionary contains a null entry for parameter 'min' of non-nullable type 'System.Int32' for method 'System.Web.Mvc.JsonResult BuscarMaterial(System.String, System.String, Int32, Int32, Int32, Int32)' in 'MetalForming.Web.Controllers.MaterialController'. An optional parameter must be a reference type, a nullable type, or be declared as an optional parameter.
+Nombre del parámetro: parameters
+2015-11-13 16:05:25,744 [13] ERROR o&c [(null)] - Controlador:Material  Action:BuscarMaterial  Mensaje:The parameters dictionary contains a null entry for parameter 'min' of non-nullable type 'System.Int32' for method 'System.Web.Mvc.JsonResult BuscarMaterial(System.String, System.String, Int32, Int32, Int32, Int32)' in 'MetalForming.Web.Controllers.MaterialController'. An optional parameter must be a reference type, a nullable type, or be declared as an optional parameter.
+Nombre del parámetro: parameters
+2015-11-13 16:06:17,168 [18] ERROR o&c [(null)] - Controlador:Material  Action:BuscarMaterial  Mensaje:The parameters dictionary contains a null entry for parameter 'min' of non-nullable type 'System.Int32' for method 'System.Web.Mvc.JsonResult BuscarMaterial(System.String, System.String, Int32, Int32, Int32, Int32)' in 'MetalForming.Web.Controllers.MaterialController'. An optional parameter must be a reference type, a nullable type, or be declared as an optional parameter.
+Nombre del parámetro: parameters
+2015-11-13 16:15:44,682 [10] ERROR o&c [(null)] - Controlador:Material  Action:BuscarMaterial  Mensaje:The parameters dictionary contains a null entry for parameter 'max' of non-nullable type 'System.Int32' for method 'System.Web.Mvc.JsonResult BuscarMaterial(System.String, System.String, Int32, Int32, Int32, Int32)' in 'MetalForming.Web.Controllers.MaterialController'. An optional parameter must be a reference type, a nullable type, or be declared as an optional parameter.
+Nombre del parámetro: parameters
+2015-11-13 16:16:03,123 [10] ERROR o&c [(null)] - Mensaje: ListarMateriales -  - Mensaje Error:  - dbo.ListarMaterialPorProducto - Error: No se puede convertir un objeto de tipo 'System.Int32' al tipo 'System.String'. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.ServiceChannel.ThrowIfFaultUnderstood(Message reply, MessageFault fault, String action, MessageVersion version, FaultConverter faultConverter)
+   en System.ServiceModel.Channels.ServiceChannel.HandleReply(ProxyOperationRuntime operation, ProxyRpc& rpc)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 16:18:50,576 [13] ERROR o&c [(null)] - Mensaje: El canal de solicitud agotó el tiempo de espera mientras esperaba una respuesta después de 00:01:00. Aumente el valor de tiempo de espera pasado a la llamada a Request, o bien aumente el valor de SendTimeout en el enlace. El tiempo asignado a esta operación puede haber sido una parte de un tiempo de espera mayor. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 16:58:55,531 [8] ERROR o&c [(null)] - Mensaje: El canal de solicitud agotó el tiempo de espera mientras esperaba una respuesta después de 00:00:59.9679982. Aumente el valor de tiempo de espera pasado a la llamada a Request, o bien aumente el valor de SendTimeout en el enlace. El tiempo asignado a esta operación puede haber sido una parte de un tiempo de espera mayor. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 16:59:43,969 [13] ERROR o&c [(null)] - Mensaje: ListarMateriales -  - Mensaje Error:  - dbo.ListarMaterialPorBusqueda - Error: La conversión especificada no es válida. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.ServiceChannel.ThrowIfFaultUnderstood(Message reply, MessageFault fault, String action, MessageVersion version, FaultConverter faultConverter)
+   en System.ServiceModel.Channels.ServiceChannel.HandleReply(ProxyOperationRuntime operation, ProxyRpc& rpc)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 17:04:25,808 [7] ERROR o&c [(null)] - Mensaje: Error al recibir la respuesta HTTP a http://localhost:7457/MantenimientoService.svc. Puede deberse a que el enlace del extremo de servicio no usa el protocolo HTTP. También puede deberse a que el servidor anula un contexto de solicitud HTTP (posiblemente por el cierre del servicio). Consulte los registros del servidor para obtener más información. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.HttpChannelUtilities.ProcessGetResponseWebException(WebException webException, HttpWebRequest request, HttpAbortReason abortReason)
+   en System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.WaitForReply(TimeSpan timeout)
+   en System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 17:04:34,875 [8] ERROR o&c [(null)] - Mensaje: Error al recibir la respuesta HTTP a http://localhost:7457/MantenimientoService.svc. Puede deberse a que el enlace del extremo de servicio no usa el protocolo HTTP. También puede deberse a que el servidor anula un contexto de solicitud HTTP (posiblemente por el cierre del servicio). Consulte los registros del servidor para obtener más información. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.HttpChannelUtilities.ProcessGetResponseWebException(WebException webException, HttpWebRequest request, HttpAbortReason abortReason)
+   en System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.WaitForReply(TimeSpan timeout)
+   en System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 17:07:22,756 [9] ERROR o&c [(null)] - Mensaje: Error al recibir la respuesta HTTP a http://localhost:7457/MantenimientoService.svc. Puede deberse a que el enlace del extremo de servicio no usa el protocolo HTTP. También puede deberse a que el servidor anula un contexto de solicitud HTTP (posiblemente por el cierre del servicio). Consulte los registros del servidor para obtener más información. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.HttpChannelUtilities.ProcessGetResponseWebException(WebException webException, HttpWebRequest request, HttpAbortReason abortReason)
+   en System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.WaitForReply(TimeSpan timeout)
+   en System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 17:08:26,959 [14] ERROR o&c [(null)] - Mensaje: Error al recibir la respuesta HTTP a http://localhost:7457/MantenimientoService.svc. Puede deberse a que el enlace del extremo de servicio no usa el protocolo HTTP. También puede deberse a que el servidor anula un contexto de solicitud HTTP (posiblemente por el cierre del servicio). Consulte los registros del servidor para obtener más información. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.HttpChannelUtilities.ProcessGetResponseWebException(WebException webException, HttpWebRequest request, HttpAbortReason abortReason)
+   en System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.WaitForReply(TimeSpan timeout)
+   en System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 17:09:32,891 [13] ERROR o&c [(null)] - Mensaje: Error al recibir la respuesta HTTP a http://localhost:7457/MantenimientoService.svc. Puede deberse a que el enlace del extremo de servicio no usa el protocolo HTTP. También puede deberse a que el servidor anula un contexto de solicitud HTTP (posiblemente por el cierre del servicio). Consulte los registros del servidor para obtener más información. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.HttpChannelUtilities.ProcessGetResponseWebException(WebException webException, HttpWebRequest request, HttpAbortReason abortReason)
+   en System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.WaitForReply(TimeSpan timeout)
+   en System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 17:10:41,927 [6] ERROR o&c [(null)] - Mensaje: Error al recibir la respuesta HTTP a http://localhost:7457/MantenimientoService.svc. Puede deberse a que el enlace del extremo de servicio no usa el protocolo HTTP. También puede deberse a que el servidor anula un contexto de solicitud HTTP (posiblemente por el cierre del servicio). Consulte los registros del servidor para obtener más información. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.HttpChannelUtilities.ProcessGetResponseWebException(WebException webException, HttpWebRequest request, HttpAbortReason abortReason)
+   en System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.WaitForReply(TimeSpan timeout)
+   en System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.ListarMateriales(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 300
+   en MetalForming.Web.Controllers.MaterialController.BuscarMaterial(String codigo, String descripcion, Int32 tipo, Int32 min, Int32 max, Int32 estado) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 28
+2015-11-13 18:26:54,652 [12] ERROR o&c [(null)] - Mensaje: GuardarMaterial -  - Mensaje Error:  - dbo.InsertarMaterial - Error: Procedure or function 'InsertarMaterial' expects parameter '@Estado', which was not supplied. Trace: 
+Server stack trace: 
+   en System.ServiceModel.Channels.ServiceChannel.ThrowIfFaultUnderstood(Message reply, MessageFault fault, String action, MessageVersion version, FaultConverter faultConverter)
+   en System.ServiceModel.Channels.ServiceChannel.HandleReply(ProxyOperationRuntime operation, ProxyRpc& rpc)
+   en System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   en System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   en System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   en System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   en System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   en MetalForming.Web.MantenimientoService.IMantenimientoService.GuardarMaterial(Material material)
+   en MetalForming.Web.MantenimientoService.MantenimientoServiceClient.GuardarMaterial(Material material) en d:\metal-forming\MetalForming\MetalForming.Web\Service References\MantenimientoService\Reference.cs:línea 314
+   en MetalForming.Web.Controllers.MaterialController.GuardarMaterial(Material model) en d:\metal-forming\MetalForming\MetalForming.Web\Controllers\MaterialController.cs:línea 54

@@ -8,7 +8,16 @@ namespace MetalForming.ServiceContracts
     public interface IMantenimientoService
     {
         [OperationContract]
-        IList<Material> ListarMateriales();
+        IList<Material> ListarMateriales(string codigo, string descripcion, int tipo, int min, int max, int estado);
 
+        [OperationContract]
+        string GuardarMaterial(Material material);
+
+        [OperationContract]
+        string ActualizarMaterial(Material material);
+
+        [OperationContract]
+
+        string EliminarMaterial(int id);
     }
 }

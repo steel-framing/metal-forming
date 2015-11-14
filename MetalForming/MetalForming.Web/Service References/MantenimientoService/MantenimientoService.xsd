@@ -11,8 +11,15 @@
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q1:BaseEntity">
         <xs:sequence>
+          <xs:element minOccurs="0" name="Ancho" type="xs:int" />
           <xs:element minOccurs="0" name="Cantidad" type="xs:int" />
+          <xs:element minOccurs="0" name="Codigo" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Espesor" type="xs:int" />
+          <xs:element minOccurs="0" name="Estado" type="xs:int" />
+          <xs:element minOccurs="0" name="Informacion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Largo" type="xs:int" />
+          <xs:element minOccurs="0" name="Presion" type="xs:int" />
           <xs:element minOccurs="0" name="Reservado" type="xs:int" />
           <xs:element minOccurs="0" name="Stock" type="xs:int" />
           <xs:element minOccurs="0" name="StockMinimo" type="xs:int" />
