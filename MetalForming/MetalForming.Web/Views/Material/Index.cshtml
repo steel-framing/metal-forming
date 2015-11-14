@@ -1,0 +1,428 @@
+﻿@model ProgramaModel
+
+@{
+    ViewBag.MenuActual = ConstantesWeb.Menu.Mantenimiento;
+    ViewBag.MenuItemActual = ConstantesWeb.MenuItem.MantenerMaterial;
+}
+
+@section styles{
+    <style type="text/css">
+        .well {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .well-form {
+            padding-top: 15px;
+            padding-bottom: 0px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    </style>
+}
+
+<header class="header-crumb">
+    <div class="container">
+        <h2>Mantener Material</h2>
+    </div>
+</header>
+
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="table-responsive ">
+                        <table id="tblMateriales" class="table table-header table-rounded">
+                            <thead class="upper">
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th class="col-xs-2">
+                                        <input id="txtBuscarCodigo" type="text" class="form-control buscarMateriales" placeholder="Código" />
+                                    </th>
+                                    <th class="col-xs-3">
+                                        <input id="txtBuscarDescripcion" type="text" class="form-control buscarMateriales" placeholder="Descripción" />
+                                    </th>
+                                    <th class="col-xs-4">
+                                        <div class="col-xs-4">
+                                            <div class="row">
+                                                <select id="cboBuscarCampo" class="form-control">
+                                                    <option value="0"> </option>
+                                                    <option value="1">Presion</option>
+                                                    <option value="2">Ancho</option>
+                                                    <option value="3">Largo</option>
+                                                    <option value="4">Espesor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="row">
+                                                <input id="txtBuscarMin" type="text" class="form-control buscarMateriales" placeholder="Min." />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="row">
+                                                <input id="txtBuscarMax" type="text" class="form-control buscarMateriales" placeholder="Max." />
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="col-xs-3">
+                                        <select id="cboBuscarEstado" class="form-control">
+                                            <option value="2">Cualquiera</option>
+                                            <option value="1">Activo</option>
+                                            <option value="0">Inactivo </option>
+                                        </select>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="tdId hide"></th>
+                                    <th class="tdCodigo">Código</th>
+                                    <th class="tdDescripcion">Descripción</th>
+                                    <th>Pres/Anc/Lar/Esp</th>
+                                    <th>Estado</th>
+                                    <th class="tdPresion hide"></th>
+                                    <th class="tdAncho hide"></th>
+                                    <th class="tdLargo hide"></th>
+                                    <th class="tdEspesor hide"></th>
+                                    <th class="tdStockMinimo hide"></th>
+                                    <th class="tdEstado hide"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="well well-form">
+                        <div class="form-horizontal">
+                            <input id="hidId" type="hidden" class="form-control" value="0" />
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-5">
+                                    Código:
+                                </div>
+                                <div class="col-xs-7">
+                                    <input id="txtCodigo" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-5">
+                                    Descripción:
+                                </div>
+                                <div class="col-xs-7">
+                                    <input id="txtDescripcion" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-5">
+                                    Presión:
+                                </div>
+                                <div class="col-xs-7">
+                                    <input id="txtPresion" class="form-control numero" />
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-5">
+                                    Ancho:
+                                </div>
+                                <div class="col-xs-7">
+                                    <input id="txtAncho" class="form-control numero" />
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-5">
+                                    Largo:
+                                </div>
+                                <div class="col-xs-7">
+                                    <input id="txtLargo" class="form-control numero" />
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-5">
+                                    Espesor:
+                                </div>
+                                <div class="col-xs-7">
+                                    <input id="txtEspesor" class="form-control numero" />
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-5">
+                                    Stock Min:
+                                </div>
+                                <div class="col-xs-7">
+                                    <input id="txtStockMinimo" class="form-control numero"  />
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-5">
+                                    Estado:
+                                </div>
+                                <div class="col-xs-7">
+                                    <select id="cboEstado" class="form-control">
+                                        <option value="1">Activo</option>
+                                        <option value="0">Inactivo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-xs-12 text-center">
+                                    <a href="javascript:;" class="btn btn-primary-line" id="btnModificar"> Actualizar</a>
+                                    <a href="javascript:;" class="btn btn-primary-line" id="btnEliminar"> Eliminar</a>
+                                    <a href="javascript:;" class="btn btn-primary-line" id="btnCrear"> Crear</a>
+                                    <a href="javascript:;" class="btn btn-primary-line" id="btnSalir"> Cancelar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br />
+    <br />
+    <br />
+</main>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        var urlGuardarMaterial = '@Url.Action("GuardarMaterial")';
+        var urlBuscarMaterial = '@Url.Action("BuscarMaterial")';
+        var urlEliminarMaterial = '@Url.Action("EliminarMaterial")';
+
+        $(function () {
+
+            BuscarMateriales();
+
+            $('.numero').keydown(function(event) {
+                if(event.shiftKey)
+                {
+                    event.preventDefault();
+                }
+ 
+                if (event.keyCode == 46 || event.keyCode == 8)    {
+                }
+                else {
+                    if (event.keyCode < 95) {
+                        if (event.keyCode < 48 || event.keyCode > 57) {
+                            event.preventDefault();
+                        }
+                    } 
+                    else {
+                        if (event.keyCode < 96 || event.keyCode > 105) {
+                            event.preventDefault();
+                        }
+                    }
+                }
+            });
+
+            $("#cboBuscarEstado").on("change", function () {
+                BuscarMateriales();
+            });
+
+            $("#cboBuscarCampo").on("change", function () {
+                BuscarMateriales();
+            });
+
+            $(".buscarMateriales").on("keypress", function (e) {
+                if (e.which == 13) {
+                    BuscarMateriales();
+                }
+            });
+
+            $("#btnCrear").on("click", function () {
+                if (Validaciones()===true) {
+                    Guardar();
+                }
+            });
+
+            $("#btnModificar").hide();
+            $("#btnEliminar").hide();
+
+            $("#btnModificar").on("click", function () {
+                if (Validaciones() === true) {
+                    Guardar();
+                }
+            });
+
+            $("#btnEliminar").on("click", function () {
+                Eliminar();
+            });
+
+            $("#btnSalir").on("click", function () {
+                Refrescar();
+            });
+        });
+
+        function BuscarMateriales() {
+            var parametros = {
+                codigo: $("#txtBuscarCodigo").val(),
+                descripcion: $("#txtBuscarDescripcion").val(),
+                tipo: $("#cboBuscarCampo").val() == "" ? 0 : parseInt($("#cboBuscarCampo").val()),
+                min: $("#txtBuscarMin").val() == "" ? -1 : parseInt($("#txtBuscarMin").val()),
+                max: $("#txtBuscarMax").val() == "" ? 99999 : parseInt($("#txtBuscarMax").val()),
+                estado: $("#cboBuscarEstado").val() == "" ? 0 : parseInt($("#cboBuscarEstado").val())
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: urlBuscarMaterial,
+                data: JSON.stringify(parametros),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    $("#tblMateriales tbody").html("");
+
+                    if (response.Success == true) {
+                        $.each(response.Data, function (index, item) {
+                            var tr = "<tr>";
+                            tr += "<td class=\"tdId hide\">" + item.Id + "</td>";
+                            tr += "<td class='tdCodigo'><a href='javascrit:;' onclick='ModificarMaterial($(this).parent().parent())' class='text-primary'>" + item.Codigo + "</a></td>";
+                            tr += "<td class='tdDescripcion'>" + item.Descripcion + "</td>";
+                            tr += "<td>" + item.Informacion + "</td>";
+                            tr += "<td>" + item.Estado + "</td>";
+                            tr += "<td class='tdPresion hide'>" + item.Presion + "</td>";
+                            tr += "<td class='tdAncho hide'>" + item.Ancho + "</td>";
+                            tr += "<td class='tdLargo hide'>" + item.Largo + "</td>";
+                            tr += "<td class='tdEspesor hide'>" + item.Espesor + "</td>";
+                            tr += "<td class='tdStockMinimo hide'>" + item.StockMinimo + "</td>";
+                            tr += "<td class='tdEstado hide'>" + item.Estado + "</td>";
+                            tr += "</tr>";
+
+                            $("#tblMateriales tbody").append(tr);
+                        });
+                    } else {
+                        app.showMessageDialog(response.Message);
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                }
+            });
+        }
+
+        function Validaciones() {
+            var txtCodigo = $("#txtCodigo").val();
+            var codSel = $("#hidId").val();
+            
+            var noRepetido = 1;
+            if (txtCodigo != "") {
+                $('#tblMateriales').find("tbody tr").each(function () {
+                    var seleccionado = $(this).find("td.tdCodigo").text();
+                    if (codSel != txtCodigo) {
+                        if ($.trim(seleccionado) == txtCodigo) {
+                            noRepetido = noRepetido*0;
+                        }
+                    }
+                });
+                if (noRepetido == 0) {
+                    app.showMessageDialog("Código de Material ya existe");
+                    return false;
+                }
+            }
+            else
+            {
+                app.showMessageDialog("Debe seleccionar/ingresar el codigo.");
+                return false;
+            }
+            return true;
+        }
+
+        function ModificarMaterial(row) {
+            $("#btnModificar").show();
+            $("#btnEliminar").show();
+            $("#btnCrear").hide();
+            $("#tblMateriales tbody tr").css("background-color", "#fff");
+            $(row).css("background-color", "#ff0");
+
+            $("#hidId").val($(row).find("td.tdId").text());
+            $("#txtCodigo").val($(row).find("td.tdCodigo").text());
+            $("#txtDescripcion").val($(row).find("td.tdDescripcion").text());
+            $("#txtPresion").val($(row).find("td.tdPresion").text());
+            $("#txtAncho").val($(row).find("td.tdAncho").text());
+            $("#txtLargo").val($(row).find("td.tdLargo").text());
+            $("#txtEspesor").val($(row).find("td.tdEspesor").text());
+            $("#txtStockMinimo").val($(row).find("td.tdStockMinimo").text());
+
+            $("#cboEstado").val($(row).find("td.tdEstado").text());
+        }
+
+        function Guardar() {
+            
+                var model = {
+                    Id: parseInt($("#hidId").val()),
+                    Codigo: $("#txtCodigo").val(),
+                    Descripcion: $("#txtDescripcion").val(),
+                    Presion: $("#txtPresion").val(),
+                    Ancho: $("#txtAncho").val(),
+                    Largo: $("#txtLargo").val(),
+                    Espesor: $("#txtEspesor").val(),
+                    StockMinimo: $("#txtStockMinimo").val(),
+                    Estado: $("#cboEstado").val()
+                };
+
+                var mensajeConfirmacion = "";
+                if (model.Id == 0) {
+                    mensajeConfirmacion = "Seguro de crear el material.";
+                } else {
+                    mensajeConfirmacion = "Seguro de modificar el material vigente.";
+                }
+
+            
+                    app.showConfirmDialog(mensajeConfirmacion, function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: urlGuardarMaterial,
+                            data: JSON.stringify(model),
+                            dataType: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (response) {
+                                if (response.Success === true) {
+                                    var mensajeGrabadoCorrecto = "Se grabo el material con exito.";
+                                    app.showMessageDialog(mensajeGrabadoCorrecto, Refrescar);
+                                } else {
+                                    app.showMessageDialog(response.Message);
+                                }
+                            },
+                            error: function (x, xh, xhr) {
+                                console.error(xh);
+                            }
+                        });
+                    });
+            
+        }
+
+        function Eliminar() {
+            var id = parseInt($("#hidId").val());
+            app.showConfirmDialog("Esta seguro de elminar", function () {
+                $.ajax({
+                    type: 'POST',
+                    url: urlEliminarMaterial,
+                    data: JSON.stringify({ id: id }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (response) {
+                        if (response.Success === true) {
+                            var mensajeGrabadoCorrecto = "Se elimino el material con exito.";
+                            app.showMessageDialog(mensajeGrabadoCorrecto, Refrescar);
+                        } else {
+                            app.showMessageDialog(response.Message);
+                        }
+                    },
+                    error: function (x, xh, xhr) {
+                        console.error(xh);
+                    }
+                });
+            });
+        }
+
+        function Refrescar() {
+            window.location.reload();
+        }
+
+    </script>
+}

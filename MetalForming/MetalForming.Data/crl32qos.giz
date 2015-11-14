@@ -11,8 +11,6 @@ namespace MetalForming.Data
         private const string ProcedimientoAlmacenadoListarPorProducto = "dbo.ListarMaterialPorProducto";
         private const string ProcedimientoAlmacenadoListarPorBusqueda = "dbo.ListarMaterialPorBusqueda";
         private const string ProcedimientoAlmacenadoGuardar = "dbo.InsertarMaterial";
-        private const string ProcedimientoAlmacenadoActualizar = "dbo.ActualizarMaterial";
-        private const string ProcedimientoAlmacenadoEliminar = "dbo.EliminarMaterial";
 
         public IList<Material> ListarPorProducto(int idProducto)
         {
@@ -100,58 +98,14 @@ namespace MetalForming.Data
                 Context.Database.AddInParameter(comando, "@Largo", DbType.Int32, material.Largo);
                 Context.Database.AddInParameter(comando, "@Espesor", DbType.Int32, material.Espesor);
                 Context.Database.AddInParameter(comando, "@StockMinimo", DbType.Int32, material.StockMinimo);
-                Context.Database.AddInParameter(comando, "@Estado", DbType.Int32, material.Estado);
 
-                var result = Convert.ToInt32(Context.ExecuteScalar(comando));
+                var  = Convert.ToInt32(Context.ExecuteScalar(comando));
 
-                return result.ToString();
+                return idOrdenProduccion;
             }
             catch (Exception ex)
             {
-                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoGuardar);
-            }
-        }
-
-        public string ActualizarMaterial(Material material)
-        {
-            try
-            {
-                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizar);
-
-                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, material.Id);
-                Context.Database.AddInParameter(comando, "@Codigo", DbType.String, material.Codigo);
-                Context.Database.AddInParameter(comando, "@Descripcion", DbType.String, material.Descripcion);
-                Context.Database.AddInParameter(comando, "@Presion", DbType.Int32, material.Presion);
-                Context.Database.AddInParameter(comando, "@Ancho", DbType.Int32, material.Ancho);
-                Context.Database.AddInParameter(comando, "@Largo", DbType.Int32, material.Largo);
-                Context.Database.AddInParameter(comando, "@Espesor", DbType.Int32, material.Espesor);
-                Context.Database.AddInParameter(comando, "@StockMinimo", DbType.Int32, material.StockMinimo);
-                Context.Database.AddInParameter(comando, "@Estado", DbType.Int32, material.Estado);
-
-                var result = Convert.ToInt32(Context.ExecuteScalar(comando));
-
-                return result.ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizar);
-            }
-        }
-
-        public string EliminarMaterial(int id)
-        {
-            try
-            {
-                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoEliminar);
-
-                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, id);
-                var result = Convert.ToInt32(Context.ExecuteScalar(comando));
-
-                return result.ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoEliminar);
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoInsertarOrdenProduccion);
             }
         }
     }
