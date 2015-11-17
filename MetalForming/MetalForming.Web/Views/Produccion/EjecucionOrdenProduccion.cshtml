@@ -52,14 +52,14 @@
                                 <tbody>
                                     @foreach (var secuencia in Model.Secuencia)
                                     {
-                                    <tr>
-                                        <td class="hide">@secuencia.IdMaquina</td>
-                                        <td>@secuencia.Secuencia</td>
-                                        <td>@secuencia.DescripcionMaquina</td>
-                                        <td>@secuencia.FechaInicio.ToString("dd/MM/yyyy HH:mm")</td>
-                                        <td>@secuencia.FechaFin.ToString("dd/MM/yyyy HH:mm")</td>
-                                        <td>@secuencia.Estado</td>
-                                    </tr>
+                                        <tr>
+                                            <td class="hide">@secuencia.IdMaquina</td>
+                                            <td>@secuencia.Secuencia</td>
+                                            <td>@secuencia.DescripcionMaquina</td>
+                                            <td>@secuencia.FechaInicio.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@secuencia.FechaFin.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@secuencia.Estado</td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
@@ -146,8 +146,7 @@
                             <div class="form-group">
                                 <label class="col-md-12 control-label">Comentario de reanudación:</label>
                                 <div class="col-md-12">
-                                    <textarea id="txtComentarioReanudar" class="form-control" rows="4">
-                                    </textarea>
+                                    <textarea id="txtComentarioReanudar" class="form-control" rows="4"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -394,7 +393,7 @@
 
         function LeadingZero(time) {
             // Coloca un 0 delante de un valor si es necesario
-            return (time < 10) ? "0" + time : + time;
+            return (time < 10) ? "0" + time : +time;
         }
 
         function sleepFor(sleepDuration) {

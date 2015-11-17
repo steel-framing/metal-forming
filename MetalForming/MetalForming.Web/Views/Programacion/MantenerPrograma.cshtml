@@ -159,17 +159,9 @@
                                         <tr>
                                             <td class="tdIdOrdenVenta hide">@item.Id</td>
                                             <td class="tdSeleccionar">
-                                                @if (item.IdPrograma == Model.Id)
+                                                @if (Model.Id > 0)
                                                 {
-                                                    if (item.Estado == Constantes.EstadoOrdenVenta.PendienteAsignar ||
-                                                        item.Estado == Constantes.EstadoOrdenVenta.Asignado)
-                                                    {
-                                                        <input type="checkbox" class="checkbox-inline chkOV" checked="checked" />
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="checkbox" class="checkbox-inline chkOV" checked="checked" disabled="disabled" />
-                                                    }
+                                                    <input type="checkbox" class="checkbox-inline chkOV" checked="checked" disabled="disabled" />
                                                 }
                                                 else
                                                 {
@@ -280,17 +272,18 @@
                                 <div class="form-horizontal">
                                     <div class="form-group form-group-sm">
                                         <div class="col-xs-5">
+                                            Código:
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <input id="txtNumeroPrograma" class="form-control" value="@Model.Numero" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="col-xs-5">
                                             Fecha de inicio:
                                         </div>
                                         <div class="col-xs-7">
-                                            <div class="input-group datepicker-default date">
-                                                <input id="txtFechaInicioPrograma" class="form-control" value="@Model.FechaInicio.ToString("dd/MM/yyyy")" placeholder="dd/mm/aaaa" readonly="readonly" />
-                                                <label class="input-group-btn" for="txtFechaInicioPrograma">
-                                                    <span class="btn btn-sm btn-primary" type="button">
-                                                        <i class="ion-calendar"></i>
-                                                    </span>
-                                                </label>
-                                            </div>
+                                            <input id="txtFechaInicioPrograma" class="form-control" value="@Model.FechaInicio.ToString("dd/MM/yyyy")" readonly="readonly" />
                                         </div>
                                     </div>
                                     <div class="form-group form-group-sm">
@@ -298,14 +291,7 @@
                                             Fecha de fin:
                                         </div>
                                         <div class="col-xs-7">
-                                            <div class="input-group datepicker-default date">
-                                                <input id="txtFechaFinPrograma" class="form-control" value="@Model.FechaFin.ToString("dd/MM/yyyy")" placeholder="dd/mm/aaaa" readonly="readonly" />
-                                                <label class="input-group-btn" for="txtFechaFinPrograma">
-                                                    <span class="btn btn-sm btn-primary" type="button">
-                                                        <i class="ion-calendar"></i>
-                                                    </span>
-                                                </label>
-                                            </div>
+                                            <input id="txtFechaFinPrograma" class="form-control" value="@Model.FechaFin.ToString("dd/MM/yyyy")" readonly="readonly" />
                                         </div>
                                     </div>
                                     <div class="form-group form-group-sm">
@@ -313,13 +299,12 @@
                                             Cantidad de OV:
                                         </div>
                                         <div class="col-xs-7">
-                                            <input id="txtCantidadOV" class="form-control" value="@Model.CantidadOV" readonly="readonly" />
+                                            <input id="txtCantidadOV" class="form-control" value="@Model.CantidadOV" readonly="readonly"/>
                                         </div>
                                     </div>
                                     <div class="form-group form-group-sm">
                                         <div class="col-xs-12 text-center">
                                             <a href="javascript:;" class="btn btn-primary-line" id="btnFinalizarModal"> Finalizar</a>
-                                            <a href="javascript:;" class="btn btn-primary-line" id="btnGuardar"> Guardar</a>
                                             <a href="javascript:;" class="btn btn-primary-line" id="btnSalir"> Cancelar</a>
                                         </div>
                                     </div>
