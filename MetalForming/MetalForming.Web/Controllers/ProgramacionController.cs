@@ -26,11 +26,6 @@ namespace MetalForming.Web.Controllers
                     model.PlanVigente = service.ObtenerPlanVigente();
                 }
 
-                using (var service = new ProduccionServiceClient())
-                {
-                    model.OrdenesVenta = service.ListarOrdenesVentaPendiente();
-                }
-
                 if (model.PlanVigente != null && model.PlanVigente.Estado == Constantes.EstadoPlan.Pendiente)
                 {
                     using (var service = new ProduccionServiceClient())
@@ -53,20 +48,27 @@ namespace MetalForming.Web.Controllers
                             model.CantidadOV = programaVigente.CantidadOV;
                             model.Estado = programaVigente.Estado;
 
-                            model.ProgramasAnteriores.Remove(programaVigente);   
-                        }
+                            model.ProgramasAnteriores.Remove(programaVigente);
 
-                        IList<OrdenVenta> ordenesVentaPorPrograma;
+                            IList<OrdenVenta> ordenesVentaPorPrograma;
+                            using (var service = new ProduccionServiceClient())
+                            {
+                                ordenesVentaPorPrograma = service.ListarOrdenesVentaPorPrograma(model.Id);
+                            }
+                            if (ordenesVentaPorPrograma.Count > 0)
+                            {
+                                foreach (var ordenVenta in ordenesVentaPorPrograma)
+                                {
+                                    model.OrdenesVenta.Add(ordenVenta);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
                         using (var service = new ProduccionServiceClient())
                         {
-                             ordenesVentaPorPrograma = service.ListarOrdenesVentaPorPrograma(model.Id);
-                        }
-                        if (ordenesVentaPorPrograma.Count > 0)
-                        {
-                            foreach (var ordenVenta in ordenesVentaPorPrograma)
-                            {
-                                model.OrdenesVenta.Add(ordenVenta);
-                            }
+                            model.OrdenesVenta = service.ListarOrdenesVentaPendiente();
                         }
                     }
                 }

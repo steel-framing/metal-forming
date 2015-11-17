@@ -53,29 +53,11 @@
                                 <td>
                                     <strong>Elegir:</strong>
                                 </td>
-                                @if (Model.CantidadProducto <= -1000)
+                                @if (Model.CantidadProducto <= 0)
                                 {
                                     <td>
                                         <label for="chkTomarStock">
-                                            <input id="chkTomarStock" type="checkbox" class="checkbox-inline" checked="checked" /> Tomar de stock
-                                        </label>
-                                    </td>
-                                }
-                                else if (Model.CantidadProducto > -1000 && Model.CantidadProducto <= 0)
-                                {
-                                    <td>
-                                        <label for="chkHaProducir">
-                                            <input id="chkHaProducir" type="checkbox" class="checkbox-inline" checked="checked" /> Ha Producir
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="col-xs-5">
-                                            <input id="txtLimiteProduccion" type="text" class="form-control" value="@(Model.CantidadProducto < 0 ? 0 : Model.CantidadProducto)" data-value-max="1000" data-value-min="0" onkeypress=" return ValidarSoloNumeros(event); " />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <label for="chkTomarStock">
-                                            <input id="chkTomarStock" type="checkbox" class="checkbox-inline" /> Tomar de stock
+                                            <input id="chkTomarStock" type="radio" class="checkbox-inline" checked="checked" name="elegir" /> Tomar de stock
                                         </label>
                                     </td>
                                 }
@@ -83,12 +65,12 @@
                                 {
                                     <td>
                                         <label for="chkHaProducir">
-                                            <input id="chkHaProducir" type="checkbox" class="checkbox-inline" checked="checked" /> Ha Producir
+                                            <input id="chkHaProducir" type="radio" class="checkbox-inline" checked="checked" name="elegir" /> Ha Producir
                                         </label>
                                     </td>
                                     <td>
                                         <div class="col-xs-5">
-                                            <input id="txtLimiteProduccion" type="text" class="form-control" value="@(Model.CantidadProducto < 0 ? 0 : Model.CantidadProducto)" data-value-max="@(Model.CantidadProducto + 1000)" data-value-min="@Model.CantidadProducto" onkeypress="return ValidarSoloNumeros(event);" />
+                                            <input id="txtLimiteProduccion" type="text" class="form-control" value="@Model.CantidadProducto" data-value-max="@(Model.CantidadProducto + 1000)" data-value-min="@Model.CantidadProducto" onkeypress="return ValidarSoloNumeros(event);" />
                                         </div>
                                     </td>
                                 }
