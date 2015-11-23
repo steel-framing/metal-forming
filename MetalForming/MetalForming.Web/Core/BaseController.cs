@@ -10,7 +10,7 @@ namespace MetalForming.Web.Core
     {
         #region Propiedades
 
-        protected static readonly ILog Logger = LogManager.GetLogger("o&c");
+        private static readonly ILog Logger = LogManager.GetLogger("o&c");
 
         #endregion
 

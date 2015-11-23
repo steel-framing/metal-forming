@@ -20,5 +20,8 @@ namespace MetalForming.BusinessEntities
 
         [DataMember]
         public DateTime FechaFin { get; set; }
+
+        [DataMember]
+        public string Estado { get; set; }
     }
 }

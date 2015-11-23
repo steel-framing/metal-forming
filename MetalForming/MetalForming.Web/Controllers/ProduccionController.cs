@@ -10,6 +10,16 @@ namespace MetalForming.Web.Controllers
 {
     public class ProduccionController : BaseController
     {
+        #region Propiedades
+
+        private OrdenProduccionModel OrdenProduccionActual
+        {
+            get { return Session["OrdenProduccion"] as OrdenProduccionModel; }
+            set { Session.Add("OrdenProduccion", value); }
+        }
+
+        #endregion
+
         #region Acciones
 
         #region Ejecutar Orden Producción
@@ -93,9 +103,12 @@ namespace MetalForming.Web.Controllers
                         PorcentajeFalla = item.Maquina.PorcentajeFalla,
                         Tiempo = item.Maquina.Tiempo,
                         FechaInicio = item.FechaInicio,
-                        FechaFin = item.FechaFin
+                        FechaFin = item.FechaFin,
+                        Estado = item.Estado
                     });
                 }
+
+                OrdenProduccionActual = model;
             }
             catch (Exception ex)
             {
@@ -107,8 +120,24 @@ namespace MetalForming.Web.Controllers
         [HttpPost]
         public JsonResult IniciarOrdenProduccion(string numero)
         {
-            //Cambiar estado -> En Proceso
-            return Json("Ok");
+            var response = new JsonResponse();
+            try
+            {
+                foreach (var secuencia in OrdenProduccionActual.Secuencia)
+                {
+                       
+                }
+
+                response.Success = true;
+                response.Message = "Ok";
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+
+                LogError(ex);
+            }
+            return Json(response);
         }
 
         [HttpGet]

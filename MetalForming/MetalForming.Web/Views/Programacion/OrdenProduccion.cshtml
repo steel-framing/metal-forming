@@ -9,6 +9,7 @@
 @Html.HiddenFor(p => p.IdOrdenVenta)
 @Html.HiddenFor(p => p.IdProducto)
 @Html.HiddenFor(p => p.CantidadProducto)
+@Html.HiddenFor(p => p.CantidadOrdenVenta)
 
 <header class="header-crumb">
     <div class="container">
@@ -245,7 +246,7 @@
                                             <input id="txtBuscarTipo" type="text" class="form-control" placeholder="Tipo" />
                                         </th>
                                         <th>
-                                            <input id="txtBuscarPLD" type="text" class="form-control" placeholder="PLD" />
+                                            <input id="txtBuscarPLD" type="text" class="form-control" placeholder="PLC" />
                                         </th>
                                         <th>
                                             <input id="txtBuscarConfiguracion" type="text" class="form-control" placeholder="Config." />
@@ -261,7 +262,7 @@
                                         <th>Sel.</th>
                                         <th>Maquina</th>
                                         <th>Tipo</th>
-                                        <th>PLD</th>
+                                        <th>PLC</th>
                                         <th>Config.</th>
                                         <th>Ver</th>
                                     </tr>
@@ -298,7 +299,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4 control-label">PDL:</label>
+                                <label class="col-md-4 control-label">PLC:</label>
                                 <div class="col-md-8">
                                     <input id="txtPDLMaquina" type="text" class="form-control" readonly="readonly" />
                                 </div>
@@ -426,13 +427,15 @@
             return patron.test(te);
         }
 
-        function ValidarCantidadLimiteProduccion() {
+        function ValidarCantidadLimiteProduccion(soloValidar) {
             var valor = parseInt($("#txtLimiteProduccion").val());
             var valorMax = parseInt($("#txtLimiteProduccion").attr("data-value-max"));
             var valorMin = parseInt($("#txtLimiteProduccion").attr("data-value-min"));
 
             if (valor >= valorMin && valor <= valorMax) {
-                CalcularCantidadCompraMaterial();
+                if (soloValidar != 1) {
+                    CalcularCantidadCompraMaterial();
+                }
                 return true;
             } else {
                 app.showMessageDialog("Ud. debe ingresar un valor como máximo de " + valorMax + " y como mínimo de " + valorMin);
@@ -627,7 +630,9 @@
         function Guardar() {
             var model = {
                 IdOrdenVenta: $("#IdOrdenVenta").val(),
+                IdProducto: $("#IdProducto").val(),
                 CantidadProducto: $("#CantidadProducto").val(),
+                CantidadOrdenVenta: $("#CantidadOrdenVenta").val(),
                 TomarStock: $("#chkTomarStock").is(':checked'),
                 Materiales: new Array(),
                 Secuencia: new Array()
@@ -681,13 +686,16 @@
         }
 
         function Validar() {
+            if ($("#chkTomarStock").is(":checked")) {
+                return true;
+            }
             var result = true;
 
             if ($("#txtLimiteProduccion").val() == "") {
                 app.showMessageDialog("Debe ingresar la cantidad ha producir (Límite de venta).");
                 result = false;
             } else {
-                result = ValidarCantidadLimiteProduccion();
+                result = ValidarCantidadLimiteProduccion(1);
             }
 
             if (result == true) {

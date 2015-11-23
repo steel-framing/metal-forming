@@ -132,7 +132,7 @@
     <br />
 </main>
 
-<div class="modal fade" id="modalReanudar">
+<div id="modalReanudar" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade" data-backdrop="static" style="z-index:100000;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -161,7 +161,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalDetener">
+<div id="modalDetener" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade" data-backdrop="static" style="z-index:100000;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -190,8 +190,7 @@
     </div>
 </div>
 
-
-<div class="modal fade" id="modalError">
+<div id="modalError" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade" data-backdrop="static" style="z-index:100000;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -303,7 +302,7 @@
             $("#spaTiempoContenedor").show();
             EmpezarDetener();
             AgregarEvento(usuario, "Inicio", "El usuario marco el inicio de la producción.");
-            //ErrorEjecutar();
+            //Ejecutar();
         }
 
         function Ejecutar() {
@@ -320,7 +319,7 @@
             AgregarEvento("PLD 004", "Paso 4", "Comentario 4.");
 
             sleepFor(2000);
-            Error();
+            EventoError();
 
             sleepFor(2000);
             AgregarEvento("PLD 005", "Paso 5", "Comentario 5.");
@@ -329,7 +328,7 @@
             AgregarEvento("PLD 006", "Paso 6", "Comentario 5.");
         }
 
-        function Error() {
+        function EventoError() {
             $("#modalError").modal("show");
             $("#btnReanudar").removeClass("disabled");
             $("#btnDetener").removeClass("disabled");

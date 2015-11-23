@@ -384,10 +384,31 @@ namespace MetalForming.Web.ProduccionService {
     public partial class Material : MetalForming.Web.ProduccionService.BaseEntity {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int AnchoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int CantidadField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescripcionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int EspesorField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int EstadoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string InformacionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int LargoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PresionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ReservadoField;
@@ -397,6 +418,19 @@ namespace MetalForming.Web.ProduccionService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int StockMinimoField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Ancho {
+            get {
+                return this.AnchoField;
+            }
+            set {
+                if ((this.AnchoField.Equals(value) != true)) {
+                    this.AnchoField = value;
+                    this.RaisePropertyChanged("Ancho");
+                }
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int Cantidad {
@@ -412,6 +446,19 @@ namespace MetalForming.Web.ProduccionService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Codigo {
+            get {
+                return this.CodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoField, value) != true)) {
+                    this.CodigoField = value;
+                    this.RaisePropertyChanged("Codigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Descripcion {
             get {
                 return this.DescripcionField;
@@ -420,6 +467,71 @@ namespace MetalForming.Web.ProduccionService {
                 if ((object.ReferenceEquals(this.DescripcionField, value) != true)) {
                     this.DescripcionField = value;
                     this.RaisePropertyChanged("Descripcion");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Espesor {
+            get {
+                return this.EspesorField;
+            }
+            set {
+                if ((this.EspesorField.Equals(value) != true)) {
+                    this.EspesorField = value;
+                    this.RaisePropertyChanged("Espesor");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Estado {
+            get {
+                return this.EstadoField;
+            }
+            set {
+                if ((this.EstadoField.Equals(value) != true)) {
+                    this.EstadoField = value;
+                    this.RaisePropertyChanged("Estado");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Informacion {
+            get {
+                return this.InformacionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.InformacionField, value) != true)) {
+                    this.InformacionField = value;
+                    this.RaisePropertyChanged("Informacion");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Largo {
+            get {
+                return this.LargoField;
+            }
+            set {
+                if ((this.LargoField.Equals(value) != true)) {
+                    this.LargoField = value;
+                    this.RaisePropertyChanged("Largo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Presion {
+            get {
+                return this.PresionField;
+            }
+            set {
+                if ((this.PresionField.Equals(value) != true)) {
+                    this.PresionField = value;
+                    this.RaisePropertyChanged("Presion");
                 }
             }
         }
@@ -876,6 +988,9 @@ namespace MetalForming.Web.ProduccionService {
     public partial class OrdenProduccionSecuencia : MetalForming.Web.ProduccionService.BaseEntity {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EstadoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime FechaFinField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -889,6 +1004,19 @@ namespace MetalForming.Web.ProduccionService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SecuenciaField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Estado {
+            get {
+                return this.EstadoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EstadoField, value) != true)) {
+                    this.EstadoField = value;
+                    this.RaisePropertyChanged("Estado");
+                }
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime FechaFin {

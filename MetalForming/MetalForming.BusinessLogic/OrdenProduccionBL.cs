@@ -15,6 +15,7 @@ namespace MetalForming.BusinessLogic
         private readonly OrdenProduccionDA _ordenProduccionDA = new OrdenProduccionDA();
         private readonly OrdenVentaDA _ordenVentaDA = new OrdenVentaDA();
         private readonly ProductoDA _productoDA = new ProductoDA();
+        private readonly MaterialDA _materialDA = new MaterialDA();
         
         public IList<OrdenProduccion> ListarPorPrograma(int idPrograma)
         {
@@ -82,7 +83,7 @@ namespace MetalForming.BusinessLogic
                     if (ordenProduccion.TomarStock)
                     {
                         //Reserva de producto --> Disminuir el Stock de Producto
-                        _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.CantidadProducto);
+                        _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.OrdenVenta.Cantidad);
 
                         //Cambiar estado a Orden de Venta
                         _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.ReservadoStock);
@@ -98,6 +99,10 @@ namespace MetalForming.BusinessLogic
                             material.IdOrdenProduccion = idOrdenProduccion;
 
                             _ordenProduccionDA.RegistrarMaterial(material);
+
+                            var cantidadUtilizada = material.Comprar - material.Requerido;
+
+                            _materialDA.ActualizarStock(material.Material.Id, cantidadUtilizada);
                         }
 
                         //Registrar Maquinas
@@ -108,8 +113,8 @@ namespace MetalForming.BusinessLogic
                             _ordenProduccionDA.RegistrarSecuencia(secuencia);
                         }
 
-                        //Reserva de producto --> Disminuir el Stock de Producto
-                        _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.CantidadProducto);
+                        //Reserva de producto --> Stock de Producto
+                        _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, ordenProduccion.CantidadProducto - ordenProduccion.OrdenVenta.Cantidad);
 
                         //Cambiar estado a Orden de Venta
                         _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.Programado);

@@ -37,5 +37,17 @@
             public const string Detenido = "Detenido";
             public const string Terminado = "Terminado";
         }
+
+        public class EstadoProcesoMaquina
+        {
+            public const string PendienteAprobar = "Pendiente Aprobar";
+            public const string Rechazado = "Observado";
+            public const string Programado = "Programado";
+            public const string ReProgramado = "ReProgramado";
+            public const string Asignado = "Asignado";
+            public const string Conformado = "Conformado";
+            public const string Detenido = "Detenido";
+            public const string Terminado = "Terminado";
+        }
     }
 }

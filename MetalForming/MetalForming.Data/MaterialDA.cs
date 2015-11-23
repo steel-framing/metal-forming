@@ -13,6 +13,7 @@ namespace MetalForming.Data
         private const string ProcedimientoAlmacenadoGuardar = "dbo.InsertarMaterial";
         private const string ProcedimientoAlmacenadoActualizar = "dbo.ActualizarMaterial";
         private const string ProcedimientoAlmacenadoEliminar = "dbo.EliminarMaterial";
+        private const string ProcedimientoAlmacenadoActualizarStock = "dbo.ActualizarStockMaterial";
 
         public IList<Material> ListarPorProducto(int idProducto)
         {
@@ -152,6 +153,23 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoEliminar);
+            }
+        }
+
+        public void ActualizarStock(int id, int cantidad)
+        {
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizarStock);
+
+                Context.Database.AddInParameter(comando, "@Id", DbType.Int32, id);
+                Context.Database.AddInParameter(comando, "@Cantidad", DbType.Int32, cantidad);
+
+                Context.Database.ExecuteNonQuery(comando);
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarStock);
             }
         }
     }
