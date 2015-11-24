@@ -5,6 +5,8 @@ using System.Web.Mvc;
 using MetalForming.Web.Core;
 using MetalForming.Web.Models;
 using MetalForming.Web.ProduccionService;
+using System.IO;
+using System.Text;
 
 namespace MetalForming.Web.Controllers
 {
@@ -104,7 +106,8 @@ namespace MetalForming.Web.Controllers
                         Tiempo = item.Maquina.Tiempo,
                         FechaInicio = item.FechaInicio,
                         FechaFin = item.FechaFin,
-                        Estado = item.Estado
+                        Estado = item.Estado,
+                        PLC = item.Maquina.PLD
                     });
                 }
 
@@ -118,14 +121,23 @@ namespace MetalForming.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult IniciarOrdenProduccion(string numero)
+        public JsonResult IniciarOrdenProduccion()
         {
             var response = new JsonResponse();
             try
             {
                 foreach (var secuencia in OrdenProduccionActual.Secuencia)
                 {
-                       
+                    var directorio = string.Format(@"C:\MetalForming\{0}\{1}", OrdenProduccionActual.Numero, secuencia.PLC);
+
+                    Directory.CreateDirectory(directorio);
+
+                    var archivo = Path.Combine(directorio, "plc.txt");
+
+                    if (System.IO.File.Exists(archivo))
+                        System.IO.File.Delete(archivo);
+
+                    System.IO.File.Create(archivo);
                 }
 
                 response.Success = true;
@@ -138,6 +150,48 @@ namespace MetalForming.Web.Controllers
                 LogError(ex);
             }
             return Json(response);
+        }
+
+        public JsonResult ProcesarOrdenProduccion(int idMaquina)
+        {
+            var maquinaActual = OrdenProduccionActual.Secuencia.FirstOrDefault(p => p.IdMaquina == idMaquina);
+
+            var archivo = string.Format(@"C:\MetalForming\{0}\{1}\plc.txt", OrdenProduccionActual.Numero, maquinaActual.PLC);
+
+            var texto = string.Empty;
+
+            using (StreamReader reader = new StreamReader(archivo))
+            {
+                texto = reader.ReadToEnd();
+            }
+
+            if (string.IsNullOrEmpty(texto))
+            {
+                using (var stream = new FileStream(archivo, FileMode.Open, FileAccess.Write))
+                {
+                    using (var writer = new StreamWriter(stream))
+                    {
+                        writer.WriteLine("#Maquina:" + maquinaActual.DescripcionMaquina + Environment.NewLine);
+                        writer.WriteLine("#FechaInicioProduccion:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + Environment.NewLine);
+                        writer.WriteLine("#FechaFinProduccion:" + Environment.NewLine);
+                        writer.WriteLine("#Longitud:" + Environment.NewLine);
+                        writer.WriteLine("#Espesor:3" + Environment.NewLine);
+                        writer.WriteLine("#Ciclo:1-5" + Environment.NewLine);
+                        writer.WriteLine("#NoCiclos:" + Environment.NewLine);
+                        writer.WriteLine("#MotivosDeParada:" + Environment.NewLine);
+                        writer.WriteLine("#TiempoParada:" + Environment.NewLine);
+                        writer.WriteLine("#TiempoProduccion:" + Environment.NewLine);
+                        writer.WriteLine("#UnidadesProducidas:" + Environment.NewLine);
+                        writer.WriteLine("#UnidadesDefectuosas:");
+                    }
+                }
+            }
+            else
+            {
+
+            }
+
+            return Json("");
         }
 
         [HttpGet]

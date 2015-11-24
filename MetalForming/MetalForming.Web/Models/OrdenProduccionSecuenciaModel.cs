@@ -23,5 +23,7 @@ namespace MetalForming.Web.Models
         public DateTime FechaFin { get; set; }
 
         public string Estado { get; set; }
+
+        public string PLC { get; set; }
     }
 }
