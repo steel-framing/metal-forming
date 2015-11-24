@@ -310,7 +310,8 @@ namespace MetalForming.Data
                                 Tiempo = GetDataValue<string>(lector, "Tiempo"),
                                 Longitud = GetDataValue<int>(lector, "Longitud"),
                                 Espesor = GetDataValue<int>(lector, "Espesor"),
-                                Ciclo = GetDataValue<string>(lector, "Ciclo")
+                                Ciclo = GetDataValue<string>(lector, "Ciclo"),
+                                PLD = GetDataValue<string>(lector, "PLD")
                             }
                         };
 

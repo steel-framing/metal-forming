@@ -210,5 +210,17 @@ namespace MetalForming.BusinessLogic
                 throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
             }
         }
+
+        public void ActualizarEstado(int id, string estado)
+        {
+            try
+            {
+                _ordenProduccionDA.ActualizarEstado(id, estado);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
     }
 }

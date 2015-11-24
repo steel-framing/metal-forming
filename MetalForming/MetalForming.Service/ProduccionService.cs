@@ -116,6 +116,11 @@ namespace MetalForming.Service
             _ordenProduccionBL.GuardarAsignaciones(ordenesProduccion, operadores);
         }
 
+        public void ActualizarEstadoOrdenProduccion(int id, string estado)
+        {
+            _ordenProduccionBL.ActualizarEstado(id, estado);
+        }
+
         #endregion
 
         #region Plan

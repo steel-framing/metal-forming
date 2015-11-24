@@ -7,6 +7,7 @@ using MetalForming.Web.Models;
 using MetalForming.Web.ProduccionService;
 using System.IO;
 using System.Text;
+using MetalForming.Common;
 
 namespace MetalForming.Web.Controllers
 {
@@ -131,7 +132,7 @@ namespace MetalForming.Web.Controllers
             {
                 using (var service = new ProduccionServiceClient())
                 {
-                    
+                    service.ActualizarEstadoOrdenProduccion(OrdenProduccionActual.Id, Constantes.EstadoOrdenPoduccion.Conformado);
                 }
 
                 foreach (var secuencia in OrdenProduccionActual.Secuencia)
@@ -145,7 +146,9 @@ namespace MetalForming.Web.Controllers
                     if (System.IO.File.Exists(archivo))
                         System.IO.File.Delete(archivo);
 
-                    System.IO.File.Create(archivo);
+                    var file = System.IO.File.Create(archivo);
+                    file.Close();
+                    file.Dispose();
                 }
 
                 response.Success = true;

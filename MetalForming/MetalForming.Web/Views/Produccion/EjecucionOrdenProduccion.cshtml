@@ -21,7 +21,7 @@
                 <div class="text-right">
                     <strong class="text-white">Número OP:</strong> <strong>@Model.Numero</strong>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <strong class="text-white">Estado:</strong> <strong>@Model.Estado</strong>
+                    <strong class="text-white">Estado:</strong> <strong id="strEstado">@Model.Estado</strong>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <span id="spaTiempoContenedor" style="display: none;"><strong class="text-white">Tiempo:</strong> <strong><span id="crono" class="text-danger"></span></strong></span>
                 </div>
@@ -225,11 +225,14 @@
 
     <script type="text/javascript">
 
-        var usuario = "USU 01";
+        var usuario = "USUARIO 01";
         var inicio = 0;
         var timeout = 0;
 
+        var estadoConformado = '@Constantes.EstadoOrdenPoduccion.Conformado';
+
         var urlFinalizar = '@Url.Action("FinalizarOrdenProduccion")';
+        var urlCrearCarpetasArcivosPLC = '@Url.Action("CrearCarpetasArcivosPLC")';
 
         $(function () {
             $(".checkMaterial").on("change", function () {
@@ -297,35 +300,39 @@
         }
 
         function Iniciar() {
+            $("input[type='checkbox']").attr("disabled", "disabled");
             $("#btnIniciar").addClass("disabled");
             $("#btnFinalizar").removeClass("disabled");
             $("#spaTiempoContenedor").show();
             EmpezarDetener();
             AgregarEvento(usuario, "Inicio", "El usuario marco el inicio de la producción.");
-            //Ejecutar();
-        }
+            
+            //Actualiza estado de OP a "Conformado" y Crear carpetas PLC
+            $.ajax({
+                type: 'POST',
+                url: urlCrearCarpetasArcivosPLC,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === true) {
+                        
+                        $("#strEstado").text(estadoConformado);
 
-        function Ejecutar() {
-            sleepFor(2000);
-            AgregarEvento("PLD 001", "Paso 1", "Comentario 1.");
+                        
 
-            sleepFor(2000);
-            AgregarEvento("PLD 002", "Paso 2", "Comentario 2.");
 
-            sleepFor(2000);
-            AgregarEvento("PLD 003", "Paso 3", "Comentario 3.");
-
-            sleepFor(2000);
-            AgregarEvento("PLD 004", "Paso 4", "Comentario 4.");
-
-            sleepFor(2000);
-            EventoError();
-
-            sleepFor(2000);
-            AgregarEvento("PLD 005", "Paso 5", "Comentario 5.");
-
-            sleepFor(2000);
-            AgregarEvento("PLD 006", "Paso 6", "Comentario 5.");
+                    } else {
+                        app.showMessageDialog(response.Message);
+                        AgregarEvento(usuario, "Error", response.Message);
+                        EmpezarDetener();
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                    AgregarEvento(usuario, "Error", "Ocurrió un error durante el inicio de la producción.");
+                    EmpezarDetener();
+                }
+            });
         }
 
         function EventoError() {
