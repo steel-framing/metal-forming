@@ -96,9 +96,12 @@
       <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q5:BaseEntity">
         <xs:sequence>
           <xs:element minOccurs="0" name="CantidadRodillos" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Ciclo" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Configuracion" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Espesor" type="xs:int" />
           <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Longitud" type="xs:int" />
           <xs:element minOccurs="0" name="MaximoCaliente" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="MaximoFrio" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="PLD" nillable="true" type="xs:string" />

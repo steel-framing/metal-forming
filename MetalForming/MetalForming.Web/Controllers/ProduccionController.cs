@@ -107,7 +107,10 @@ namespace MetalForming.Web.Controllers
                         FechaInicio = item.FechaInicio,
                         FechaFin = item.FechaFin,
                         Estado = item.Estado,
-                        PLC = item.Maquina.PLD
+                        PLC = item.Maquina.PLD,
+                        Ciclo = item.Maquina.Ciclo,
+                        Longitud = item.Maquina.Longitud,
+                        Espesor = item.Maquina.Espesor
                     });
                 }
 
@@ -121,11 +124,16 @@ namespace MetalForming.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult IniciarOrdenProduccion()
+        public JsonResult CrearCarpetasArcivosPLC()
         {
             var response = new JsonResponse();
             try
             {
+                using (var service = new ProduccionServiceClient())
+                {
+                    
+                }
+
                 foreach (var secuencia in OrdenProduccionActual.Secuencia)
                 {
                     var directorio = string.Format(@"C:\MetalForming\{0}\{1}", OrdenProduccionActual.Numero, secuencia.PLC);
@@ -152,21 +160,16 @@ namespace MetalForming.Web.Controllers
             return Json(response);
         }
 
-        public JsonResult ProcesarOrdenProduccion(int idMaquina)
+        [HttpPost]
+        public JsonResult IniciarProceso(int idMaquina)
         {
-            var maquinaActual = OrdenProduccionActual.Secuencia.FirstOrDefault(p => p.IdMaquina == idMaquina);
-
-            var archivo = string.Format(@"C:\MetalForming\{0}\{1}\plc.txt", OrdenProduccionActual.Numero, maquinaActual.PLC);
-
-            var texto = string.Empty;
-
-            using (StreamReader reader = new StreamReader(archivo))
+            var response = new JsonResponse();
+            try
             {
-                texto = reader.ReadToEnd();
-            }
+                var maquinaActual = OrdenProduccionActual.Secuencia.FirstOrDefault(p => p.IdMaquina == idMaquina);
 
-            if (string.IsNullOrEmpty(texto))
-            {
+                var archivo = string.Format(@"C:\MetalForming\{0}\{1}\plc.txt", OrdenProduccionActual.Numero, maquinaActual.PLC);
+
                 using (var stream = new FileStream(archivo, FileMode.Open, FileAccess.Write))
                 {
                     using (var writer = new StreamWriter(stream))
@@ -174,9 +177,9 @@ namespace MetalForming.Web.Controllers
                         writer.WriteLine("#Maquina:" + maquinaActual.DescripcionMaquina + Environment.NewLine);
                         writer.WriteLine("#FechaInicioProduccion:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + Environment.NewLine);
                         writer.WriteLine("#FechaFinProduccion:" + Environment.NewLine);
-                        writer.WriteLine("#Longitud:" + Environment.NewLine);
-                        writer.WriteLine("#Espesor:3" + Environment.NewLine);
-                        writer.WriteLine("#Ciclo:1-5" + Environment.NewLine);
+                        writer.WriteLine("#Longitud:" + maquinaActual.Longitud + Environment.NewLine);
+                        writer.WriteLine("#Espesor:" + maquinaActual.Espesor + Environment.NewLine);
+                        writer.WriteLine("#Ciclo:" + maquinaActual.Ciclo + Environment.NewLine);
                         writer.WriteLine("#NoCiclos:" + Environment.NewLine);
                         writer.WriteLine("#MotivosDeParada:" + Environment.NewLine);
                         writer.WriteLine("#TiempoParada:" + Environment.NewLine);
@@ -186,13 +189,16 @@ namespace MetalForming.Web.Controllers
                     }
                 }
             }
-            else
+            catch (Exception ex)
             {
+                response.Message = ex.Message;
 
+                LogError(ex);
             }
-
-            return Json("");
+            return Json(response);
         }
+
+
 
         [HttpGet]
         public ActionResult FinalizarOrdenProduccion(string numero, string tiempo)

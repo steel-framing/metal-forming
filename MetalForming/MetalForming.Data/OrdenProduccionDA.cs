@@ -301,12 +301,16 @@ namespace MetalForming.Data
                             Secuencia = GetDataValue<int>(lector, "Secuencia"),
                             FechaInicio = GetDataValue<DateTime>(lector, "FechaInicio"),
                             FechaFin = GetDataValue<DateTime>(lector, "FechaFin"),
+                            Estado = GetDataValue<string>(lector, "Estado"),
                             Maquina = new Maquina
                             {
                                 Id = GetDataValue<int>(lector, "IdMaquina"),
                                 Descripcion = GetDataValue<string>(lector, "Descripcion"),
                                 PorcentajeFalla = GetDataValue<string>(lector, "PorcentajeFalla"),
-                                Tiempo = GetDataValue<string>(lector, "Tiempo")
+                                Tiempo = GetDataValue<string>(lector, "Tiempo"),
+                                Longitud = GetDataValue<int>(lector, "Longitud"),
+                                Espesor = GetDataValue<int>(lector, "Espesor"),
+                                Ciclo = GetDataValue<string>(lector, "Ciclo")
                             }
                         };
 
@@ -371,6 +375,7 @@ namespace MetalForming.Data
                 Context.Database.AddInParameter(comando, "@IdMaquina", DbType.Int32, ordenProduccionSecuencia.Maquina.Id);
                 Context.Database.AddInParameter(comando, "@FechaInicio", DbType.DateTime, ordenProduccionSecuencia.FechaInicio);
                 Context.Database.AddInParameter(comando, "@FechaFin", DbType.DateTime, ordenProduccionSecuencia.FechaFin);
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, ordenProduccionSecuencia.Estado);
 
                 Context.ExecuteNonQuery(comando);
             }

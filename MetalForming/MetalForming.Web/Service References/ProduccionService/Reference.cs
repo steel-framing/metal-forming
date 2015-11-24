@@ -586,13 +586,22 @@ namespace MetalForming.Web.ProduccionService {
         private string CantidadRodillosField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CicloField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ConfiguracionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescripcionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int EspesorField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EstadoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int LongitudField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MaximoCalienteField;
@@ -632,6 +641,19 @@ namespace MetalForming.Web.ProduccionService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Ciclo {
+            get {
+                return this.CicloField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CicloField, value) != true)) {
+                    this.CicloField = value;
+                    this.RaisePropertyChanged("Ciclo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Configuracion {
             get {
                 return this.ConfiguracionField;
@@ -658,6 +680,19 @@ namespace MetalForming.Web.ProduccionService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Espesor {
+            get {
+                return this.EspesorField;
+            }
+            set {
+                if ((this.EspesorField.Equals(value) != true)) {
+                    this.EspesorField = value;
+                    this.RaisePropertyChanged("Espesor");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Estado {
             get {
                 return this.EstadoField;
@@ -666,6 +701,19 @@ namespace MetalForming.Web.ProduccionService {
                 if ((object.ReferenceEquals(this.EstadoField, value) != true)) {
                     this.EstadoField = value;
                     this.RaisePropertyChanged("Estado");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Longitud {
+            get {
+                return this.LongitudField;
+            }
+            set {
+                if ((this.LongitudField.Equals(value) != true)) {
+                    this.LongitudField = value;
+                    this.RaisePropertyChanged("Longitud");
                 }
             }
         }

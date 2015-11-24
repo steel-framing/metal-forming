@@ -109,6 +109,7 @@ namespace MetalForming.BusinessLogic
                         foreach (var secuencia in ordenProduccion.Secuencia)
                         {
                             secuencia.IdOrdenProduccion = idOrdenProduccion;
+                            secuencia.Estado = Constantes.EstadoProcesoMaquina.Pendiente;
 
                             _ordenProduccionDA.RegistrarSecuencia(secuencia);
                         }

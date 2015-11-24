@@ -41,5 +41,14 @@ namespace MetalForming.BusinessEntities
 
         [DataMember]
         public string Tiempo { get; set; }
+
+        [DataMember]
+        public int Longitud { get; set; }
+
+        [DataMember]
+        public int Espesor { get; set; }
+
+        [DataMember]
+        public string Ciclo { get; set; }
     }
 }
