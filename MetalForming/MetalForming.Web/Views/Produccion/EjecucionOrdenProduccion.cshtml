@@ -47,18 +47,20 @@
                                         <th style="width: 25%;">F.Inicio</th>
                                         <th style="width: 25%;">F.Fin</th>
                                         <th style="width: 20%;">Estado</th>
+                                        <th class="hide">PLC</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var secuencia in Model.Secuencia)
                                     {
                                         <tr>
-                                            <td class="hide">@secuencia.IdMaquina</td>
+                                            <td class="tdIdMaquina hide">@secuencia.IdMaquina</td>
                                             <td>@secuencia.Secuencia</td>
                                             <td>@secuencia.DescripcionMaquina</td>
                                             <td>@secuencia.FechaInicio.ToString("dd/MM/yyyy HH:mm")</td>
                                             <td>@secuencia.FechaFin.ToString("dd/MM/yyyy HH:mm")</td>
-                                            <td>@secuencia.Estado</td>
+                                            <td class="tdEstado">@secuencia.Estado</td>
+                                            <td class="tdPLC hide">@secuencia.PLC</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -83,13 +85,13 @@
                                 <tbody>
                                     @foreach (var material in Model.Materiales)
                                     {
-                                        <tr>
-                                            <td class="hide">@material.IdMaterial</td>
-                                            <td class="tdCheckMaterial"><input type="checkbox" class="checkMaterial" /></td>
-                                            <td>@material.DescripcionMaterial</td>
-                                            <td>@material.Reservado</td>
-                                            <td>@material.Comprar</td>
-                                        </tr>
+                                    <tr>
+                                        <td class="hide">@material.IdMaterial</td>
+                                        <td class="tdCheckMaterial"><input type="checkbox" class="checkMaterial" /></td>
+                                        <td>@material.DescripcionMaterial</td>
+                                        <td>@material.Reservado</td>
+                                        <td>@material.Comprar</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -231,8 +233,14 @@
 
         var estadoConformado = '@Constantes.EstadoOrdenPoduccion.Conformado';
 
+        var estadoMaquinaEnProceso = '@Constantes.EstadoProcesoMaquina.EnProceso';
+        var estadoMaquinaTerminado = '@Constantes.EstadoProcesoMaquina.Terminado';
+        var maquinas = new Array();
+
         var urlFinalizar = '@Url.Action("FinalizarOrdenProduccion")';
         var urlCrearCarpetasArcivosPLC = '@Url.Action("CrearCarpetasArcivosPLC")';
+        var urlIniciarProceso = '@Url.Action("IniciarProceso")';
+        var urlLeerArchivo = '@Url.Action("LeerArchivo")';
 
         $(function () {
             $(".checkMaterial").on("change", function () {
@@ -306,8 +314,7 @@
             $("#spaTiempoContenedor").show();
             EmpezarDetener();
             AgregarEvento(usuario, "Inicio", "El usuario marco el inicio de la producción.");
-            
-            //Actualiza estado de OP a "Conformado" y Crear carpetas PLC
+
             $.ajax({
                 type: 'POST',
                 url: urlCrearCarpetasArcivosPLC,
@@ -315,11 +322,16 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
                     if (response.Success === true) {
-                        
+
                         $("#strEstado").text(estadoConformado);
 
-                        
+                        $('#tblSecuencia').find("tbody tr").each(function (index, item) {
+                            var idMaquina = parseInt($.trim($(this).find("td.tdIdMaquina").text()));
+                            var plc = $.trim($(this).find("td.tdPLC").text());
+                            maquinas.push({ idMaquina: idMaquina, plc: plc, row: item });
+                        });
 
+                        IniciarArchivo(0);
 
                     } else {
                         app.showMessageDialog(response.Message);
@@ -331,6 +343,64 @@
                     console.error(xh);
                     AgregarEvento(usuario, "Error", "Ocurrió un error durante el inicio de la producción.");
                     EmpezarDetener();
+                }
+            });
+        }
+
+        function IniciarArchivo(numero) {
+
+            var maquina = maquinas[numero];
+
+            $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
+
+            $.ajax({
+                type: 'POST',
+                url: urlIniciarProceso,
+                data: JSON.stringify({ idMaquina: maquina.IdMaquina }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === true) {
+
+                        setTimeout(function () { LeerArchivo(numero) }, 10000);//10 seg.
+
+                    } else {
+                        app.showMessageDialog(response.Message);
+                        AgregarEvento(maquina.plc, "Error", response.Message);
+                        EmpezarDetener();
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                    AgregarEvento(maquina.plc, "Error", "Ocurrió un error durante el inicio del PLC.");
+                    EmpezarDetener();
+                }
+            });
+        }
+
+        function LeerArchivo(numero) {
+
+            var maquina = maquinas[numero];
+
+            $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
+
+            $.ajax({
+                type: 'POST',
+                url: urlLeerArchivo,
+                data: JSON.stringify({ idMaquina: maquina.IdMaquina }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === true) {
+
+                        setTimeout(function () { LeerArchivo(numero) }, 10000);//10 seg.
+
+                    } else {
+                        app.showMessageDialog(response.Message);
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
                 }
             });
         }
@@ -404,7 +474,8 @@
 
         function sleepFor(sleepDuration) {
             var now = new Date().getTime();
-            while (new Date().getTime() < now + sleepDuration) { /* do nothing */ }
+            while (new Date().getTime() < now + sleepDuration) { /* do nothing */
+            }
         }
 
         Date.prototype.yyyymmddhhmmss = function () {

@@ -201,7 +201,26 @@ namespace MetalForming.Web.Controllers
             return Json(response);
         }
 
+        [HttpPost]
+        public JsonResult LeerArchivo(int idMaquina)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                var maquinaActual = OrdenProduccionActual.Secuencia.FirstOrDefault(p => p.IdMaquina == idMaquina);
 
+                var archivo = string.Format(@"C:\MetalForming\{0}\{1}\plc.txt", OrdenProduccionActual.Numero, maquinaActual.PLC);
+
+                var texto = 
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+
+                LogError(ex);
+            }
+            return Json(response);
+        }
 
         [HttpGet]
         public ActionResult FinalizarOrdenProduccion(string numero, string tiempo)
