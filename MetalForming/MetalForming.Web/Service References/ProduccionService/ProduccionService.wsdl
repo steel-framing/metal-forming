@@ -117,6 +117,12 @@
   <wsdl:message name="IProduccionService_ActualizarEstadoOrdenProduccion_OutputMessage">
     <wsdl:part name="parameters" element="tns:ActualizarEstadoOrdenProduccionResponse" />
   </wsdl:message>
+  <wsdl:message name="IProduccionService_ActualizarEstadoOrdenProduccionSecuencia_InputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarEstadoOrdenProduccionSecuencia" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ActualizarEstadoOrdenProduccionSecuencia_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarEstadoOrdenProduccionSecuenciaResponse" />
+  </wsdl:message>
   <wsdl:message name="IProduccionService_ObtenerPlanVigente_InputMessage">
     <wsdl:part name="parameters" element="tns:ObtenerPlanVigente" />
   </wsdl:message>
@@ -231,6 +237,10 @@
     <wsdl:operation name="ActualizarEstadoOrdenProduccion">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccion" message="tns:IProduccionService_ActualizarEstadoOrdenProduccion_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionResponse" message="tns:IProduccionService_ActualizarEstadoOrdenProduccion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarEstadoOrdenProduccionSecuencia">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuencia" message="tns:IProduccionService_ActualizarEstadoOrdenProduccionSecuencia_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuenciaResponse" message="tns:IProduccionService_ActualizarEstadoOrdenProduccionSecuencia_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ObtenerPlanVigente">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente" message="tns:IProduccionService_ObtenerPlanVigente_InputMessage" />
@@ -418,6 +428,15 @@
     </wsdl:operation>
     <wsdl:operation name="ActualizarEstadoOrdenProduccion">
       <soap:operation soapAction="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarEstadoOrdenProduccionSecuencia">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuencia" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

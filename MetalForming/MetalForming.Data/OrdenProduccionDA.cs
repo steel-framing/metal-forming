@@ -21,6 +21,7 @@ namespace MetalForming.Data
         private const string ProcedimientoAlmacenadoActualizarEstado = "dbo.ActualizarEstadoOrdenProduccion";
         private const string ProcedimientoAlmacenadoActualizarPorRechazo = "dbo.ActualizarOrdenProduccionPorRechazo";
         private const string ProcedimientoAlmacenadoActualizarAsignacion = "dbo.ActualizarOrdenProduccionPorAsignacion";
+        private const string ProcedimientoAlmacenadoActualizarEstadoSecuencia = "dbo.ActualizarEstadoOrdenProduccionSecuencia";
 
         public IList<OrdenProduccion> ListarPorPrograma(int idPrograma)
         {
@@ -436,6 +437,24 @@ namespace MetalForming.Data
             catch (Exception ex)
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarAsignacion);
+            }
+        }
+
+        public void ActualizarEstadoSecuencia(int id, int idMaquina, string estado)
+        {
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoActualizarEstadoSecuencia);
+
+                Context.Database.AddInParameter(comando, "@IdOrdenProduccion", DbType.Int32, id);
+                Context.Database.AddInParameter(comando, "@IdMaquina", DbType.Int32, idMaquina);
+                Context.Database.AddInParameter(comando, "@Estado", DbType.String, estado);
+
+                Context.ExecuteNonQuery(comando);
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarEstadoSecuencia);
             }
         }
     }

@@ -222,5 +222,17 @@ namespace MetalForming.BusinessLogic
                 throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
             }
         }
+
+        public void ActualizarEstadoSecuencia(int id, int idMaquina, string estado)
+        {
+            try
+            {
+                _ordenProduccionDA.ActualizarEstadoSecuencia(id, idMaquina, estado);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
     }
 }

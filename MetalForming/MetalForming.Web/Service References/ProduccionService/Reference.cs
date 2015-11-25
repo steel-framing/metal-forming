@@ -1468,6 +1468,14 @@ namespace MetalForming.Web.ProduccionService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccion", ReplyAction="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionResponse")]
         System.Threading.Tasks.Task ActualizarEstadoOrdenProduccionAsync(int id, string estado);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuencia", ReplyAction="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuenciaRes" +
+            "ponse")]
+        void ActualizarEstadoOrdenProduccionSecuencia(int id, int idMaquina, string estado);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuencia", ReplyAction="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuenciaRes" +
+            "ponse")]
+        System.Threading.Tasks.Task ActualizarEstadoOrdenProduccionSecuenciaAsync(int id, int idMaquina, string estado);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente", ReplyAction="http://tempuri.org/IProduccionService/ObtenerPlanVigenteResponse")]
         MetalForming.Web.ProduccionService.Plan ObtenerPlanVigente();
         
@@ -1680,6 +1688,14 @@ namespace MetalForming.Web.ProduccionService {
         
         public System.Threading.Tasks.Task ActualizarEstadoOrdenProduccionAsync(int id, string estado) {
             return base.Channel.ActualizarEstadoOrdenProduccionAsync(id, estado);
+        }
+        
+        public void ActualizarEstadoOrdenProduccionSecuencia(int id, int idMaquina, string estado) {
+            base.Channel.ActualizarEstadoOrdenProduccionSecuencia(id, idMaquina, estado);
+        }
+        
+        public System.Threading.Tasks.Task ActualizarEstadoOrdenProduccionSecuenciaAsync(int id, int idMaquina, string estado) {
+            return base.Channel.ActualizarEstadoOrdenProduccionSecuenciaAsync(id, idMaquina, estado);
         }
         
         public MetalForming.Web.ProduccionService.Plan ObtenerPlanVigente() {

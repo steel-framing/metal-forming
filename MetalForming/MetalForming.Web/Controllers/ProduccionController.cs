@@ -8,6 +8,8 @@ using MetalForming.Web.ProduccionService;
 using System.IO;
 using System.Text;
 using MetalForming.Common;
+using System.Threading;
+using System.Reflection;
 
 namespace MetalForming.Web.Controllers
 {
@@ -81,6 +83,7 @@ namespace MetalForming.Web.Controllers
                 model.FechaEntrega = ordenProduccion.OrdenVenta.FechaEntrega;
                 model.NumeroOrdenVenta = ordenProduccion.Numero;
                 model.Estado = ordenProduccion.Estado;
+                model.CantidadProducto = ordenProduccion.CantidadProducto;
 
                 foreach (var item in ordenProduccion.Materiales)
                 {
@@ -130,11 +133,6 @@ namespace MetalForming.Web.Controllers
             var response = new JsonResponse();
             try
             {
-                using (var service = new ProduccionServiceClient())
-                {
-                    service.ActualizarEstadoOrdenProduccion(OrdenProduccionActual.Id, Constantes.EstadoOrdenPoduccion.Conformado);
-                }
-
                 foreach (var secuencia in OrdenProduccionActual.Secuencia)
                 {
                     var directorio = string.Format(@"C:\MetalForming\{0}\{1}", OrdenProduccionActual.Numero, secuencia.PLC);
@@ -149,6 +147,11 @@ namespace MetalForming.Web.Controllers
                     var file = System.IO.File.Create(archivo);
                     file.Close();
                     file.Dispose();
+                }
+
+                using (var service = new ProduccionServiceClient())
+                {
+                    service.ActualizarEstadoOrdenProduccion(OrdenProduccionActual.Id, Constantes.EstadoOrdenPoduccion.Conformado);
                 }
 
                 response.Success = true;
@@ -177,20 +180,29 @@ namespace MetalForming.Web.Controllers
                 {
                     using (var writer = new StreamWriter(stream))
                     {
-                        writer.WriteLine("#Maquina:" + maquinaActual.DescripcionMaquina + Environment.NewLine);
-                        writer.WriteLine("#FechaInicioProduccion:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + Environment.NewLine);
-                        writer.WriteLine("#FechaFinProduccion:" + Environment.NewLine);
-                        writer.WriteLine("#Longitud:" + maquinaActual.Longitud + Environment.NewLine);
-                        writer.WriteLine("#Espesor:" + maquinaActual.Espesor + Environment.NewLine);
-                        writer.WriteLine("#Ciclo:" + maquinaActual.Ciclo + Environment.NewLine);
-                        writer.WriteLine("#NoCiclos:" + Environment.NewLine);
-                        writer.WriteLine("#MotivosDeParada:" + Environment.NewLine);
-                        writer.WriteLine("#TiempoParada:" + Environment.NewLine);
-                        writer.WriteLine("#TiempoProduccion:" + Environment.NewLine);
-                        writer.WriteLine("#UnidadesProducidas:" + Environment.NewLine);
+                        writer.WriteLine("#Maquina:" + maquinaActual.DescripcionMaquina);
+                        writer.WriteLine("#FechaInicioProduccion:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+                        writer.WriteLine("#FechaFinProduccion:");
+                        writer.WriteLine("#Longitud:" + maquinaActual.Longitud);
+                        writer.WriteLine("#Espesor:" + maquinaActual.Espesor);
+                        writer.WriteLine("#Ciclo:" + maquinaActual.Ciclo);
+                        writer.WriteLine("#NoCiclos:");
+                        writer.WriteLine("#MotivosDeParada:");
+                        writer.WriteLine("#TiempoParada:");
+                        writer.WriteLine("#TiempoProduccion:");
+                        writer.WriteLine("#UnidadesAProducir:" + OrdenProduccionActual.CantidadProducto);
+                        writer.WriteLine("#UnidadesProducidas:");
                         writer.WriteLine("#UnidadesDefectuosas:");
                     }
                 }
+
+                using (var service = new ProduccionServiceClient())
+                {
+                    service.ActualizarEstadoOrdenProduccionSecuencia(OrdenProduccionActual.Id, idMaquina, Constantes.EstadoProcesoMaquina.EnProceso);
+                }
+
+                response.Success = true;
+                response.Message = "Ok";
             }
             catch (Exception ex)
             {
@@ -211,7 +223,60 @@ namespace MetalForming.Web.Controllers
 
                 var archivo = string.Format(@"C:\MetalForming\{0}\{1}\plc.txt", OrdenProduccionActual.Numero, maquinaActual.PLC);
 
-                var texto = 
+                var texto = System.IO.File.ReadAllText(archivo);
+                var lineas = texto.Split('\n');
+
+                var model = new DatosArchivoModel
+                {
+                    Maquina = lineas[0].Replace("#Maquina:", "").Replace("\r", ""),
+                    FechaInicioProduccion = lineas[1].Replace("#FechaInicioProduccion:", "").Replace("\r", ""),
+                    FechaFinProduccion = lineas[2].Replace("#FechaFinProduccion:", "").Replace("\r", ""),
+                    Longitud = lineas[3].Replace("#Longitud:", "").Replace("\r", ""),
+                    Espesor = lineas[4].Replace("#Espesor:", "").Replace("\r", ""),
+                    Ciclo = lineas[5].Replace("#Ciclo:", "").Replace("\r", ""),
+                    NoCiclos = lineas[6].Replace("#NoCiclos:", "").Replace("\r", ""),
+                    MotivosDeParada = lineas[7].Replace("#MotivosDeParada:", "").Replace("\r", ""),
+                    TiempoParada = lineas[8].Replace("#TiempoParada:", "").Replace("\r", ""),
+                    TiempoProduccion = lineas[9].Replace("#TiempoProduccion:", "").Replace("\r", ""),
+                    UnidadesProducidas = lineas[10].Replace("#UnidadesProducidas:", "").Replace("\r", ""),
+                    UnidadesAProducidas = lineas[11].Replace("#UnidadesAProducir:", "").Replace("\r", ""),
+                    UnidadesDefectuosas = lineas[12].Replace("#UnidadesDefectuosas:", "").Replace("\r", ""),
+                    Paradas = new List<ParadaModel>()
+                };
+
+                model.MotivosDeParada = string.IsNullOrEmpty(model.MotivosDeParada) ? "" : model.MotivosDeParada;
+                model.TiempoParada = string.IsNullOrEmpty(model.TiempoParada) ? "" : model.TiempoParada;
+
+                var motivos = model.MotivosDeParada.Split(',').Where(p => !string.IsNullOrEmpty(p)).ToList();
+                var tiempos = model.TiempoParada.Split(',').Where(p => !string.IsNullOrEmpty(p)).ToList();
+
+                for (int i = 0; i < motivos.Count; i++)
+                {
+                    //Obtener el valor de la constante de manera dinamica
+                    var constante = typeof(Constantes.MotivosDeParada).GetFields().First(f => f.Name.Equals("Motivo" + motivos.ElementAtOrDefault(i)));
+                    if (constante == null)
+                    {
+                        model.Paradas.Add(new ParadaModel
+                        {
+                            Motivo = motivos.ElementAtOrDefault(i),
+                            Mensaje = string.Empty,
+                            Tiempo = tiempos.ElementAtOrDefault(i)
+                        });
+                    }
+                    else
+                    {
+                        model.Paradas.Add(new ParadaModel
+                        {
+                            Motivo = motivos.ElementAtOrDefault(i),
+                            Mensaje = constante.GetRawConstantValue().ToString(),
+                            Tiempo = tiempos.ElementAtOrDefault(i)
+                        });
+                    }
+                }
+
+                response.Data = model;
+                response.Success = true;
+                response.Message = "Ok";
             }
             catch (Exception ex)
             {
@@ -222,11 +287,150 @@ namespace MetalForming.Web.Controllers
             return Json(response);
         }
 
-        [HttpGet]
-        public ActionResult FinalizarOrdenProduccion(string numero, string tiempo)
+        [HttpPost]
+        public JsonResult ActualizarEstado(string estado)
         {
-            //Cambiar estado -> Producido
-            return RedirectToAction("EjecutarOrdenProduccion");
+            var response = new JsonResponse();
+            try
+            {
+                using (var service = new ProduccionServiceClient())
+                {
+                    service.ActualizarEstadoOrdenProduccion(OrdenProduccionActual.Id, estado);
+                }
+
+                response.Success = true;
+                response.Message = "Ok";
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+
+                LogError(ex);
+            }
+            return Json(response);
+        }
+
+        [HttpPost]
+        public JsonResult ActualizarEstadoSecuencia(int idMaquina, string estado)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                using (var service = new ProduccionServiceClient())
+                {
+                    service.ActualizarEstadoOrdenProduccionSecuencia(OrdenProduccionActual.Id, idMaquina, estado);
+                }
+
+                response.Success = true;
+                response.Message = "Ok";
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+
+                LogError(ex);
+            }
+            return Json(response);
+        }
+
+        [HttpPost]
+        public JsonResult GenerarArchivoPrueba(int idMaquina, int numero)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                var maquinaActual = OrdenProduccionActual.Secuencia.FirstOrDefault(p => p.IdMaquina == idMaquina);
+
+                var archivo = string.Format(@"C:\MetalForming\{0}\{1}\plc.txt", OrdenProduccionActual.Numero, maquinaActual.PLC);
+
+                switch (numero)
+                {
+                    case 1: //Generar siguiente ciclo
+                        {
+                            var texto = System.IO.File.ReadAllText(archivo);
+                            var lineas = texto.Split('\n');
+
+                            var fechaInicioProduccion = lineas[1].Replace("#FechaInicioProduccion:", "").Replace("\r", "");
+
+                            var noCiclos = lineas[6].Replace("#NoCiclos:", "").Replace("\r", "");
+                            if (string.IsNullOrEmpty(noCiclos))
+                                noCiclos = "1";
+                            else
+                                noCiclos = (Convert.ToInt32(noCiclos) + 1).ToString();
+
+                            var builder = new StringBuilder();
+                            builder.AppendLine("#Maquina:" + maquinaActual.DescripcionMaquina);
+                            builder.AppendLine("#FechaInicioProduccion:" + fechaInicioProduccion);
+                            builder.AppendLine("#FechaFinProduccion:");
+                            builder.AppendLine("#Longitud:" + maquinaActual.Longitud);
+                            builder.AppendLine("#Espesor:" + maquinaActual.Espesor);
+                            builder.AppendLine("#Ciclo:" + maquinaActual.Ciclo);
+                            builder.AppendLine("#NoCiclos:" + noCiclos);
+                            builder.AppendLine("#MotivosDeParada:");
+                            builder.AppendLine("#TiempoParada:");
+                            builder.AppendLine("#TiempoProduccion:");
+                            builder.AppendLine("#UnidadesAProducir:" + OrdenProduccionActual.CantidadProducto);
+                            builder.AppendLine("#UnidadesProducidas:");
+                            builder.AppendLine("#UnidadesDefectuosas:");
+
+                            System.IO.File.WriteAllText(archivo, builder.ToString());
+                        }
+                        break;
+                    case 2: //Generar error
+                        {
+                            var texto = System.IO.File.ReadAllText(archivo);
+                            var lineas = texto.Split('\n');
+
+                            var fechaInicioProduccion = lineas[1].Replace("#FechaInicioProduccion:", "").Replace("\r", "");
+
+                            var noCiclos = lineas[6].Replace("#NoCiclos:", "").Replace("\r", "");
+                            if (string.IsNullOrEmpty(noCiclos))
+                                noCiclos = "1";
+                            else
+                                noCiclos = (Convert.ToInt32(noCiclos) + 1).ToString();
+
+                            var builder = new StringBuilder();
+                            builder.AppendLine("#Maquina:" + maquinaActual.DescripcionMaquina);
+                            builder.AppendLine("#FechaInicioProduccion:" + fechaInicioProduccion);
+                            builder.AppendLine("#FechaFinProduccion:");
+                            builder.AppendLine("#Longitud:" + maquinaActual.Longitud);
+                            builder.AppendLine("#Espesor:" + maquinaActual.Espesor);
+                            builder.AppendLine("#Ciclo:" + maquinaActual.Ciclo);
+                            builder.AppendLine("#NoCiclos:" + noCiclos);
+                            builder.AppendLine("#MotivosDeParada:1");
+                            builder.AppendLine("#TiempoParada:");
+                            builder.AppendLine("#TiempoProduccion:");
+                            builder.AppendLine("#UnidadesAProducir:" + OrdenProduccionActual.CantidadProducto);
+                            builder.AppendLine("#UnidadesProducidas:");
+                            builder.AppendLine("#UnidadesDefectuosas:");
+
+                            System.IO.File.WriteAllText(archivo, builder.ToString());
+                        }
+                        break;
+                    case 3: //Generar error corregido
+                        {
+
+                        }
+                        break;
+                    case 4: //Generar termino
+                        {
+
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                response.Success = true;
+                response.Message = "Ok";
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+
+                LogError(ex);
+            }
+            return Json(response);
         }
 
         #endregion

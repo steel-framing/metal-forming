@@ -8,5 +8,6 @@
 #MotivosDeParada:1,2
 #TiempoParada:300,400
 #TiempoProduccion:1500
+#UnidadesAProducir:
 #UnidadesProducidas:1500
 #UnidadesDefectuosas:10

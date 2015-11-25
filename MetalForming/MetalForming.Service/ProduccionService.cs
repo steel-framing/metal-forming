@@ -121,6 +121,11 @@ namespace MetalForming.Service
             _ordenProduccionBL.ActualizarEstado(id, estado);
         }
 
+        public void ActualizarEstadoOrdenProduccionSecuencia(int id, int idMaquina, string estado)
+        {
+            _ordenProduccionBL.ActualizarEstadoSecuencia(id, idMaquina, estado);
+        }
+
         #endregion
 
         #region Plan

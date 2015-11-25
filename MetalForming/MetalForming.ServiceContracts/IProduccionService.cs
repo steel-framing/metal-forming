@@ -75,6 +75,9 @@ namespace MetalForming.ServiceContracts
         [OperationContract]
         void ActualizarEstadoOrdenProduccion(int id, string estado);
 
+        [OperationContract]
+        void ActualizarEstadoOrdenProduccionSecuencia(int id, int idMaquina, string estado);
+
         #endregion
 
         #region Plan
