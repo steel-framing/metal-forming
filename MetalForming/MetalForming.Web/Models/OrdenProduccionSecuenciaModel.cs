@@ -23,5 +23,13 @@ namespace MetalForming.Web.Models
         public DateTime FechaFin { get; set; }
 
         public string Estado { get; set; }
+
+        public string PLC { get; set; }
+
+        public int Longitud { get; set; }
+
+        public int Espesor { get; set; }
+
+        public string Ciclo { get; set; }
     }
 }

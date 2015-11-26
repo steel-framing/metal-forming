@@ -1,0 +1,13 @@
+#Maquina:Maquina 01
+#FechaInicioProduccion:2015-11-01 13:00
+#FechaFinProduccion:
+#Longitud:50
+#Espesor:3
+#Ciclo:1-5
+#NoCiclos:1
+#MotivosDeParada:
+#TiempoParada:
+#TiempoProduccion:1500
+#UnidadesAProducir:
+#UnidadesProducidas:200
+#UnidadesDefectuosas:1

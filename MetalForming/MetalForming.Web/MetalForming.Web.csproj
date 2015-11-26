@@ -134,6 +134,8 @@
     </Compile>
     <Compile Include="Models\AsignarOrdenProduccionModel.cs" />
     <Compile Include="Models\AsignarOrdenVentaModel.cs" />
+    <Compile Include="Models\DatosArchivoModel.cs" />
+    <Compile Include="Models\ParadaModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Models\Mapping\AutoMapperConfiguration.cs" />
     <Compile Include="Models\Mapping\EntityToModelMappingProfile.cs" />

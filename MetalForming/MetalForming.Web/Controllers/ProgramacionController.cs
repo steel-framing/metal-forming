@@ -342,13 +342,14 @@ namespace MetalForming.Web.Controllers
             {
                 var ordenProduccion = new OrdenProduccion
                 {
-                    CantidadProducto = model.CantidadProducto,
                     TomarStock = model.TomarStock,
+                    CantidadProducto = model.CantidadProducto,
                     Estado = Constantes.EstadoOrdenPoduccion.PendienteAprobar,
                     OrdenVenta = new OrdenVenta
                     {
                         Id = model.IdOrdenVenta,
-                        Producto = new Producto { Id = model.IdProducto }
+                        Producto = new Producto { Id = model.IdProducto },
+                        Cantidad = model.CantidadOrdenVenta
                     },
                     Materiales = new List<OrdenProduccionMaterial>(),
                     Secuencia = new List<OrdenProduccionSecuencia>()

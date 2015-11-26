@@ -72,6 +72,12 @@ namespace MetalForming.ServiceContracts
         [OperationContract]
         void GuardarAsignacionesOrdenProduccion(IList<int> ordenesProduccion, IList<Usuario> operadores);
 
+        [OperationContract]
+        void ActualizarEstadoOrdenProduccion(int id, string estado);
+
+        [OperationContract]
+        void ActualizarEstadoOrdenProduccionSecuencia(int id, int idMaquina, string estado);
+
         #endregion
 
         #region Plan

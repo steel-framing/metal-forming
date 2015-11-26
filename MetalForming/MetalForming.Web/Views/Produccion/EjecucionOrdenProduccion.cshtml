@@ -15,15 +15,25 @@
                 <a id="btnIniciar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-play"></i> Iniciar</a>
                 <a id="btnReanudar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-refresh"></i> Reanudar</a>
                 <a id="btnDetener" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-pause"></i> Detener</a>
-                <a id="btnFinalizar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-power"></i> Finalizar</a>
+                <a id="btnSalir" href="@Url.Action("EjecutarOrdenProduccion")" class="btn btn-primary-line disabled"><i class="ion-ios-close"></i> Salir</a>
             </div>
             <div class="col-xs-6">
                 <div class="text-right">
                     <strong class="text-white">Número OP:</strong> <strong>@Model.Numero</strong>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <strong class="text-white">Estado:</strong> <strong>@Model.Estado</strong>
+                    <strong class="text-white">Estado:</strong> <strong id="strEstado" style="background-color: yellow;">@Model.Estado</strong>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span id="spaTiempoContenedor" style="display: none;"><strong class="text-white">Tiempo:</strong> <strong><span id="crono" class="text-danger"></span></strong></span>
+                    <span id="spaTiempoContenedor" style="display: none;">
+                        <strong class="text-white">Tiempo:</strong>
+                        <strong>
+                            <span id="crono" class="text-danger" style="background-color: yellow;">
+                                <span id="Horas">00</span>
+                                <span id="Minutos">:00</span>
+                                <span id="Segundos">:00</span>
+                                <span id="Centesimas">:00</span>
+                            </span>
+                        </strong>
+                    </span>
                 </div>
             </div>
         </div>
@@ -47,18 +57,20 @@
                                         <th style="width: 25%;">F.Inicio</th>
                                         <th style="width: 25%;">F.Fin</th>
                                         <th style="width: 20%;">Estado</th>
+                                        <th class="hide">PLC</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var secuencia in Model.Secuencia)
                                     {
                                         <tr>
-                                            <td class="hide">@secuencia.IdMaquina</td>
+                                            <td class="tdIdMaquina hide">@secuencia.IdMaquina</td>
                                             <td>@secuencia.Secuencia</td>
                                             <td>@secuencia.DescripcionMaquina</td>
                                             <td>@secuencia.FechaInicio.ToString("dd/MM/yyyy HH:mm")</td>
                                             <td>@secuencia.FechaFin.ToString("dd/MM/yyyy HH:mm")</td>
-                                            <td>@secuencia.Estado</td>
+                                            <td class="tdEstado">@secuencia.Estado</td>
+                                            <td class="tdPLC hide">@secuencia.PLC</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -107,7 +119,24 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="well">
-                        <h4 class="text-primary">Eventos</h4>
+                        <div class="pull-left">
+                            <h4 class="text-primary">Eventos</h4>
+                        </div>
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Archivos de prueba
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:;" onclick="GenerarPrueba(1)">Generar siguiente ciclo</a></li>
+                                    <li><a href="javascript:;" onclick="GenerarPrueba(2)">Generar error</a></li>
+                                    <li><a href="javascript:;" onclick="GenerarPrueba(3)">Generar error corregido</a></li>
+                                    <li><a href="javascript:;" onclick="GenerarPrueba(4)">Generar termino</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
                         <div class="table-responsive">
                             <table id="tblEventos" class="table table-striped table-header table-rounded table-condensed">
                                 <thead class="upper">
@@ -132,7 +161,7 @@
     <br />
 </main>
 
-<div class="modal fade" id="modalReanudar">
+<div id="modalReanudar" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade" data-backdrop="static" style="z-index:100000;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -144,7 +173,7 @@
                     <div class="col-md-12">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-md-12 control-label">Comentario de reanudación:</label>
+                                <label class="col-md-5 control-label">Comentario de reanudación:</label>
                                 <div class="col-md-12">
                                     <textarea id="txtComentarioReanudar" class="form-control" rows="4"></textarea>
                                 </div>
@@ -154,14 +183,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a id="btnReanudarConfirmacion" href="javascript:;" class="btn btn-danger"><i class="ion-checkmark-round"></i> Reanudar</a>
+                <a id="btnReanudarConfirmacion" href="javascript:;" class="btn btn-info"><i class="ion-checkmark-round"></i> Reanudar</a>
                 <a href="javascript:;" class="btn btn-danger" data-dismiss="modal"><i class="ion-close-circled"></i> Cerrar</a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="modalDetener">
+<div id="modalDetener" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade" data-backdrop="static" style="z-index:100000;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -173,7 +202,7 @@
                     <div class="col-md-12">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-md-12 control-label">Comentario:</label>
+                                <label class="col-md-2 control-label">Comentario:</label>
                                 <div class="col-md-12">
                                     <textarea id="txtComentarioDetener" class="form-control" rows="4"></textarea>
                                 </div>
@@ -183,15 +212,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a id="btnDetenerConfirmacion" href="javascript:;" class="btn btn-danger"><i class="ion-checkmark-round"></i> Detener</a>
+                <a id="btnDetenerConfirmacion" href="javascript:;" class="btn btn-info"><i class="ion-checkmark-round"></i> Detener</a>
                 <a href="javascript:;" class="btn btn-danger" data-dismiss="modal"><i class="ion-close-circled"></i> Cerrar</a>
             </div>
         </div>
     </div>
 </div>
 
-
-<div class="modal fade" id="modalError">
+<div id="modalError" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade" data-backdrop="static" style="z-index:100000;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -203,10 +231,8 @@
                     <div class="col-md-12">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-md-12 control-label">ERR00015: Cizalla no calibrada.</label>
                                 <div class="col-md-12">
-                                    <p>
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                                    <p id="modalErrorMensaje">
                                     </p>
                                 </div>
                             </div>
@@ -215,8 +241,8 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <a id="btnReanudarError" href="javascript:;" class="btn btn-info"><i class="ion-close-circled"></i> Reanudar</a>
                 <a id="btnDetenerError" href="javascript:;" class="btn btn-danger"><i class="ion-checkmark-round"></i> Detener</a>
-                <a id="btnReanudarError" href="javascript:;" class="btn btn-danger"><i class="ion-close-circled"></i> Reanudar</a>
             </div>
         </div>
     </div>
@@ -226,11 +252,26 @@
 
     <script type="text/javascript">
 
-        var usuario = "USU 01";
-        var inicio = 0;
-        var timeout = 0;
+        var usuario = "USUARIO 01";
 
-        var urlFinalizar = '@Url.Action("FinalizarOrdenProduccion")';
+        var estadoConformado = '@Constantes.EstadoOrdenPoduccion.Conformado';
+        var estadoDetenido = '@Constantes.EstadoOrdenPoduccion.Detenido';
+        var estadoTerminado = '@Constantes.EstadoOrdenPoduccion.Terminado';
+
+        var estadoMaquinaEnProceso = '@Constantes.EstadoProcesoMaquina.EnProceso';
+        var estadoMaquinaDetenido = '@Constantes.EstadoProcesoMaquina.Detenido';
+        var estadoMaquinaTerminado = '@Constantes.EstadoProcesoMaquina.Terminado';
+
+        var maquinas = new Array();
+        var numeroMaquinaActual = 0;
+        var tiempoEspera = 10000; //milisegundos
+
+        var urlCrearCarpetasArcivosPLC = '@Url.Action("CrearCarpetasArcivosPLC")';
+        var urlIniciarProceso = '@Url.Action("IniciarProceso")';
+        var urlLeerArchivo = '@Url.Action("LeerArchivo")';
+        var urlActualizarEstado = '@Url.Action("ActualizarEstado")';
+        var urlActualizarEstadoSecuencia = '@Url.Action("ActualizarEstadoSecuencia")';
+        var urlGenerarArchivoPrueba = '@Url.Action("GenerarArchivoPrueba")';
 
         $(function () {
             $(".checkMaterial").on("change", function () {
@@ -247,6 +288,7 @@
 
             $("#btnReanudar").on("click", function () {
                 if ($(this).hasClass("disabled") == false) {
+                    $("#txtComentarioReanudar").val("");
                     $("#modalReanudar").modal("show");
                 }
             });
@@ -256,11 +298,14 @@
             });
 
             $("#btnReanudarError").on("click", function () {
+                $("#modalError").modal("hide");
+                $("#txtComentarioReanudar").val("");
                 $("#modalReanudar").modal("show");
             });
 
             $("#btnDetener").on("click", function () {
                 if ($(this).hasClass("disabled") == false) {
+                    $("#txtComentarioDetener").val();
                     $("#modalDetener").modal("show");
                 }
             });
@@ -270,15 +315,9 @@
             });
 
             $("#btnDetenerError").on("click", function () {
+                $("#modalError").modal("hide");
+                $("#txtComentarioDetener").val();
                 $("#modalDetener").modal("show");
-            });
-
-            $("#btnFinalizar").on("click", function () {
-                if ($(this).hasClass("disabled") == false) {
-                    app.showConfirmDialog("Listo para finalizar la producción?", function () {
-                        Finalizar();
-                    });
-                }
             });
         });
 
@@ -298,60 +337,298 @@
         }
 
         function Iniciar() {
+            $("input[type='checkbox']").attr("disabled", "disabled");
             $("#btnIniciar").addClass("disabled");
-            $("#btnFinalizar").removeClass("disabled");
             $("#spaTiempoContenedor").show();
-            EmpezarDetener();
+            inicioCronometro();
             AgregarEvento(usuario, "Inicio", "El usuario marco el inicio de la producción.");
-            //ErrorEjecutar();
+
+            $.ajax({
+                type: 'POST',
+                url: urlCrearCarpetasArcivosPLC,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === true) {
+
+                        $("#strEstado").text(estadoConformado);
+
+                        $('#tblSecuencia').find("tbody tr").each(function (index, row) {
+                            var idMaquina = parseInt($.trim($(this).find("td.tdIdMaquina").text()));
+                            var plc = $.trim($(this).find("td.tdPLC").text());
+                            maquinas.push({
+                                idMaquina: idMaquina,
+                                plc: plc,
+                                row: row,
+                                model: null,
+                                cantidadLecturas: 0
+                            });
+                        });
+
+                        IniciarArchivo();
+
+                    } else {
+                        AgregarEvento(usuario, "Error", response.Message);
+                        pararCronometro();
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                    AgregarEvento(usuario, "Error", "Ocurrió un error durante el inicio de la producción.");
+                    pararCronometro();
+                }
+            });
         }
 
-        function Ejecutar() {
-            sleepFor(2000);
-            AgregarEvento("PLD 001", "Paso 1", "Comentario 1.");
+        function IniciarArchivo() {
 
-            sleepFor(2000);
-            AgregarEvento("PLD 002", "Paso 2", "Comentario 2.");
+            var maquina = maquinas[numeroMaquinaActual];
 
-            sleepFor(2000);
-            AgregarEvento("PLD 003", "Paso 3", "Comentario 3.");
+            $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
 
-            sleepFor(2000);
-            AgregarEvento("PLD 004", "Paso 4", "Comentario 4.");
+            $.ajax({
+                type: 'POST',
+                url: urlIniciarProceso,
+                data: JSON.stringify({ idMaquina: maquina.idMaquina }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === true) {
 
-            sleepFor(2000);
-            Error();
+                        LeerArchivo();
 
-            sleepFor(2000);
-            AgregarEvento("PLD 005", "Paso 5", "Comentario 5.");
-
-            sleepFor(2000);
-            AgregarEvento("PLD 006", "Paso 6", "Comentario 5.");
+                    } else {
+                        AgregarEvento(maquina.plc, "Error", response.Message);
+                        pararCronometro();
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                    AgregarEvento(maquina.plc, "Error", "Ocurrió un error durante el inicio del PLC.");
+                    pararCronometro();
+                }
+            });
         }
 
-        function Error() {
-            $("#modalError").modal("show");
-            $("#btnReanudar").removeClass("disabled");
-            $("#btnDetener").removeClass("disabled");
+        function LeerArchivo() {
+
+            var maquina = maquinas[numeroMaquinaActual];
+
+            maquina.cantidadLecturas += 1;
+
+            $.ajax({
+                type: 'POST',
+                url: urlLeerArchivo,
+                data: JSON.stringify({ idMaquina: maquina.idMaquina }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === true) {
+
+                        if (maquina.model == null) {
+
+                            AgregarEvento(maquina.plc, "Inicio", "Inicio de proceso del PLC");
+
+                            maquina.model = response.Data;
+                        }
+
+                        //Mostrar el numero de ciclo cuando cambia
+                        if (maquina.model.NoCiclos != response.Data.NoCiclos) {
+                            AgregarEvento(maquina.plc, "Proceso", "Se inicio el número de ciclo " + response.Data.NoCiclos);
+                        }
+
+                        //Verificando si existe un error
+                        if (maquina.model.MotivosDeParada != response.Data.MotivosDeParada) {
+                            var existe = false;
+                            for (var i = 0; i < response.Data.Paradas.length; i++) {
+                                for (var k = 0; k < maquina.model.Paradas.length; k++) {
+                                    if (response.Data.Paradas[i].Motivo == maquina.model.Paradas[k].Motivo) {
+                                        existe = true;
+                                    }
+                                }
+                                if (!existe) {
+                                    AgregarEvento(maquina.plc, "Error", response.Data.Paradas[i].Mensaje);
+
+                                    pararCronometro();
+
+                                    $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
+
+                                    $("#strEstado").text(estadoDetenido);
+
+                                    ActualizarEstadoSecuencia(maquina.idMaquina, estadoMaquinaDetenido);
+                                    ActualizarEstado(estadoDetenido);
+
+                                    $("#btnReanudar").removeClass("disabled");
+                                    $("#btnDetener").removeClass("disabled");
+
+                                    $("#modalErrorMensaje").text("La maquina PLC " + maquina.plc + " presento una parada " + response.Data.Paradas[i].Mensaje);
+                                    $("#modalError").modal("show");
+
+                                    maquina.model = response.Data;
+                                    break;
+                                }
+                                existe = false;
+                            }
+                            if (!existe)
+                                return;
+                        }
+
+                        //Mostrar el tiempo de parada
+                        if (maquina.model.TiempoParada != response.Data.TiempoParada) {
+                            for (var i = 0; i < response.Data.Paradas.length; i++) {
+
+                                var existe = false;
+                                for (var k = 0; k < maquina.model.Paradas.length; k++) {
+                                    if (response.Data.Paradas[i].Tiempo == maquina.model.Paradas[k].Tiempo) {
+                                        existe = true;
+                                    }
+                                }
+                                if (!existe) {
+                                    AgregarEvento(maquina.plc, "Proceso", "MOTIVO" + response.Data.Paradas[i].Motivo + " con tiempo de parada: " + response.Data.Paradas[i].Tiempo + " seg.");
+                                }
+                            }
+                        }
+
+                        //Mostrando el cambio por unidades producidas
+                        if (maquina.model.UnidadesProducidas != response.Data.UnidadesProducidas) {
+                            if (response.Data.UnidadesAProducidas != response.Data.UnidadesProducidas) {
+                                AgregarEvento(maquina.plc, "Proceso", response.Data.UnidadesProducidas + " unidades producidas hasta el momento.");
+                            }
+                        }
+
+                        //Mostrando el cambio por unidades defectuosas
+                        if (maquina.model.UnidadesDefectuosas != response.Data.UnidadesDefectuosas) {
+                            AgregarEvento(maquina.plc, "Proceso", response.Data.NoCiclos + " unidades defectuosas en total.");
+                        }
+
+                        maquina.model = response.Data;
+
+                        //Verificar si se termino el proceso del PLC
+                        if (maquina.model.UnidadesAProducidas != '' && maquina.model.UnidadesProducidas != '') {
+                            if (maquina.model.UnidadesAProducidas == maquina.model.UnidadesProducidas) {
+
+                                ActualizarEstadoSecuencia(maquina.idMaquina, estadoMaquinaTerminado);
+                                $(maquina.row).find(".tdEstado").text(estadoMaquinaTerminado);
+
+                                AgregarEvento(maquina.plc, "Termino", "Termino de proceso del PLC, ser producierón " + maquina.model.UnidadesProducidas + " unidades.");
+
+                                //Verificar si existen mas PLC
+                                if ((numeroMaquinaActual + 1) < maquinas.length) {
+
+                                    numeroMaquinaActual += 1;
+                                    IniciarArchivo();
+
+                                } else {
+                                    //Produccion terminada si todos los PLC se terminaron
+
+                                    pararCronometro();
+
+                                    ActualizarEstado(estadoTerminado);
+                                    $("#strEstado").text(estadoTerminado);
+
+                                    AgregarEvento(usuario, "Termino", "El sistema marco el termino de la producción.");
+
+                                    $("#btnSalir").removeClass("disabled");
+                                }
+
+                            } else {
+                                setTimeout(function () { LeerArchivo() }, tiempoEspera);
+                            }
+                        } else {
+                            setTimeout(function () { LeerArchivo() }, tiempoEspera);
+                        }
+
+                    } else {
+                        AgregarEvento(maquina.plc, "Error", response.Message);
+                        pararCronometro();
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                    AgregarEvento(maquina.plc, "Error", "Ocurrió un error durante la lectura del PLC.");
+                    pararCronometro();
+                }
+            });
+        }
+
+        function ActualizarEstado(estado) {
+            $.ajax({
+                type: 'POST',
+                url: urlActualizarEstado,
+                data: JSON.stringify({ estado: estado }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === false) {
+                        app.showMessageDialog(response.Message);
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                }
+            });
+        }
+
+        function ActualizarEstadoSecuencia(idMaquina, estado) {
+            $.ajax({
+                type: 'POST',
+                url: urlActualizarEstadoSecuencia,
+                data: JSON.stringify({ idMaquina: idMaquina, estado: estado }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === false) {
+                        app.showMessageDialog(response.Message);
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                }
+            });
         }
 
         function Reanudar() {
-            AgregarEvento(usuario, "Reanudar", "El usuario marco el inicio de la producción.");
+
+            $("#modalReanudar").modal("hide");
+            $("#btnReanudar").addClass("disabled");
+            $("#btnDetener").addClass("disabled");
+
+            AgregarEvento(usuario, "Reanudado", $("#txtComentarioReanudar").val());
+
+            inicioCronometro();
+
+            var maquina = maquinas[numeroMaquinaActual];
+            $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
+
+            $("#strEstado").text(estadoConformado);
+
+            ActualizarEstadoSecuencia(maquina.idMaquina, estadoMaquinaEnProceso);
+            ActualizarEstado(estadoConformado);
+
+            LeerArchivo();
         }
 
         function Detener() {
-            AgregarEvento(usuario, "Detenido", "ERR00015: Cizalla no calibrada. Se requiere mantenimiento de máquina.");
-        }
 
-        function Finalizar() {
-            EmpezarDetener();
-            //window.location.href = urlFinalizar;
+            $("#modalDetener").modal("hide");
+            $("#btnReanudar").addClass("disabled");
+            $("#btnDetener").addClass("disabled");
+            $("#btnSalir").removeClass("disabled");
+
+            AgregarEvento(usuario, "Detenido", $("#txtComentarioDetener").val());
+
+            var maquina = maquinas[numeroMaquinaActual];
+            $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
+
+            $("#strEstado").text(estadoDetenido);
+
+            ActualizarEstadoSecuencia(maquina.idMaquina, estadoMaquinaDetenido);
+            ActualizarEstado(estadoDetenido);
         }
 
         function AgregarEvento(dispositvo_usuario, evento, resultado) {
             var date = new Date();
             var momento = date.yyyymmddhhmmss();
-
             var tr = "<tr>";
             tr += "<td>" + dispositvo_usuario + "</td>";
             tr += "<td>" + evento + "</td>";
@@ -361,44 +638,81 @@
             $("#tblEventos tbody").prepend(tr);
         }
 
-        function EmpezarDetener() {
-            if (timeout == 0) {
-                // Obtenemos el valor actual
-                inicio = new Date().getTime();
+        function GenerarPrueba(numero) {
+            var maquina = maquinas[numeroMaquinaActual];
+            $.ajax({
+                type: 'POST',
+                url: urlGenerarArchivoPrueba,
+                data: JSON.stringify({ idMaquina: maquina.idMaquina, numero: numero }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Success === false) {
+                        app.showMessageDialog(response.Message);
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                }
+            });
+        }
 
-                // iniciamos el proceso
-                Funcionando();
+        var centesimas = 0;
+        var segundos = 0;
+        var minutos = 0;
+        var horas = 0;
+        var control;
 
-            } else {
-                // detemer el cronometro
-                clearTimeout(timeout);
-                timeout = 0;
+        function inicioCronometro() {
+            control = setInterval(cronometro, 10);
+        }
+
+        function pararCronometro() {
+            clearInterval(control);
+        }
+
+        function reinicioCronometro() {
+            clearInterval(control);
+            centesimas = 0;
+            segundos = 0;
+            minutos = 0;
+            horas = 0;
+            document.getElementById("Centesimas").innerHTML = ":00";
+            document.getElementById("Segundos").innerHTML = ":00";
+            document.getElementById("Minutos").innerHTML = ":00";
+            document.getElementById("Horas").innerHTML = "00";
+        }
+
+        function cronometro() {
+            if (centesimas < 99) {
+                centesimas++;
+                if (centesimas < 10) { centesimas = "0" + centesimas }
+                document.getElementById("Centesimas").innerHTML = ":" + centesimas;
             }
-        }
-
-        function Funcionando() {
-            // obteneos la fecha actual
-            var actual = new Date().getTime();
-
-            // obtenemos la diferencia entre la fecha actual y la de inicio
-            var diff = new Date(actual - inicio);
-
-            // mostramos la diferencia entre la fecha actual y la inicial
-            var result = LeadingZero(diff.getUTCHours()) + ":" + LeadingZero(diff.getUTCMinutes()) + ":" + LeadingZero(diff.getUTCSeconds());
-            document.getElementById('crono').innerHTML = result;
-
-            // Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
-            timeout = setTimeout("Funcionando()", 1000);
-        }
-
-        function LeadingZero(time) {
-            // Coloca un 0 delante de un valor si es necesario
-            return (time < 10) ? "0" + time : +time;
-        }
-
-        function sleepFor(sleepDuration) {
-            var now = new Date().getTime();
-            while (new Date().getTime() < now + sleepDuration) { /* do nothing */ }
+            if (centesimas == 99) {
+                centesimas = -1;
+            }
+            if (centesimas == 0) {
+                segundos++;
+                if (segundos < 10) { segundos = "0" + segundos }
+                document.getElementById("Segundos").innerHTML = ":" + segundos;
+            }
+            if (segundos == 59) {
+                segundos = -1;
+            }
+            if ((centesimas == 0) && (segundos == 0)) {
+                minutos++;
+                if (minutos < 10) { minutos = "0" + minutos }
+                document.getElementById("Minutos").innerHTML = ":" + minutos;
+            }
+            if (minutos == 59) {
+                minutos = -1;
+            }
+            if ((centesimas == 0) && (segundos == 0) && (minutos == 0)) {
+                horas++;
+                if (horas < 10) { horas = "0" + horas }
+                document.getElementById("Horas").innerHTML = horas;
+            }
         }
 
         Date.prototype.yyyymmddhhmmss = function () {
