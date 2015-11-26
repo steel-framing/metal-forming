@@ -238,8 +238,8 @@ namespace MetalForming.Web.Controllers
                     MotivosDeParada = lineas[7].Replace("#MotivosDeParada:", "").Replace("\r", ""),
                     TiempoParada = lineas[8].Replace("#TiempoParada:", "").Replace("\r", ""),
                     TiempoProduccion = lineas[9].Replace("#TiempoProduccion:", "").Replace("\r", ""),
-                    UnidadesProducidas = lineas[10].Replace("#UnidadesProducidas:", "").Replace("\r", ""),
-                    UnidadesAProducidas = lineas[11].Replace("#UnidadesAProducir:", "").Replace("\r", ""),
+                    UnidadesAProducidas = lineas[10].Replace("#UnidadesAProducir:", "").Replace("\r", ""),
+                    UnidadesProducidas = lineas[11].Replace("#UnidadesProducidas:", "").Replace("\r", ""),
                     UnidadesDefectuosas = lineas[12].Replace("#UnidadesDefectuosas:", "").Replace("\r", ""),
                     Paradas = new List<ParadaModel>()
                 };
@@ -343,21 +343,21 @@ namespace MetalForming.Web.Controllers
 
                 var archivo = string.Format(@"C:\MetalForming\{0}\{1}\plc.txt", OrdenProduccionActual.Numero, maquinaActual.PLC);
 
+                var texto = System.IO.File.ReadAllText(archivo);
+                var lineas = texto.Split('\n');
+
+                var fechaInicioProduccion = lineas[1].Replace("#FechaInicioProduccion:", "").Replace("\r", "");
+
+                var noCiclos = lineas[6].Replace("#NoCiclos:", "").Replace("\r", "");
+                if (string.IsNullOrEmpty(noCiclos))
+                    noCiclos = "1";
+                else
+                    noCiclos = (Convert.ToInt32(noCiclos) + 1).ToString();
+
                 switch (numero)
                 {
                     case 1: //Generar siguiente ciclo
                         {
-                            var texto = System.IO.File.ReadAllText(archivo);
-                            var lineas = texto.Split('\n');
-
-                            var fechaInicioProduccion = lineas[1].Replace("#FechaInicioProduccion:", "").Replace("\r", "");
-
-                            var noCiclos = lineas[6].Replace("#NoCiclos:", "").Replace("\r", "");
-                            if (string.IsNullOrEmpty(noCiclos))
-                                noCiclos = "1";
-                            else
-                                noCiclos = (Convert.ToInt32(noCiclos) + 1).ToString();
-
                             var builder = new StringBuilder();
                             builder.AppendLine("#Maquina:" + maquinaActual.DescripcionMaquina);
                             builder.AppendLine("#FechaInicioProduccion:" + fechaInicioProduccion);
@@ -378,17 +378,6 @@ namespace MetalForming.Web.Controllers
                         break;
                     case 2: //Generar error
                         {
-                            var texto = System.IO.File.ReadAllText(archivo);
-                            var lineas = texto.Split('\n');
-
-                            var fechaInicioProduccion = lineas[1].Replace("#FechaInicioProduccion:", "").Replace("\r", "");
-
-                            var noCiclos = lineas[6].Replace("#NoCiclos:", "").Replace("\r", "");
-                            if (string.IsNullOrEmpty(noCiclos))
-                                noCiclos = "1";
-                            else
-                                noCiclos = (Convert.ToInt32(noCiclos) + 1).ToString();
-
                             var builder = new StringBuilder();
                             builder.AppendLine("#Maquina:" + maquinaActual.DescripcionMaquina);
                             builder.AppendLine("#FechaInicioProduccion:" + fechaInicioProduccion);
@@ -409,12 +398,45 @@ namespace MetalForming.Web.Controllers
                         break;
                     case 3: //Generar error corregido
                         {
+                            var builder = new StringBuilder();
+                            builder.AppendLine("#Maquina:" + maquinaActual.DescripcionMaquina);
+                            builder.AppendLine("#FechaInicioProduccion:" + fechaInicioProduccion);
+                            builder.AppendLine("#FechaFinProduccion:");
+                            builder.AppendLine("#Longitud:" + maquinaActual.Longitud);
+                            builder.AppendLine("#Espesor:" + maquinaActual.Espesor);
+                            builder.AppendLine("#Ciclo:" + maquinaActual.Ciclo);
+                            builder.AppendLine("#NoCiclos:" + noCiclos);
+                            builder.AppendLine("#MotivosDeParada:1");
+                            builder.AppendLine("#TiempoParada:150");
+                            builder.AppendLine("#TiempoProduccion:");
+                            builder.AppendLine("#UnidadesAProducir:" + OrdenProduccionActual.CantidadProducto);
+                            builder.AppendLine("#UnidadesProducidas:");
+                            builder.AppendLine("#UnidadesDefectuosas:");
 
+                            System.IO.File.WriteAllText(archivo, builder.ToString());
                         }
                         break;
                     case 4: //Generar termino
                         {
+                            var motivosDeParada = lineas[7].Replace("#MotivosDeParada:", "").Replace("\r", "");
+                            var tiempoParada = lineas[8].Replace("#TiempoParada:", "").Replace("\r", "");
 
+                            var builder = new StringBuilder();
+                            builder.AppendLine("#Maquina:" + maquinaActual.DescripcionMaquina);
+                            builder.AppendLine("#FechaInicioProduccion:" + fechaInicioProduccion);
+                            builder.AppendLine("#FechaFinProduccion:");
+                            builder.AppendLine("#Longitud:" + maquinaActual.Longitud);
+                            builder.AppendLine("#Espesor:" + maquinaActual.Espesor);
+                            builder.AppendLine("#Ciclo:" + maquinaActual.Ciclo);
+                            builder.AppendLine("#NoCiclos:" + noCiclos);
+                            builder.AppendLine("#MotivosDeParada:" + motivosDeParada);
+                            builder.AppendLine("#TiempoParada:" + tiempoParada);
+                            builder.AppendLine("#TiempoProduccion:");
+                            builder.AppendLine("#UnidadesAProducir:" + OrdenProduccionActual.CantidadProducto);
+                            builder.AppendLine("#UnidadesProducidas:" + OrdenProduccionActual.CantidadProducto);
+                            builder.AppendLine("#UnidadesDefectuosas:10");
+
+                            System.IO.File.WriteAllText(archivo, builder.ToString());
                         }
                         break;
                     default:

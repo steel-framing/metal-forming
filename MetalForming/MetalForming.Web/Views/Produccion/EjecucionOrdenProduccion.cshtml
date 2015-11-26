@@ -15,15 +15,25 @@
                 <a id="btnIniciar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-play"></i> Iniciar</a>
                 <a id="btnReanudar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-refresh"></i> Reanudar</a>
                 <a id="btnDetener" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-pause"></i> Detener</a>
-                <a id="btnFinalizar" href="javascript:;" class="btn btn-primary-line disabled"><i class="ion-power"></i> Finalizar</a>
+                <a id="btnSalir" href="@Url.Action("EjecutarOrdenProduccion")" class="btn btn-primary-line disabled"><i class="ion-ios-close"></i> Salir</a>
             </div>
             <div class="col-xs-6">
                 <div class="text-right">
                     <strong class="text-white">Número OP:</strong> <strong>@Model.Numero</strong>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <strong class="text-white">Estado:</strong> <strong id="strEstado">@Model.Estado</strong>
+                    <strong class="text-white">Estado:</strong> <strong id="strEstado" style="background-color: yellow;">@Model.Estado</strong>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span id="spaTiempoContenedor" style="display: none;"><strong class="text-white">Tiempo:</strong> <strong><span id="crono" class="text-danger"></span></strong></span>
+                    <span id="spaTiempoContenedor" style="display: none;">
+                        <strong class="text-white">Tiempo:</strong>
+                        <strong>
+                            <span id="crono" class="text-danger" style="background-color: yellow;">
+                                <span id="Horas">00</span>
+                                <span id="Minutos">:00</span>
+                                <span id="Segundos">:00</span>
+                                <span id="Centesimas">:00</span>
+                            </span>
+                        </strong>
+                    </span>
                 </div>
             </div>
         </div>
@@ -243,8 +253,6 @@
     <script type="text/javascript">
 
         var usuario = "USUARIO 01";
-        var inicio = 0;
-        var timeout = 0;
 
         var estadoConformado = '@Constantes.EstadoOrdenPoduccion.Conformado';
         var estadoDetenido = '@Constantes.EstadoOrdenPoduccion.Detenido';
@@ -280,6 +288,7 @@
 
             $("#btnReanudar").on("click", function () {
                 if ($(this).hasClass("disabled") == false) {
+                    $("#txtComentarioReanudar").val("");
                     $("#modalReanudar").modal("show");
                 }
             });
@@ -289,11 +298,14 @@
             });
 
             $("#btnReanudarError").on("click", function () {
+                $("#modalError").modal("hide");
+                $("#txtComentarioReanudar").val("");
                 $("#modalReanudar").modal("show");
             });
 
             $("#btnDetener").on("click", function () {
                 if ($(this).hasClass("disabled") == false) {
+                    $("#txtComentarioDetener").val();
                     $("#modalDetener").modal("show");
                 }
             });
@@ -303,15 +315,9 @@
             });
 
             $("#btnDetenerError").on("click", function () {
+                $("#modalError").modal("hide");
+                $("#txtComentarioDetener").val();
                 $("#modalDetener").modal("show");
-            });
-
-            $("#btnFinalizar").on("click", function () {
-                if ($(this).hasClass("disabled") == false) {
-                    app.showConfirmDialog("Listo para finalizar la producción?", function () {
-                        Finalizar();
-                    });
-                }
             });
         });
 
@@ -333,9 +339,8 @@
         function Iniciar() {
             $("input[type='checkbox']").attr("disabled", "disabled");
             $("#btnIniciar").addClass("disabled");
-            $("#btnFinalizar").removeClass("disabled");
             $("#spaTiempoContenedor").show();
-            EmpezarDetener();
+            inicioCronometro();
             AgregarEvento(usuario, "Inicio", "El usuario marco el inicio de la producción.");
 
             $.ajax({
@@ -364,13 +369,13 @@
 
                     } else {
                         AgregarEvento(usuario, "Error", response.Message);
-                        EmpezarDetener();
+                        pararCronometro();
                     }
                 },
                 error: function (x, xh, xhr) {
                     console.error(xh);
                     AgregarEvento(usuario, "Error", "Ocurrió un error durante el inicio de la producción.");
-                    EmpezarDetener();
+                    pararCronometro();
                 }
             });
         }
@@ -390,17 +395,17 @@
                 success: function (response) {
                     if (response.Success === true) {
 
-                        setTimeout(function () { LeerArchivo() }, tiempoEspera);
+                        LeerArchivo();
 
                     } else {
                         AgregarEvento(maquina.plc, "Error", response.Message);
-                        EmpezarDetener();
+                        pararCronometro();
                     }
                 },
                 error: function (x, xh, xhr) {
                     console.error(xh);
                     AgregarEvento(maquina.plc, "Error", "Ocurrió un error durante el inicio del PLC.");
-                    EmpezarDetener();
+                    pararCronometro();
                 }
             });
         }
@@ -425,74 +430,80 @@
                             AgregarEvento(maquina.plc, "Inicio", "Inicio de proceso del PLC");
 
                             maquina.model = response.Data;
-
-                        } else {
-
-                            //Mostrar el numero de ciclo cuando cambia
-                            if (maquina.model.NoCiclos != response.Data.NoCiclos) {
-                                AgregarEvento(maquina.plc, "Proceso", "Se inicio el número de ciclo " + response.Data.NoCiclos);
-                            }
-
-                            //Verificando si existe un error
-                            if (maquina.model.MotivosDeParada != response.Data.MotivosDeParada) {
-                                var existe = false;
-                                for (var i = 0; i < response.Data.Paradas.length; i++) {
-                                    for (var k = 0; k < maquina.model.Paradas.length; k++) {
-                                        if (response.Data.Paradas[i].Motivo == maquina.model.Paradas[k].Motivo) {
-                                            existe = true;
-                                        }
-                                    }
-                                    if (!existe) {
-                                        AgregarEvento(maquina.plc, "Error", response.Data.Paradas[i].Mensaje);
-
-                                        EmpezarDetener();
-
-                                        $("#btnReanudar").removeClass("disabled");
-                                        $("#btnDetener").removeClass("disabled");
-
-                                        $("#modalErrorMensaje").text("La maquina PLC " + maquina.plc + " presento una parada " + response.Data.Paradas[i].Mensaje);
-                                        $("#modalError").modal("show");
-
-                                        maquina.model = response.Data;
-                                        break;
-                                    }
-                                    existe = false;
-                                }
-                                if (!existe)
-                                    return;
-                            }
-
-                            //Mostrar el tiempo de parada
-                            if (maquina.model.TiempoParada != response.Data.TiempoParada) {
-                                for (var i = 0; i < response.Data.Paradas.length; i++) {
-
-                                    var existe = false;
-                                    for (var k = 0; k < maquina.model.Paradas.length; k++) {
-                                        if (response.Data.Paradas[i].Tiempo == maquina.model.Paradas[k].Tiempo) {
-                                            existe = true;
-                                        }
-                                    }
-                                    if (!existe) {
-                                        AgregarEvento(maquina.plc, "Proceso", "Tiempo de parada: " + response.Data.Paradas[i].Tiempo + " seg.");
-                                    }
-                                }
-                            }
-
-                            //Mostrando el cambio por unidades producidas
-                            if (maquina.model.UnidadesProducidas != response.Data.UnidadesProducidas) {
-                                if (response.Data.UnidadesAProducidas != response.Data.UnidadesProducidas) {
-                                    AgregarEvento(maquina.plc, "Proceso", response.Data.UnidadesProducidas + " unidades producidas hasta el momento.");
-                                }
-                            }
-
-                            //Mostrando el cambio por unidades defectuosas 
-                            if (maquina.model.UnidadesDefectuosas != response.Data.UnidadesDefectuosas) {
-                                AgregarEvento(maquina.plc, "Proceso", response.Data.NoCiclos + " unidades defectuosas en total.");
-                            }
-
-                            maquina.model = response.Data;
                         }
 
+                        //Mostrar el numero de ciclo cuando cambia
+                        if (maquina.model.NoCiclos != response.Data.NoCiclos) {
+                            AgregarEvento(maquina.plc, "Proceso", "Se inicio el número de ciclo " + response.Data.NoCiclos);
+                        }
+
+                        //Verificando si existe un error
+                        if (maquina.model.MotivosDeParada != response.Data.MotivosDeParada) {
+                            var existe = false;
+                            for (var i = 0; i < response.Data.Paradas.length; i++) {
+                                for (var k = 0; k < maquina.model.Paradas.length; k++) {
+                                    if (response.Data.Paradas[i].Motivo == maquina.model.Paradas[k].Motivo) {
+                                        existe = true;
+                                    }
+                                }
+                                if (!existe) {
+                                    AgregarEvento(maquina.plc, "Error", response.Data.Paradas[i].Mensaje);
+
+                                    pararCronometro();
+
+                                    $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
+
+                                    $("#strEstado").text(estadoDetenido);
+
+                                    ActualizarEstadoSecuencia(maquina.idMaquina, estadoMaquinaDetenido);
+                                    ActualizarEstado(estadoDetenido);
+
+                                    $("#btnReanudar").removeClass("disabled");
+                                    $("#btnDetener").removeClass("disabled");
+
+                                    $("#modalErrorMensaje").text("La maquina PLC " + maquina.plc + " presento una parada " + response.Data.Paradas[i].Mensaje);
+                                    $("#modalError").modal("show");
+
+                                    maquina.model = response.Data;
+                                    break;
+                                }
+                                existe = false;
+                            }
+                            if (!existe)
+                                return;
+                        }
+
+                        //Mostrar el tiempo de parada
+                        if (maquina.model.TiempoParada != response.Data.TiempoParada) {
+                            for (var i = 0; i < response.Data.Paradas.length; i++) {
+
+                                var existe = false;
+                                for (var k = 0; k < maquina.model.Paradas.length; k++) {
+                                    if (response.Data.Paradas[i].Tiempo == maquina.model.Paradas[k].Tiempo) {
+                                        existe = true;
+                                    }
+                                }
+                                if (!existe) {
+                                    AgregarEvento(maquina.plc, "Proceso", "MOTIVO" + response.Data.Paradas[i].Motivo + " con tiempo de parada: " + response.Data.Paradas[i].Tiempo + " seg.");
+                                }
+                            }
+                        }
+
+                        //Mostrando el cambio por unidades producidas
+                        if (maquina.model.UnidadesProducidas != response.Data.UnidadesProducidas) {
+                            if (response.Data.UnidadesAProducidas != response.Data.UnidadesProducidas) {
+                                AgregarEvento(maquina.plc, "Proceso", response.Data.UnidadesProducidas + " unidades producidas hasta el momento.");
+                            }
+                        }
+
+                        //Mostrando el cambio por unidades defectuosas
+                        if (maquina.model.UnidadesDefectuosas != response.Data.UnidadesDefectuosas) {
+                            AgregarEvento(maquina.plc, "Proceso", response.Data.NoCiclos + " unidades defectuosas en total.");
+                        }
+
+                        maquina.model = response.Data;
+
+                        //Verificar si se termino el proceso del PLC
                         if (maquina.model.UnidadesAProducidas != '' && maquina.model.UnidadesProducidas != '') {
                             if (maquina.model.UnidadesAProducidas == maquina.model.UnidadesProducidas) {
 
@@ -501,17 +512,23 @@
 
                                 AgregarEvento(maquina.plc, "Termino", "Termino de proceso del PLC, ser producierón " + maquina.model.UnidadesProducidas + " unidades.");
 
+                                //Verificar si existen mas PLC
                                 if ((numeroMaquinaActual + 1) < maquinas.length) {
 
                                     numeroMaquinaActual += 1;
                                     IniciarArchivo();
 
                                 } else {
+                                    //Produccion terminada si todos los PLC se terminaron
+
+                                    pararCronometro();
 
                                     ActualizarEstado(estadoTerminado);
                                     $("#strEstado").text(estadoTerminado);
 
-                                    AgregarEvento(usuario, "Termino", "El usuario marco el termino de la producción.");
+                                    AgregarEvento(usuario, "Termino", "El sistema marco el termino de la producción.");
+
+                                    $("#btnSalir").removeClass("disabled");
                                 }
 
                             } else {
@@ -523,13 +540,13 @@
 
                     } else {
                         AgregarEvento(maquina.plc, "Error", response.Message);
-                        EmpezarDetener();
+                        pararCronometro();
                     }
                 },
                 error: function (x, xh, xhr) {
                     console.error(xh);
                     AgregarEvento(maquina.plc, "Error", "Ocurrió un error durante la lectura del PLC.");
-                    EmpezarDetener();
+                    pararCronometro();
                 }
             });
         }
@@ -538,7 +555,7 @@
             $.ajax({
                 type: 'POST',
                 url: urlActualizarEstado,
-                data: JSON.stringify({ estado : estado }),
+                data: JSON.stringify({ estado: estado }),
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
@@ -572,34 +589,46 @@
 
         function Reanudar() {
 
-            AgregarEvento(usuario, "Reanudado", $("#txtComentarioReanudar").text());
+            $("#modalReanudar").modal("hide");
+            $("#btnReanudar").addClass("disabled");
+            $("#btnDetener").addClass("disabled");
+
+            AgregarEvento(usuario, "Reanudado", $("#txtComentarioReanudar").val());
+
+            inicioCronometro();
 
             var maquina = maquinas[numeroMaquinaActual];
             $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
+
+            $("#strEstado").text(estadoConformado);
+
+            ActualizarEstadoSecuencia(maquina.idMaquina, estadoMaquinaEnProceso);
+            ActualizarEstado(estadoConformado);
 
             LeerArchivo();
         }
 
         function Detener() {
 
-            AgregarEvento(usuario, "Detenido", $("#txtComentarioDetener").text());
+            $("#modalDetener").modal("hide");
+            $("#btnReanudar").addClass("disabled");
+            $("#btnDetener").addClass("disabled");
+            $("#btnSalir").removeClass("disabled");
+
+            AgregarEvento(usuario, "Detenido", $("#txtComentarioDetener").val());
 
             var maquina = maquinas[numeroMaquinaActual];
             $(maquina.row).find(".tdEstado").text(estadoMaquinaEnProceso);
+
+            $("#strEstado").text(estadoDetenido);
 
             ActualizarEstadoSecuencia(maquina.idMaquina, estadoMaquinaDetenido);
             ActualizarEstado(estadoDetenido);
         }
 
-        function Finalizar() {
-            EmpezarDetener();
-            //Ajax -> urlFinalizar;
-        }
-
         function AgregarEvento(dispositvo_usuario, evento, resultado) {
             var date = new Date();
             var momento = date.yyyymmddhhmmss();
-
             var tr = "<tr>";
             tr += "<td>" + dispositvo_usuario + "</td>";
             tr += "<td>" + evento + "</td>";
@@ -608,51 +637,6 @@
             tr += "</tr>";
             $("#tblEventos tbody").prepend(tr);
         }
-
-        function EmpezarDetener() {
-            if (timeout == 0) {
-                // Obtenemos el valor actual
-                inicio = new Date().getTime();
-
-                // iniciamos el proceso
-                Funcionando();
-
-            } else {
-                // detemer el cronometro
-                clearTimeout(timeout);
-                timeout = 0;
-            }
-        }
-
-        function Funcionando() {
-            // obteneos la fecha actual
-            var actual = new Date().getTime();
-
-            // obtenemos la diferencia entre la fecha actual y la de inicio
-            var diff = new Date(actual - inicio);
-
-            // mostramos la diferencia entre la fecha actual y la inicial
-            var result = LeadingZero(diff.getUTCHours()) + ":" + LeadingZero(diff.getUTCMinutes()) + ":" + LeadingZero(diff.getUTCSeconds());
-            document.getElementById('crono').innerHTML = result;
-
-            // Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
-            timeout = setTimeout("Funcionando()", 1000);
-        }
-
-        function LeadingZero(time) {
-            // Coloca un 0 delante de un valor si es necesario
-            return (time < 10) ? "0" + time : +time;
-        }
-
-        Date.prototype.yyyymmddhhmmss = function () {
-            var yyyy = this.getFullYear();
-            var mm = this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1); // getMonth() is zero-based
-            var dd = this.getDate() < 10 ? "0" + this.getDate() : this.getDate();
-            var hh = this.getHours() < 10 ? "0" + this.getHours() : this.getHours();
-            var min = this.getMinutes() < 10 ? "0" + this.getMinutes() : this.getMinutes();
-            var seg = this.getSeconds() < 10 ? "0" + this.getSeconds() : this.getSeconds();
-            return "".concat(dd).concat("/").concat(mm).concat("/").concat(yyyy).concat(" ").concat(hh).concat(":").concat(min).concat(":").concat(seg);
-        };
 
         function GenerarPrueba(numero) {
             var maquina = maquinas[numeroMaquinaActual];
@@ -672,6 +656,74 @@
                 }
             });
         }
+
+        var centesimas = 0;
+        var segundos = 0;
+        var minutos = 0;
+        var horas = 0;
+        var control;
+
+        function inicioCronometro() {
+            control = setInterval(cronometro, 10);
+        }
+
+        function pararCronometro() {
+            clearInterval(control);
+        }
+
+        function reinicioCronometro() {
+            clearInterval(control);
+            centesimas = 0;
+            segundos = 0;
+            minutos = 0;
+            horas = 0;
+            document.getElementById("Centesimas").innerHTML = ":00";
+            document.getElementById("Segundos").innerHTML = ":00";
+            document.getElementById("Minutos").innerHTML = ":00";
+            document.getElementById("Horas").innerHTML = "00";
+        }
+
+        function cronometro() {
+            if (centesimas < 99) {
+                centesimas++;
+                if (centesimas < 10) { centesimas = "0" + centesimas }
+                document.getElementById("Centesimas").innerHTML = ":" + centesimas;
+            }
+            if (centesimas == 99) {
+                centesimas = -1;
+            }
+            if (centesimas == 0) {
+                segundos++;
+                if (segundos < 10) { segundos = "0" + segundos }
+                document.getElementById("Segundos").innerHTML = ":" + segundos;
+            }
+            if (segundos == 59) {
+                segundos = -1;
+            }
+            if ((centesimas == 0) && (segundos == 0)) {
+                minutos++;
+                if (minutos < 10) { minutos = "0" + minutos }
+                document.getElementById("Minutos").innerHTML = ":" + minutos;
+            }
+            if (minutos == 59) {
+                minutos = -1;
+            }
+            if ((centesimas == 0) && (segundos == 0) && (minutos == 0)) {
+                horas++;
+                if (horas < 10) { horas = "0" + horas }
+                document.getElementById("Horas").innerHTML = horas;
+            }
+        }
+
+        Date.prototype.yyyymmddhhmmss = function () {
+            var yyyy = this.getFullYear();
+            var mm = this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1); // getMonth() is zero-based
+            var dd = this.getDate() < 10 ? "0" + this.getDate() : this.getDate();
+            var hh = this.getHours() < 10 ? "0" + this.getHours() : this.getHours();
+            var min = this.getMinutes() < 10 ? "0" + this.getMinutes() : this.getMinutes();
+            var seg = this.getSeconds() < 10 ? "0" + this.getSeconds() : this.getSeconds();
+            return "".concat(dd).concat("/").concat(mm).concat("/").concat(yyyy).concat(" ").concat(hh).concat(":").concat(min).concat(":").concat(seg);
+        };
 
     </script>
 }
