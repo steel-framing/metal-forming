@@ -596,6 +596,29 @@
                         tr += "<td><a href=\"javascript:;\" class=\"btn btn-primary-line btnEliminarMaquina\"><i class=\"ion-trash-a\"></i></a></td>";
                         tr += "</tr>";
                         $("#tblSecuencia tbody").append(tr);
+
+                        var newRow = $("#tblSecuencia tbody tr:last");
+                        var prevRow = newRow.prev();
+                        if (prevRow.length > 0) {
+                            var fechaFin = prevRow.find("td.tdFechaFin").text(); //yyyy-MM-ddThh:mm
+
+                            var fechaInput = fechaFin.substr(0, 10).split("/"); 
+                            var tiempoInput = fechaFin.substr(11, 5).split(":");
+
+                            var anio = parseInt(fechaInput[2]);
+                            var mes = parseInt(fechaInput[1]) - 1;
+                            var dia = parseInt(fechaInput[0]);
+                            var hora = parseInt(tiempoInput[0]);
+                            var minuto = parseInt(tiempoInput[1]);
+
+                            var fecha = new Date(anio, mes, dia, hora, minuto);
+                            fecha.setMinutes(fecha.getMinutes() + 1);
+
+                            var fechaInicioInput = newRow.find("td.tdFechaInicio input.txtFecha");
+                            fechaInicioInput.val(fecha.yyyymmddhhmm2());
+                            
+                            AsignarFechaHoraInicio(fechaInicioInput[0]);
+                        }
                     }
                 }
             });
@@ -746,6 +769,15 @@
             var hh = this.getHours() < 10 ? "0" + this.getHours() : this.getHours();
             var min = this.getMinutes() < 10 ? "0" + this.getMinutes() : this.getMinutes();
             return "".concat(dd).concat("/").concat(mm).concat("/").concat(yyyy).concat(" ").concat(hh).concat(":").concat(min);
+        };
+        
+        Date.prototype.yyyymmddhhmm2 = function () {
+            var yyyy = this.getFullYear();
+            var mm = this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1); // getMonth() is zero-based
+            var dd = this.getDate() < 10 ? "0" + this.getDate() : this.getDate();
+            var hh = this.getHours() < 10 ? "0" + this.getHours() : this.getHours();
+            var min = this.getMinutes() < 10 ? "0" + this.getMinutes() : this.getMinutes();
+            return "".concat(yyyy).concat("-").concat(mm).concat("-").concat(dd).concat("T").concat(hh).concat(":").concat(min);
         };
 
     </script>
