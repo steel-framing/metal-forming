@@ -83,7 +83,8 @@ namespace MetalForming.BusinessLogic
                     if (ordenProduccion.TomarStock)
                     {
                         //Reserva de producto --> Disminuir el Stock de Producto
-                        _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, -1 * ordenProduccion.OrdenVenta.Cantidad);
+                        var stockProducto = ordenProduccion.OrdenVenta.Producto.Stock - ordenProduccion.OrdenVenta.Cantidad;
+                        _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, stockProducto);
 
                         //Cambiar estado a Orden de Venta
                         _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.ReservadoStock);
@@ -100,9 +101,8 @@ namespace MetalForming.BusinessLogic
 
                             _ordenProduccionDA.RegistrarMaterial(material);
 
-                            var cantidadUtilizada = material.Comprar - material.Requerido;
-
-                            _materialDA.ActualizarStock(material.Material.Id, cantidadUtilizada);
+                            var stockMaterial = (material.Material.Stock + material.Comprar) - material.Requerido;
+                            _materialDA.ActualizarStock(material.Material.Id, stockMaterial);
                         }
 
                         //Registrar Maquinas
@@ -115,7 +115,8 @@ namespace MetalForming.BusinessLogic
                         }
 
                         //Reserva de producto --> Stock de Producto
-                        _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, ordenProduccion.CantidadProducto - ordenProduccion.OrdenVenta.Cantidad);
+                        var stockProducto = (ordenProduccion.OrdenVenta.Producto.Stock + ordenProduccion.CantidadProductoDigitado) - ordenProduccion.OrdenVenta.Cantidad;
+                        _productoDA.ActualizarStock(ordenProduccion.OrdenVenta.Producto.Id, stockProducto);
 
                         //Cambiar estado a Orden de Venta
                         _ordenVentaDA.ActualizarEstado(ordenProduccion.OrdenVenta.Id, Constantes.EstadoOrdenVenta.Programado);

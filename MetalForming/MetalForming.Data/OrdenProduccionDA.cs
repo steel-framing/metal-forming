@@ -336,7 +336,7 @@ namespace MetalForming.Data
 
                 Context.Database.AddInParameter(comando, "@IdOrdenVenta", DbType.Int32, ordenProduccion.OrdenVenta.Id);
                 Context.Database.AddInParameter(comando, "@Estado", DbType.String, ordenProduccion.Estado);
-                Context.Database.AddInParameter(comando, "@CantidadProducto", DbType.Int32, ordenProduccion.CantidadProducto);
+                Context.Database.AddInParameter(comando, "@CantidadProducto", DbType.Int32, ordenProduccion.CantidadProductoDigitado);
 
                 var idOrdenProduccion = Convert.ToInt32(Context.ExecuteScalar(comando));
 
