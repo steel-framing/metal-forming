@@ -22,6 +22,7 @@ namespace MetalForming.Data
         private const string ProcedimientoAlmacenadoActualizarPorRechazo = "dbo.ActualizarOrdenProduccionPorRechazo";
         private const string ProcedimientoAlmacenadoActualizarAsignacion = "dbo.ActualizarOrdenProduccionPorAsignacion";
         private const string ProcedimientoAlmacenadoActualizarEstadoSecuencia = "dbo.ActualizarEstadoOrdenProduccionSecuencia";
+        private const string ProcedimientoAlmacenadoValidarHorarioMaquina = "dbo.ValidarOrdenProduccionSecuenciaHorario";
 
         public IList<OrdenProduccion> ListarPorPrograma(int idPrograma)
         {
@@ -456,6 +457,32 @@ namespace MetalForming.Data
             {
                 throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoActualizarEstadoSecuencia);
             }
+        }
+
+        public int ValidarHorarioMaquina(int idMaquina, DateTime fechaInicio, DateTime fechaFin)
+        {
+            var cantidad = 0;
+            try
+            {
+                var comando = Context.Database.GetStoredProcCommand(ProcedimientoAlmacenadoValidarHorarioMaquina);
+
+                Context.Database.AddInParameter(comando, "@IdMaquina", DbType.Int32, idMaquina);
+                Context.Database.AddInParameter(comando, "@FechaInicio", DbType.DateTime, fechaInicio);
+                Context.Database.AddInParameter(comando, "@FechaFin", DbType.DateTime, fechaFin);
+
+                using (var lector = Context.ExecuteReader(comando))
+                {
+                    if (lector.Read())
+                    {
+                        cantidad = GetDataValue<int>(lector, "Cantidad");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ExceptionData(ex.Message, Context.ProfileName, ProcedimientoAlmacenadoValidarHorarioMaquina);
+            }
+            return cantidad;
         }
     }
 }

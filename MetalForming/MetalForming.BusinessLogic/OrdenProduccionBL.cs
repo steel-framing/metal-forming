@@ -234,5 +234,17 @@ namespace MetalForming.BusinessLogic
                 throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
             }
         }
+
+        public int ValidarHorarioMaquina(int idMaquina, DateTime fechaInicio, DateTime fechaFin)
+        {
+            try
+            {
+               return _ordenProduccionDA.ValidarHorarioMaquina(idMaquina, fechaInicio, fechaFin);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowException(ex, MethodBase.GetCurrentMethod().Name);
+            }
+        }
     }
 }

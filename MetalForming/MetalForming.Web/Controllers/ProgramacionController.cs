@@ -486,6 +486,34 @@ namespace MetalForming.Web.Controllers
             return Json(response);
         }
 
+        [HttpPost]
+        public JsonResult ValidarHorarioMaquina(int idMaquina, string fechaInicio, string fechaFin)
+        {
+            var response = new JsonResponse();
+            try
+            {
+                var f1 = Utils.ConvertDate(fechaInicio, "dd/MM/yyyy HH:mm").Value;
+                var f2 = Utils.ConvertDate(fechaFin, "dd/MM/yyyy HH:mm").Value;
+
+                var cantidad = 0;
+                using (var service = new ProduccionServiceClient())
+                {
+                    cantidad = service.ValidarHorarioOrdenProduccionSecuencia(idMaquina, f1, f2);
+                }
+
+                response.Data = cantidad;
+                response.Success = true;
+                response.Message = "Ok";
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+
+                LogError(ex);
+            }
+            return Json(response);
+        }
+
         #endregion
 
         #region Asignar Ordenes Venta
