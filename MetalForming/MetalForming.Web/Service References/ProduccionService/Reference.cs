@@ -1476,6 +1476,14 @@ namespace MetalForming.Web.ProduccionService {
             "ponse")]
         System.Threading.Tasks.Task ActualizarEstadoOrdenProduccionSecuenciaAsync(int id, int idMaquina, string estado);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ValidarHorarioOrdenProduccionSecuencia", ReplyAction="http://tempuri.org/IProduccionService/ValidarHorarioOrdenProduccionSecuenciaRespo" +
+            "nse")]
+        int ValidarHorarioOrdenProduccionSecuencia(int idMaquina, System.DateTime fechaInicio, System.DateTime fechaFin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ValidarHorarioOrdenProduccionSecuencia", ReplyAction="http://tempuri.org/IProduccionService/ValidarHorarioOrdenProduccionSecuenciaRespo" +
+            "nse")]
+        System.Threading.Tasks.Task<int> ValidarHorarioOrdenProduccionSecuenciaAsync(int idMaquina, System.DateTime fechaInicio, System.DateTime fechaFin);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente", ReplyAction="http://tempuri.org/IProduccionService/ObtenerPlanVigenteResponse")]
         MetalForming.Web.ProduccionService.Plan ObtenerPlanVigente();
         
@@ -1696,6 +1704,14 @@ namespace MetalForming.Web.ProduccionService {
         
         public System.Threading.Tasks.Task ActualizarEstadoOrdenProduccionSecuenciaAsync(int id, int idMaquina, string estado) {
             return base.Channel.ActualizarEstadoOrdenProduccionSecuenciaAsync(id, idMaquina, estado);
+        }
+        
+        public int ValidarHorarioOrdenProduccionSecuencia(int idMaquina, System.DateTime fechaInicio, System.DateTime fechaFin) {
+            return base.Channel.ValidarHorarioOrdenProduccionSecuencia(idMaquina, fechaInicio, fechaFin);
+        }
+        
+        public System.Threading.Tasks.Task<int> ValidarHorarioOrdenProduccionSecuenciaAsync(int idMaquina, System.DateTime fechaInicio, System.DateTime fechaFin) {
+            return base.Channel.ValidarHorarioOrdenProduccionSecuenciaAsync(idMaquina, fechaInicio, fechaFin);
         }
         
         public MetalForming.Web.ProduccionService.Plan ObtenerPlanVigente() {

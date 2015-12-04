@@ -1,6 +1,7 @@
 ﻿using MetalForming.BusinessEntities;
 using MetalForming.BusinessLogic;
 using MetalForming.ServiceContracts;
+using System;
 using System.Collections.Generic;
 using System.ServiceModel.Activation;
 
@@ -124,6 +125,11 @@ namespace MetalForming.Service
         public void ActualizarEstadoOrdenProduccionSecuencia(int id, int idMaquina, string estado)
         {
             _ordenProduccionBL.ActualizarEstadoSecuencia(id, idMaquina, estado);
+        }
+
+        public int ValidarHorarioOrdenProduccionSecuencia(int idMaquina, DateTime fechaInicio, DateTime fechaFin)
+        {
+            return _ordenProduccionBL.ValidarHorarioMaquina(idMaquina, fechaInicio, fechaFin);
         }
 
         #endregion

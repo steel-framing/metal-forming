@@ -356,6 +356,7 @@
         var urlBuscarMaquina = '@Url.Action("BuscarMaquina")';
         var urlObtenerMaquina = '@Url.Action("ObtenerMaquina")';
         var urlGuardar = '@Url.Action("GuardarOrdenProduccion")';
+        var urlValidarHorario = '@Url.Action("ValidarHorarioMaquina")';
 
         $(function () {
 
@@ -388,7 +389,11 @@
             });
 
             $("body").on("change", ".tdFechaInicio input", function () {
-                AsignarFechaHoraInicio(this);
+                AsignarFechaHoraFin(this);
+            });
+
+            $("body").on("blur", ".tdFechaInicio input", function () {
+                ValidarHorarioMaquina(this);
             });
 
             $("#btnGuardar").on("click", function () {
@@ -596,6 +601,29 @@
                         tr += "<td><a href=\"javascript:;\" class=\"btn btn-primary-line btnEliminarMaquina\"><i class=\"ion-trash-a\"></i></a></td>";
                         tr += "</tr>";
                         $("#tblSecuencia tbody").append(tr);
+
+                        var newRow = $("#tblSecuencia tbody tr:last");
+                        var prevRow = newRow.prev();
+                        if (prevRow.length > 0) {
+                            var fechaFin = prevRow.find("td.tdFechaFin").text(); //dd-MM-yyyy hh:mm
+
+                            var fechaInput = fechaFin.substr(0, 10).split("/"); 
+                            var tiempoInput = fechaFin.substr(11, 5).split(":");
+
+                            var anio = parseInt(fechaInput[2]);
+                            var mes = parseInt(fechaInput[1]) - 1;
+                            var dia = parseInt(fechaInput[0]);
+                            var hora = parseInt(tiempoInput[0]);
+                            var minuto = parseInt(tiempoInput[1]);
+
+                            var fecha = new Date(anio, mes, dia, hora, minuto);
+                            fecha.setMinutes(fecha.getMinutes() + 1);
+
+                            var fechaInicioInput = newRow.find("td.tdFechaInicio input.txtFecha");
+                            fechaInicioInput.val(fecha.yyyymmddhhmm2());
+                            
+                            AsignarFechaHoraFin(fechaInicioInput[0]);
+                        }
                     }
                 }
             });
@@ -603,7 +631,7 @@
             $("#modalAgregarMaquina").modal("hide");
         }
 
-        function AsignarFechaHoraInicio(input) {
+        function AsignarFechaHoraFin(input) {
             var fechaInput = $(input).val().split("-"); //yyyy-MM-ddThh:mm
             var tiempoInput = fechaInput[2].split("T");
 
@@ -624,6 +652,57 @@
             fecha.setHours(fecha.getHours() + horaAgregar);
 
             $(input).parent().parent().find("td.tdFechaFin").text(fecha.yyyymmddhhmm());
+        }
+
+        function ValidarHorarioMaquina(input) {
+            var resultado = true;
+
+            var fechaInput = $(input).val().split("-"); //yyyy-MM-ddThh:mm
+            var tiempoInput = fechaInput[2].split("T");
+
+            var anio = parseInt(fechaInput[0]);
+            var mes = parseInt(fechaInput[1]) - 1;
+            var dia = parseInt(tiempoInput[0]);
+            var hora = parseInt(tiempoInput[1].split(":")[0]);
+            var minuto = parseInt(tiempoInput[1].split(":")[1]);
+
+            var fecha = new Date(anio, mes, dia, hora, minuto);
+
+            var fechaInicio = fecha.yyyymmddhhmm();
+            var fechaFin = $(input).parent().parent().find("td.tdFechaFin").text();
+            var idMaquina = $(input).parent().parent().find("td.tdIdMaquina").text();
+            var nombreMaquina = $(input).parent().parent().find("td.tdDescripcionMaquina").text();
+
+            var model = {
+                idMaquina: idMaquina,
+                fechaInicio: fechaInicio,
+                fechaFin: fechaFin
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: urlValidarHorario,
+                data: JSON.stringify(model),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                success: function (response) {
+                    if (response.Success == true) {
+                        if (response.Data != 0) {
+                            app.showMessageDialog("El horario de reserva de la máquina " + nombreMaquina + " no se encuentra disponible porque existe otra OP que la mantendra ocupada.");
+                            resultado = false;
+                        }
+                    } else {
+                        app.showMessageDialog(response.Message);
+                        resultado = false;
+                    }
+                },
+                error: function (x, xh, xhr) {
+                    console.error(xh);
+                    resultado = false;
+                }
+            });
+            return resultado;
         }
 
         function EliminarMaquina(a) {
@@ -732,6 +811,13 @@
                             result = false;
                             return;
                         }
+
+                        var inputFecha = $(this).find("td.tdFechaInicio input");
+                        var horarioValido = ValidarHorarioMaquina(inputFecha);
+                        if (!horarioValido) {
+                            result = false;
+                            return;
+                        }
                     });
                 }
             }
@@ -746,6 +832,15 @@
             var hh = this.getHours() < 10 ? "0" + this.getHours() : this.getHours();
             var min = this.getMinutes() < 10 ? "0" + this.getMinutes() : this.getMinutes();
             return "".concat(dd).concat("/").concat(mm).concat("/").concat(yyyy).concat(" ").concat(hh).concat(":").concat(min);
+        };
+        
+        Date.prototype.yyyymmddhhmm2 = function () {
+            var yyyy = this.getFullYear();
+            var mm = this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1); // getMonth() is zero-based
+            var dd = this.getDate() < 10 ? "0" + this.getDate() : this.getDate();
+            var hh = this.getHours() < 10 ? "0" + this.getHours() : this.getHours();
+            var min = this.getMinutes() < 10 ? "0" + this.getMinutes() : this.getMinutes();
+            return "".concat(yyyy).concat("-").concat(mm).concat("-").concat(dd).concat("T").concat(hh).concat(":").concat(min);
         };
 
     </script>

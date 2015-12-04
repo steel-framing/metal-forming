@@ -259,6 +259,22 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="ValidarHorarioOrdenProduccionSecuencia">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idMaquina" type="xs:int" />
+        <xs:element minOccurs="0" name="fechaInicio" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="fechaFin" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ValidarHorarioOrdenProduccionSecuenciaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ValidarHorarioOrdenProduccionSecuenciaResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="ObtenerPlanVigente">
     <xs:complexType>
       <xs:sequence />

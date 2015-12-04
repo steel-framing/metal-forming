@@ -122,7 +122,7 @@
                         <div class="pull-left">
                             <h4 class="text-primary">Eventos</h4>
                         </div>
-                        <div class="pull-right">
+                        <div class="pull-right" style="display: none;">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Archivos de prueba
@@ -498,7 +498,7 @@
 
                         //Mostrando el cambio por unidades defectuosas
                         if (maquina.model.UnidadesDefectuosas != response.Data.UnidadesDefectuosas) {
-                            AgregarEvento(maquina.plc, "Proceso", response.Data.NoCiclos + " unidades defectuosas en total.");
+                            AgregarEvento(maquina.plc, "Proceso", response.Data.UnidadesDefectuosas + " unidades defectuosas en total.");
                         }
 
                         maquina.model = response.Data;

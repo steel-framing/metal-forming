@@ -123,6 +123,12 @@
   <wsdl:message name="IProduccionService_ActualizarEstadoOrdenProduccionSecuencia_OutputMessage">
     <wsdl:part name="parameters" element="tns:ActualizarEstadoOrdenProduccionSecuenciaResponse" />
   </wsdl:message>
+  <wsdl:message name="IProduccionService_ValidarHorarioOrdenProduccionSecuencia_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidarHorarioOrdenProduccionSecuencia" />
+  </wsdl:message>
+  <wsdl:message name="IProduccionService_ValidarHorarioOrdenProduccionSecuencia_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidarHorarioOrdenProduccionSecuenciaResponse" />
+  </wsdl:message>
   <wsdl:message name="IProduccionService_ObtenerPlanVigente_InputMessage">
     <wsdl:part name="parameters" element="tns:ObtenerPlanVigente" />
   </wsdl:message>
@@ -241,6 +247,10 @@
     <wsdl:operation name="ActualizarEstadoOrdenProduccionSecuencia">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuencia" message="tns:IProduccionService_ActualizarEstadoOrdenProduccionSecuencia_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuenciaResponse" message="tns:IProduccionService_ActualizarEstadoOrdenProduccionSecuencia_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidarHorarioOrdenProduccionSecuencia">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ValidarHorarioOrdenProduccionSecuencia" message="tns:IProduccionService_ValidarHorarioOrdenProduccionSecuencia_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProduccionService/ValidarHorarioOrdenProduccionSecuenciaResponse" message="tns:IProduccionService_ValidarHorarioOrdenProduccionSecuencia_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ObtenerPlanVigente">
       <wsdl:input wsaw:Action="http://tempuri.org/IProduccionService/ObtenerPlanVigente" message="tns:IProduccionService_ObtenerPlanVigente_InputMessage" />
@@ -437,6 +447,15 @@
     </wsdl:operation>
     <wsdl:operation name="ActualizarEstadoOrdenProduccionSecuencia">
       <soap:operation soapAction="http://tempuri.org/IProduccionService/ActualizarEstadoOrdenProduccionSecuencia" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidarHorarioOrdenProduccionSecuencia">
+      <soap:operation soapAction="http://tempuri.org/IProduccionService/ValidarHorarioOrdenProduccionSecuencia" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

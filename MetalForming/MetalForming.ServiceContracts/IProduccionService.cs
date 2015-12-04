@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using MetalForming.BusinessEntities;
+using System;
 
 namespace MetalForming.ServiceContracts
 {
@@ -77,6 +78,9 @@ namespace MetalForming.ServiceContracts
 
         [OperationContract]
         void ActualizarEstadoOrdenProduccionSecuencia(int id, int idMaquina, string estado);
+
+        [OperationContract]
+        int ValidarHorarioOrdenProduccionSecuencia(int idMaquina, DateTime fechaInicio, DateTime fechaFin);
 
         #endregion
 
