@@ -98,7 +98,7 @@ namespace MetalForming.Web.Controllers
                     CantidadOV = model.CantidadOV,
                     Estado = model.Estado,
                     IdPlan = model.IdPlan,
-                    OrdenesVenta =  new List<OrdenVenta>()
+                    OrdenesVenta = new List<OrdenVenta>()
                 };
 
                 foreach (var ordenVenta in model.OrdenesVenta)
@@ -204,7 +204,7 @@ namespace MetalForming.Web.Controllers
                             DescripcionProducto = item.OrdenVenta.Producto.Descripcion,
                             Estado = item.Estado
                         });
-                    }   
+                    }
                 }
             }
             catch (Exception ex)
@@ -344,11 +344,17 @@ namespace MetalForming.Web.Controllers
                 {
                     TomarStock = model.TomarStock,
                     CantidadProducto = model.CantidadProducto,
+                    CantidadProductoDigitado = model.CantidadProductoDigitado,
                     Estado = Constantes.EstadoOrdenPoduccion.PendienteAprobar,
                     OrdenVenta = new OrdenVenta
                     {
                         Id = model.IdOrdenVenta,
-                        Producto = new Producto { Id = model.IdProducto },
+                        Producto = new Producto
+                        {
+                            Id = model.IdProducto,
+                            Stock = model.StockProducto,
+                            StockMinimo = model.StockMinimoProducto
+                        },
                         Cantidad = model.CantidadOrdenVenta
                     },
                     Materiales = new List<OrdenProduccionMaterial>(),
@@ -361,7 +367,12 @@ namespace MetalForming.Web.Controllers
                     {
                         Comprar = material.Comprar,
                         Requerido = material.Requerido,
-                        Material = new Material { Id = material.IdMaterial }
+                        Material = new Material
+                        {
+                            Id = material.IdMaterial,
+                            Stock = material.Stock,
+                            StockMinimo = material.StockMinimo
+                        }
                     });
                 }
 
@@ -556,9 +567,9 @@ namespace MetalForming.Web.Controllers
                             FechaEntrega = item.FechaEntrega,
                             Estado = item.Estado,
                             IdPrograma = item.IdPrograma,
-                            NombreAsistentePlaneamiento = item.AsistentePlaneamiento == null 
+                            NombreAsistentePlaneamiento = item.AsistentePlaneamiento == null
                                         ? string.Empty
-                                        : item.AsistentePlaneamiento.NombreCompleto 
+                                        : item.AsistentePlaneamiento.NombreCompleto
                         });
                     }
                 }
@@ -596,8 +607,8 @@ namespace MetalForming.Web.Controllers
                 using (var service = new ProduccionServiceClient())
                 {
                     service.GuardarAsignacionesOrdeneVenta(
-                        model.OrdenesVenta.Select(p=>p.Id).ToList(), 
-                        model.AsistentePlaneamiento.Select(p=>new Usuario
+                        model.OrdenesVenta.Select(p => p.Id).ToList(),
+                        model.AsistentePlaneamiento.Select(p => new Usuario
                         {
                             Id = p.Id,
                             CantidadOV = p.CantidadOV

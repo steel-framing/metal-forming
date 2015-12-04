@@ -30,5 +30,8 @@ namespace MetalForming.BusinessEntities
 
         [DataMember]
         public Usuario Operador { get; set; }
+
+        [DataMember]
+        public int CantidadProductoDigitado { get; set; }
     }
 }

@@ -120,6 +120,7 @@
       <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/MetalForming.BusinessEntities.Core" base="q6:BaseEntity">
         <xs:sequence>
           <xs:element minOccurs="0" name="CantidadProducto" type="xs:int" />
+          <xs:element minOccurs="0" name="CantidadProductoDigitado" type="xs:int" />
           <xs:element minOccurs="0" name="Estado" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Materiales" nillable="true" type="tns:ArrayOfOrdenProduccionMaterial" />
           <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />

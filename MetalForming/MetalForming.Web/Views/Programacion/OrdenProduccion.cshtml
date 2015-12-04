@@ -17,6 +17,9 @@
     </div>
 </header>
 
+<input id="hidStockProducto" type="hidden" value="@Model.StockProducto" />
+<input id="hidStockMinimoProducto" type="hidden" value="@Model.StockMinimoProducto" />
+
 <main id="mainOrdenProduccion">
     <section>
         <div class="container">
@@ -724,16 +727,21 @@
                 IdProducto: $("#IdProducto").val(),
                 CantidadProducto: $("#CantidadProducto").val(),
                 CantidadOrdenVenta: $("#CantidadOrdenVenta").val(),
+                CantidadProductoDigitado: $("#txtLimiteProduccion").val(),
                 TomarStock: $("#chkTomarStock").is(':checked'),
                 Materiales: new Array(),
-                Secuencia: new Array()
-            }
+                Secuencia: new Array(),
+                StockProducto: $("#hidStockProducto").val(),
+                StockMinimoProducto: $("#hidStockMinimoProducto").val()
+            };
 
             $("#tblMateriales").find("tbody tr").each(function (index, item) {
                 model.Materiales.push({
                     IdMaterial: parseInt($(this).find("td.IdMaterial").text()),
                     Requerido: parseInt($(this).find("td.RequeridoMaterial").text()),
-                    Comprar: parseInt($(this).find("td.ComprarMaterial input").val())
+                    Comprar: parseInt($(this).find("td.ComprarMaterial input").val()),
+                    Stock: parseInt($(this).find("td.StockMaterial").text()),
+                    StockMinimo: parseInt($(this).find("td.StockMinimoMaterial").text()),
                 });
             });
 

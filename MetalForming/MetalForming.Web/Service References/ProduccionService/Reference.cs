@@ -833,6 +833,9 @@ namespace MetalForming.Web.ProduccionService {
         private int CantidadProductoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int CantidadProductoDigitadoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EstadoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -862,6 +865,19 @@ namespace MetalForming.Web.ProduccionService {
                 if ((this.CantidadProductoField.Equals(value) != true)) {
                     this.CantidadProductoField = value;
                     this.RaisePropertyChanged("CantidadProducto");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CantidadProductoDigitado {
+            get {
+                return this.CantidadProductoDigitadoField;
+            }
+            set {
+                if ((this.CantidadProductoDigitadoField.Equals(value) != true)) {
+                    this.CantidadProductoDigitadoField = value;
+                    this.RaisePropertyChanged("CantidadProductoDigitado");
                 }
             }
         }

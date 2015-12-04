@@ -44,5 +44,7 @@ namespace MetalForming.Web.Models
         public int IdOperador { get; set; }
 
         public string NombreOperador { get; set; }
+
+        public int CantidadProductoDigitado { get; set; }
     }
 }
